@@ -15,7 +15,7 @@
         <div class="collapse navbar-collapse">
             <ul class="navbar-nav">
                 <li class="nav-item ">
-                    <a class="nav-link " aria-current="page" href="#"><span>
+                    <a class="nav-link " aria-current="page" href="{{url('/')}}"><span>
                             الصفحة الرئيسية</span></a>
                 </li>
                 <li class="nav-item">
@@ -41,9 +41,21 @@
             </ul>
 
         </div>
-        <div class="cart  text-primary border shadow-sm btn bg-white  p-2 rounded">
-            <span class="mx-1 total" >د.م 00,00</span>
+        <div class="cart  text-primary border shadow-sm btn bg-white  p-2 rounded" data-bs-toggle="offcanvas" data-bs-target="#cart-canvas" aria-controls="cart-canvas">
             <i class=" fa-solid fa-cart-shopping mx-1"></i>
+            <span class="mx-1 total" > {{number_format(cart()->total,2,',',' ') }}</span>
+            <span>د.م</span>
         </div>
     </div>
 </nav>
+
+<div class="offcanvas offcanvas-start" tabindex="-1" id="cart-canvas" aria-labelledby="cart-canvasLabel">
+    <div class="offcanvas-header d-flex justify-content-between">
+        <h5 class="offcanvas-title w-100" id="cart-canvasLabel">
+            عربة التسوق</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="offcanvas" aria-label="Close"></button>
+    </div>
+    <div class="offcanvas-body">
+
+    </div>
+</div>
