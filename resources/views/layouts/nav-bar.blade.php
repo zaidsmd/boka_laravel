@@ -15,7 +15,7 @@
         <div class="collapse navbar-collapse">
             <ul class="navbar-nav">
                 <li class="nav-item ">
-                    <a class="nav-link " aria-current="page" href="{{url('/')}}"><span>
+                    <a class="nav-link @if(\Illuminate\Support\Facades\Request::segment(1) == '') active @endif" aria-current="page"  href="{{url('/')}}"><span>
                             الصفحة الرئيسية</span></a>
                 </li>
                 <li class="nav-item">

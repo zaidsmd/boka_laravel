@@ -230,3 +230,28 @@ $(document).on('click','.cart-container .delete-cart-item',function (){
         }
     })
 })
+$(document).on('click','.change-city.trigger',function (){
+    $('.change-city').toggleClass('d-none')
+})
+$(document).on('change','.change-city select',function (){
+    let city = $(this).val()
+    $('.cart-container').append($('<div class="position-absolute top-0 bottom-0 end-0 start-0 text-primary rounded d-flex align-items-center justify-content-center cart-loader" ><div class="spinner-border"></div></div>'))
+    $.ajax({
+        url:window.origin+'/cart-city',
+        method:'POST',
+        data:{
+            'city':city
+        },
+        headers: {
+            'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+        },
+        success:function (response){
+            $('.cart-container').html(response)
+            $('.cart-container .cart-loader').remove();
+        },
+        error:function (xhr){
+            notyf.error(xhr.responseText);
+            $('.cart-container .cart-loader').remove();
+        }
+    })
+})

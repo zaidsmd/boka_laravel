@@ -8,7 +8,8 @@ use Illuminate\Database\Eloquent\Relations\HasMany;
 class Cart extends Model
 {
     protected $fillable = [
-        'user_id'
+        'user_id',
+        'city'
     ];
 
     function cart_lignes(): HasMany

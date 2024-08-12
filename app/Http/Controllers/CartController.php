@@ -100,9 +100,11 @@ class CartController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, Cart $cart)
+    public function updateCartCity(Request $request)
     {
-        //
+        $cart = \cart();
+        $cart->update(['city'=>$request->input('city')]);
+        return response(view('partials.cart-table',compact('cart')));
     }
 
     /**

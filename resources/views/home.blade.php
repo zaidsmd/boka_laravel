@@ -1,4 +1,5 @@
 @extends('layouts.main')
+@section('document-title','الصفحة الرئيسية')
 @section('page')
     <div id="carouselExampleIndicators" class="carousel slide" data-bs-ride="carousel">
         <div class="carousel-indicators">

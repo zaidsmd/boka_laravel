@@ -20,4 +20,8 @@ class ShopViewsController extends Controller
         $cart = cart();
         return view('cart',compact('cart'));
     }
+
+    public function checkout(){
+        return view('checkout');
+    }
 }

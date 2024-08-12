@@ -70,6 +70,7 @@ nav.navbar {
     backdrop-filter: blur(8px);
 
     .nav-link {
+        font-weight: 500;
         &.active {
             &::before {
                 transform: translate3d(0, 1px, 0) scale3d(1.08, 2, 1);
@@ -171,4 +172,7 @@ label.required {
 }
 .delete-cart-item  {
     cursor: pointer;
+}
+.cursor-pointer {
+    cursor: pointer !important;
 }
