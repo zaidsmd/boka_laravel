@@ -27,3 +27,34 @@ Route::post('/cart-item-quantity', [\App\Http\Controllers\CartController::class,
 Route::delete('/cart-line-delete', [\App\Http\Controllers\CartController::class, 'deleteLine'])->name('cart.line-delete');
 Route::post('/cart-city', [\App\Http\Controllers\CartController::class, 'updateCartCity'])->name('cart.line-delete');
 
+
+
+//admin routes
+
+// product
+
+//Route::get('/admin', [\App\Http\Controllers\ArticleController::class, 'index'])->name('index');
+
+
+
+Route::group(['prefix' => 'articles', 'controller' => \App\Http\Controllers\ArticleController::class], function () {
+    Route::get('/', 'liste')->name('articles.liste');
+    Route::get('/{id}/afficher', 'afficher')->name('articles.afficher');
+    Route::get('/ajouter', 'ajouter')->name('articles.ajouter');
+    Route::post('/', 'sauvegarder')->name('articles.sauvegarder');
+    Route::get('/{id}/modifier', 'modifier')->name('articles.modifier');
+    Route::put('/{id}', 'mettre_a_jour')->name('articles.mettre_a_jour');
+    Route::delete('/articles/{article}', 'supprimer')->name('articles.supprimer');
+
+});
+
+Route::group(['prefix' => 'categories', 'controller' => \App\Http\Controllers\CategoryController::class], function () {
+    Route::get('/', 'liste')->name('categories.liste');
+    Route::get('/{id}/afficher', 'afficher')->name('categories.afficher');
+    Route::get('/ajouter', 'ajouter')->name('categories.ajouter');
+    Route::post('/', 'sauvegarder')->name('categories.sauvegarder');
+    Route::get('/{id}/modifier','modifier')->name('categories.modifier');
+    Route::put('/{id}', 'mettre_a_jour')->name('categories.mettre_a_jour');
+    Route::delete('/categories/{category}', 'supprimer')->name('categories.supprimer');
+
+});
