@@ -1,13 +1,15 @@
-@extends('layouts.main')
+@extends('admin_layouts.main')
 @section('document-title','Articles')
-@push('styles')
+@push('css')
     <link rel="stylesheet" href="{{asset('libs/select2/css/select2.min.css')}}">
     <link href="{{asset('libs/bootstrap-datepicker/css/bootstrap-datepicker.min.css')}}" rel="stylesheet">
     <link href="{{asset('libs/daterangepicker/css/daterangepicker.min.css')}}" rel="stylesheet">
     <link rel="stylesheet" href="{{asset('libs/dropify/css/dropify.min.css')}}">
     <link rel="stylesheet" href="{{asset('libs/spectrum-colorpicker2/spectrum.min.css')}}">
+
+
 @endpush
-@section('page')
+@section('section')
     <div class="row">
         <div class="col-12">
             <div class="card">
@@ -34,115 +36,60 @@
                         <div class="row">
                             <div class="col-sm-6 row mx-0 col-12">
                                 <div class="col-12 mt-2">
-                                    <h5 class="text-muted">Propriétés</h5>
+                                    <h5 class="text-muted">Informations</h5>
                                     <hr class="border border-success">
                                 </div>
                                 <div class=" col-12 col-lg-6 mb-3 ">
-                                    <label class="form-label required" for="reference-input">Référence</label>
-                                    <input required type="text"
-                                           class="form-control {{$errors->has('i_reference')? 'is-invalid' : ''}}"
-                                           id="reference-input" placeholder=""
-                                           name="i_reference" value="{{old('i_reference',$article_reference)}}">
+                                    <label class="form-label required" for="reference-input">Titre</label>
+                                    <input  type="text"
+                                           class="form-control {{$errors->has('titre')? 'is-invalid' : ''}}"
+                                           id="titre" placeholder=""
+                                           name="titre" value="{{old('titre')}}">
                                     <div class="invalid-feedback">
-                                        @if($errors->has('i_reference'))
-                                            {{ $errors->first('i_reference') }}
+                                        @if($errors->has('titre'))
+                                            {{ $errors->first('titre') }}
                                         @endif
                                     </div>
                                 </div>
                                 <div class="col-12 col-lg-6 mb-3 ">
-                                    <label class="form-label   required" for="designation-input">Désignation</label>
-                                    <input required type="text"
-                                           class="form-control {{$errors->has('i_designation')? 'is-invalid' : ''}}"
-                                           id="designation-input"
-                                           placeholder=""
-                                           name="i_designation" value="{{old('i_designation')}}">
-                                    <div class="invalid-feedback">
-                                        @if($errors->has('i_designation'))
-                                            {{ $errors->first('i_designation') }}
-                                        @endif
-                                    </div>
-                                </div>
-                                <div class="col-12 col-lg-6 mb-3 ">
-                                    <label class="form-label   required" for="unity-select">Unité</label>
-                                    <div class="input-group">
-                                        <select required
-                                                class="select2 form-control mb-3 custom-select {{$errors->has('i_unite')? 'is-invalid' : ''}}"
-                                                name="i_unite"
-                                                id="unity-select">
-                                            @if($unites)
-                                                @foreach($unites as $unite)
-                                                    <option @if(old('i_unite',$unite['defaut'])===$unite['id']) selected
-                                                            @endif value="{{$unite['id']}}">{{$unite['nom']}}</option>
-                                                @endforeach
-                                            @endif
-                                        </select>
-                                        <button type="button" class="btn btn-light" data-bs-target="#unite-modal" data-bs-toggle="modal" >+</button>
-                                        @if($errors->has('i_unite'))
-                                            <div class="invalid-feedback">
-
-                                                {{ $errors->first('i_unite') }}
-                                            </div>
-
-                                        @endif
-                                    </div>
-                                </div>
-                                <div class="col-12 col-lg-6 mb-3 ">
-                                    <label class="form-label  " for="cat-select">Famille</label>
+                                    <label class="form-label required" for="categorie">Catégorie</label>
                                     <div class="input-group">
                                         <select
-                                            class="select2 form-control mb-3 custom-select {{$errors->has('i_famille')? 'is-invalid' : ''}}"
-                                            name="i_famille"
-                                            id="cat-select">
+                                            class="select2 form-control mb-3 custom-select {{$errors->has('categorie')? 'is-invalid' : ''}}"
+                                            name="categorie[]"
+                                            id="categorie" multiple>
                                         </select>
-                                        <button type="button" class="btn btn-light" data-bs-target="#family-modal" data-bs-toggle="modal" >+</button>
-                                    @if($errors->has('i_famille'))
+
+                                        {{--<button type="button" class="btn btn-light" data-bs-target="#family-modal" data-bs-toggle="modal" >+</button>--}}
+                                        @if($errors->has('categorie'))
                                             <div class="invalid-feedback">
-                                                {{ $errors->first('i_famille') }}
+                                                {{ $errors->first('categorie') }}
                                             </div>
                                         @endif
                                     </div>
                                 </div>
-                                @if($marque)
-                                    <div class="col-12 col-lg-6 mb-3">
-                                        <label for="marque" class="form-label">Marque</label>
-                                        <div class="input-group">
-                                            <select name="i_marque_id"
-                                                    class="select2 form-control mb-3 custom-select {{$errors->has('i_marque_id')? 'is-invalid' : ''}}"
-                                                    id="marque">
-                                                <option selected value="">...</option>
-                                                @foreach($marques as $marque)
-                                                    <option
-                                                        @selected(old('i_marque_id') === $marque->id) value="{{$marque->id}}">{{$marque->nom}}</option>
-                                                @endforeach
-                                            </select>
-                                            <button type="button" class="btn btn-light" data-bs-target="#marque-modal" data-bs-toggle="modal" >+</button>
-                                            @error('i_marque_id')
-                                            <div class="invalid-feedback">
-                                                {{ $message }}
-                                            </div>
-                                            @enderror
-                                        </div>
+
+
+                                <div class="col-12 col-lg-6 mb-3 ">
+                                    <label class="form-label   required" for="short_description">Description courte</label>
+                                    <input  type="text"
+                                           class="form-control {{$errors->has('short_description')? 'is-invalid' : ''}}"
+                                           id="short_description"
+                                           placeholder=""
+                                           name="short_description" value="{{old('short_description')}}">
+                                    <div class="invalid-feedback">
+                                        @if($errors->has('short_description'))
+                                            {{ $errors->first('short_description') }}
+                                        @endif
                                     </div>
-                                    <div class="col-12 col-lg-6 mb-3 d-none d-lg-block"></div>
-                                @endif
-                                @if($image)
-                                    <div class="col-12 col-lg-6 mb-3 ">
-                                        <label for="i_image"
-                                               class="form-label {{$errors->has('i_image')? 'is-invalid' : ''}}">Image</label>
-                                        <input name="i_image" type="file" id="i_image" accept="image/*">
-                                        <div class="invalid-feedback">
-                                            @if($errors->has('i_image'))
-                                                {{ $errors->first('i_image') }}
-                                            @endif
-                                        </div>
-                                    </div>
-                                @endif
-                                    <div class="col-12 col-lg-6 mb-3">
-                                    <label class="form-label" for="desc-input">Description</label>
+                                </div>
+
+                                <div class="col-12 col-lg-6 mb-3">
+                                    <label class="form-label required" for="desc-input">Description</label>
                                     <textarea name="description"
                                               class="form-control {{$errors->has('description')? 'is-invalid' : ''}}"
                                               style="resize: vertical"
-                                              placeholder="Tapez votre description ici..." id="desc-input" cols="30"
+                                              placeholder="Tapez votre description ici..." id="description" cols="30"
                                               rows="8">{{old('description')}}</textarea>
                                     <div class="invalid-feedback">
                                         @if($errors->has('description'))
@@ -150,6 +97,18 @@
                                         @endif
                                     </div>
                                 </div>
+
+{{--                                    <div class="col-12 col-lg-6 mb-3 ">--}}
+{{--                                        <label for="i_image"--}}
+{{--                                               class="form-label {{$errors->has('i_image')? 'is-invalid' : ''}}">Image</label>--}}
+{{--                                        <input name="i_image" type="file" id="i_image" accept="image/*">--}}
+{{--                                        <div class="invalid-feedback">--}}
+{{--                                            @if($errors->has('i_image'))--}}
+{{--                                                {{ $errors->first('i_image') }}--}}
+{{--                                            @endif--}}
+{{--                                        </div>--}}
+{{--                                    </div>--}}
+
                             </div>
                             <div class="col-sm-6 row mx-0 a col-12 align-content-start">
                                 <div class="col-12 mt-2">
@@ -157,110 +116,32 @@
                                     <hr class="border border-success">
                                 </div>
                                 <div class="col-12 col-lg-6 mb-3 ">
-                                    <label class="form-label   required " for="tax-select">Taxe</label>
-                                    <select required
-                                            class="select2 form-control mb-3 custom-select {{$errors->has('i_taxe')? 'is-invalid' : ''}}"
-                                            name="i_taxe"
-                                            id="tax-select">
-                                        @if($taxes)
-                                            @foreach($taxes as $taxe)
-                                                <option @if(old('i_taxe',$taxe['active'])===$taxe['valeur']) selected
-                                                        @endif value="{{$taxe['valeur']}}">{{$taxe['nom']}}</option>
-                                            @endforeach
-                                        @endif
-                                    </select>
-                                    <div class="invalid-feedback">
-                                        @if($errors->has('i_taxe'))
-                                            {{ $errors->first('i_taxe') }}
-                                        @endif
-                                    </div>
-                                </div>
-                                <div class="col-12 col-lg-6 mb-3 ">
                                     <label class="form-label   required" for="vente-input">Prix de vente</label>
                                     <div class="input-group">
                                         <input required type="number" step="0.01"
-                                               class="form-control {{$errors->has('i_vente_prix')? 'is-invalid' : ''}}"
-                                               id="vente-input" min="0"
-                                               name="i_vente_prix" value="{{old('i_vente_prix',0)}}">
+                                               class="form-control {{$errors->has('sale_price')? 'is-invalid' : ''}}"
+                                               id="sale_price" min="0"
+                                               name="sale_price" value="{{old('sale_price',0)}}">
                                         <span class="input-group-text">MAD</span>
                                         <div class="invalid-feedback">
-                                            @if($errors->has('i_vente_prix'))
-                                                {{ $errors->first('i_vente_prix') }}
+                                            @if($errors->has('sale_price'))
+                                                {{ $errors->first('sale_price') }}
                                             @endif
                                         </div>
                                     </div>
                                 </div>
                                 <div class=" col-12 col-lg-6 mb-3 ">
-                                    <label class="form-label   " for="achat_price-input">Prix d'achat</label>
+                                    <label class="form-label   " for="price">Prix d'achat</label>
                                     <div class="input-group">
                                         <input type="number" step="0.01" min="0"
-                                               class="form-control {{$errors->has('i_achat_prix')? 'is-invalid' : ''}}"
-                                               id="achat_price-input"
-                                               name="i_achat_prix" value="{{old('i_achat_prix')}}">
+                                               class="form-control {{$errors->has('price')? 'is-invalid' : ''}}"
+                                               id="price"
+                                               name="price" value="{{old('price')}}">
                                         <span class="input-group-text">MAD</span>
                                         <div class="invalid-feedback">
-                                            @if($errors->has('i_achat_prix'))
-                                                {{ $errors->first('i_achat_prix') }}
+                                            @if($errors->has('price'))
+                                                {{ $errors->first('price') }}
                                             @endif
-                                        </div>
-                                    </div>
-                                </div>
-                                {{--                                <div class="col-12 col-lg-6 mb-3 ">--}}
-                                {{--                                    <label class="form-label  " for="revien_prix-input">Prix de revient</label>--}}
-                                {{--                                    <div class="input-group">--}}
-                                {{--                                        <input type="number" step="0.01" min="0"--}}
-                                {{--                                               class="form-control {{$errors->has('i_revient_prix')? 'is-invalid' : ''}}"--}}
-                                {{--                                               id="revien_prix-input"--}}
-                                {{--                                               name="i_revient_prix" value="{{old('i_revient_prix')}}">--}}
-                                {{--                                        <span class="input-group-text">MAD</span>--}}
-                                {{--                                        <div class="invalid-feedback">--}}
-                                {{--                                            @if($errors->has('i_revient_prix'))--}}
-                                {{--                                                {{ $errors->first('i_revient_prix') }}--}}
-                                {{--                                            @endif--}}
-                                {{--                                        </div>--}}
-                                {{--                                    </div>--}}
-                                {{--                                </div>--}}
-                                <div class="col-12 mt-2">
-                                    <h5 class="text-muted">Stock</h5>
-                                    <hr class="border border-success">
-                                </div>
-                                @if($numero_serie)
-                                    <div class="col-12 col-lg-6 mb-3 ">
-                                        <label class="form-label" for="i_numero_serie-input">Numéro de série</label>
-                                        <input required type="text"
-                                               class="form-control {{$errors->has('i_numero_serie')? 'is-invalid' : ''}}"
-                                               id="i_numero_serie-input"
-                                               placeholder=""
-                                               name="i_numero_serie" value="{{old('i_numero_serie')}}">
-                                        <div class="invalid-feedback">
-                                            @if($errors->has('i_numero_serie'))
-                                                {{ $errors->first('i_numero_serie') }}
-                                            @endif
-                                        </div>
-                                    </div>
-                                @endif
-                                <div class="col-12 col-lg-6 mb-3 ">
-                                    <label class="form-label" for="quantite-input">Quantité d'alerte</label>
-                                    <input type="number" step="0.01"
-                                           class="form-control {{$errors->has('i_quantite_alerte')? 'is-invalid' : ''}}"
-                                           id="quantite-input"
-                                           placeholder=""
-                                           name="i_quantite_alerte" value="{{old('i_quantite_alerte')}}">
-                                    <div class="invalid-feedback">
-                                        @if($errors->has('i_quantite_alerte'))
-                                            {{ $errors->first('i_quantite_alerte') }}
-                                        @endif
-                                    </div>
-                                </div>
-                                <div class="col-12 col-lg-6 mb-3 d-flex align-items-center pt-4">
-                                    <div class="d-flex align-items-center">
-                                        <label for="i_stockable" class="form-check-label me-2">Stockable</label>
-                                        <div class="form-check-inline " style="height: 24px">
-                                            <input name="i_stockable" value="1" type="checkbox" id="i_stockable"
-                                                   switch="bool"
-                                                   @if(old('i_stockable')==1)checked @endif >
-                                            <label for="i_stockable" data-on-label="Oui"
-                                                   data-off-label="Non"></label>
                                         </div>
                                     </div>
                                 </div>
@@ -268,39 +149,6 @@
                         </div>
                     </form>
                 </div>
-            </div>
-        </div>
-    </div>
-    <div class="modal fade" id="unite-modal" tabindex="-1" aria-hidden="true" style="display: none;">
-        <div class="modal-dialog modal-dialog-centered">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h5 class="modal-title align-self-center" id="add-uni-modal-title">Ajouter une unité</h5>
-                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                </div>
-                <form method="post" action="{{route('unites.sauvegarder')}}" class="needs-validation" id="unite-form" novalidate>
-                    @csrf
-                    <div class="modal-body">
-                        <div class="row">
-                            <div class="col-12 mb-3">
-                                <label class="form-label required " for="unite-input">Unité</label>
-                                <input type="text" required class="form-control" id="unite-input" name="i_nom">
-                                <div class="invalid-feedback">Veuillez d'abord entrer une unité</div>
-                            </div>
-                            <div class="col-12 mb-3">
-                                <div class="form-check-inline d-flex align-items-center">
-                                    <label for="" class="form-check-label me-2">Par défaut</label>
-                                    <input name="i_default" value="1" type="checkbox" id="active-input" switch="bool">
-                                    <label for="active-input" data-on-label="Oui" data-off-label="Non"></label>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="modal-footer">
-                        <button type="button" class="btn btn-light" data-bs-dismiss="modal">Fermer</button>
-                        <button class="btn btn-primary">Ajouter</button>
-                    </div>
-                </form>
             </div>
         </div>
     </div>
@@ -312,7 +160,7 @@
                     <h5 class="modal-title align-self-center" id="add-cat-modal-title">Ajouter une famille</h5>
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
-                <form method="post" id="family-form" action="{{route('familles.sauvegarder')}}" class="needs-validation" novalidate>
+                <form method="post" id="family-form" action="{{route('categories.sauvegarder')}}" class="needs-validation" novalidate>
                     @csrf
                     <div class="modal-body">
                         <div class="row">
@@ -344,37 +192,7 @@
         </div>
         <!-- /.modal-dialog -->
     </div>
-    @if($marque)
-    <div class="modal fade" id="marque-modal" tabindex="-1" aria-labelledby="add-marque-modal-title" aria-hidden="true"
-         style="display: none;">
-        <div class="modal-dialog modal-dialog-centered">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h5 class="modal-title align-self-center" id="add-marque-modal-title">Ajouter une marque</h5>
-                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                </div>
-                <form method="post" action="{{route('marques.sauvegarder')}}" class="needs-validation" id="marque-form" novalidate>
-                    @csrf
-                    <div class="modal-body">
-                        <div class="row">
-                            <div class="col-12 mb-3">
-                                <label class="form-label required " for="nom-input">Nom</label>
-                                <input type="text" required class="form-control" id="nom-input" name="nom">
-                            </div>
 
-                        </div>
-                    </div>
-                    <div class="modal-footer">
-                        <button type="button" class="btn btn-light" data-bs-dismiss="modal">Fermer</button>
-                        <button class="btn btn-primary">Ajouter</button>
-                    </div>
-                </form>
-            </div>
-            <!-- /.modal-content -->
-        </div>
-        <!-- /.modal-dialog -->
-    </div>
-    @endif
 
 @endsection
 @push('scripts')
@@ -382,5 +200,44 @@
     <script src="{{asset('libs/select2/js/select2.full.min.js')}}"></script>
     <script src="{{asset('libs/daterangepicker/js/daterangepicker.js')}}"></script>
     <script src="{{asset('libs/dropify/js/dropify.min.js')}}"></script>
-    @vite('resources/js/article_create.js')
+{{--    @vite('resources/js/article_create.js')--}}
+
+    <script>
+        $("#i_image").dropify({
+            messages: {
+                default: "Glissez-déposez un fichier ici ou cliquez",
+                replace: "Glissez-déposez un fichier ou cliquez pour remplacer",
+                remove: "Supprimer",
+                error: "Désolé, le fichier trop volumineux",
+            },
+        });
+
+        $("#marque").select2({
+            allowClear : true,
+            placeholder: "...",
+            minimumResultsForSearch: -1,
+        });
+    </script>
+    <script>
+        $("#categorie").select2({
+            placeholder: "...",
+            ajax: {
+                url: "{{ route('categories.select') }}",
+                dataType: "json",
+                delay: 250,
+                data: function (params) {
+                    return {
+                        term: params.term,
+                    };
+                },
+                processResults: function (data) {
+                    return {
+                        results: data,
+                    };
+                },
+                cache: false,
+            },
+            minimumInputLength: 1,
+        });
+    </script>
 @endpush

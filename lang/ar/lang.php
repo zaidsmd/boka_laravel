@@ -1,6 +1,24 @@
 <?php
 
 return [
+    'product'=> [
+    'id' => 'المعرف',
+    'title' => 'العنوان',
+    'purchase_price' => 'سعر الشراء',
+    'sale_price' => 'سعر البيع',
+    'short_description' => 'الوصف القصير',
+    'description' => 'الوصف',
+    'actions' => 'الإجراءات',
+        'article_list' => 'قائمة المنتجات',
+        'add_product' => 'إضافة منتج',
+    ],
+
+    'category' => [
+        'list' => 'قائمة الفئات',
+        'add' => 'إضافة فئة',
+    ],
+
+
     'create_fruit' => [
         'title' => 'إنشاء فاكهة جديدة',
         'label_name' => 'الاسم',

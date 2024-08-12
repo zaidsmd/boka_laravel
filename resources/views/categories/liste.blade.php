@@ -15,7 +15,7 @@
             <div class="card-body">
                 <div class="row">
                     <div class="col-md-6">
-                        <h2>Liste des categories</h2>
+                        <h2>{{__('lang.category.list')}}</h2>
                     </div>
                     <div class="col-md-6 d-flex align-items-center justify-content-end">
 {{--                        <a href="{{ route('categories.ajouter') }}" class="btn btn-primary mr-3">--}}
@@ -23,7 +23,7 @@
 {{--                        </a>--}}
 
                         <button class="btn btn-soft-success" data-bs-target="#add-marque-modal"
-                                data-bs-toggle="modal"><i class="mdi mdi-plus"></i> Ajouter
+                                data-bs-toggle="modal"><i class="mdi mdi-plus"></i> {{__('lang.category.add')}}
                         </button>
 
                     </div>
@@ -44,7 +44,7 @@
                         <tr>
                             <th style="display:none;">id </th>
                             <th>Nom </th>
-                            <th style="width: 20%;">Actions</th>
+                            <th style="width: 10%">Actions</th>
                         </tr>
                         </thead>
                     </table>

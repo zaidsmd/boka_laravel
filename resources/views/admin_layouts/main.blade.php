@@ -29,7 +29,12 @@
     <link href="{{ asset('assets/libs/datatables.net-responsive-bs4/css/responsive.bootstrap4.min.css') }}" rel="stylesheet" type="text/css" />
 
     <link rel="shortcut icon" href="{{ asset('assets/images/favicon.ico') }}">
-
+    <style>
+        .required::after {
+            content: " *";
+            color: red;
+        }
+    </style>
     @stack('css')
 
 </head>
@@ -308,5 +313,8 @@
 @yield('scripts')
 @yield('javascript')
 @stack('scripts')
+
+@vite(['resources/js/app.js'])
+
 </body>
 </html>

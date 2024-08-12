@@ -15,11 +15,11 @@
             <div class="card-body">
                 <div class="row">
                     <div class="col-md-6">
-                        <h2>Liste des articles</h2>
+                        <h2>{{__('lang.product.article_list')}}</h2>
                     </div>
                     <div class="col-md-6 d-flex align-items-center justify-content-end">
                         <a href="{{ route('articles.ajouter') }}" class="btn btn-primary mr-3">
-                            Ajouter un article
+                            {{__('lang.product.add_product')}}
                         </a>
 
                     </div>
@@ -38,14 +38,14 @@
                     <table style="width: 100%;" id="articles_table" class="table table-bordered">
                         <thead>
                         <tr>
-                            <th style="display:none;">id </th>
-                            <th>Titre </th>
-                            <th>Slug </th>
-                            <th>Prix d'achat</th>
-                            <th>Prix de vente </th>
-                            <th>Description courte</th>
-                            <th>Description </th>
-                            <th style="width: 20%;">Actions</th>
+                            <th > {{__('lang.product.id')}}</th>
+                            <th > {{__('lang.product.title')}}</th>
+                            <th > {{__('lang.product.purchase_price')}}</th>
+                            <th > {{__('lang.product.sale_price')}}</th>
+                            <th > {{__('lang.product.short_description')}}</th>
+                            <th > {{__('lang.product.description')}}</th>
+                            <th > {{__('lang.product.actions')}}</th>
+
                         </tr>
                         </thead>
                     </table>
@@ -63,8 +63,8 @@
                 "serverSide": true,
                 "ajax": "{{ route('articles.liste') }}",
                 "columns": [
+                    { "data": "id" },
                     { "data": "title" },
-                    { "data": "slug" },
                     { "data": "price" },
                     { "data": "sale_price" },
                     { "data": "short_description" },
@@ -100,14 +100,9 @@
             });
         });
 
-
-
         function redirectToCreatePage() {
             window.location.href = "{{ route('articles.liste') }}";
         }
-
-
-
 
         $('#articles_table').on('click', '.delete-article', function() {
             var articleId = $(this).data('id'); // Extract the achat ID from the data-id attribute

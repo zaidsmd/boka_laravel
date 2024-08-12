@@ -1,199 +1,249 @@
-@extends('layouts.main')
-@section('document-title', 'Articles')
-@push('styles')
-    @include('layouts.partials.css.__datatable_css')
-    <link rel="stylesheet" href="{{ asset('libs/select2/css/select2.min.css') }}">
-    <link href="{{ asset('libs/bootstrap-datepicker/css/bootstrap-datepicker.min.css') }}" rel="stylesheet">
-    <link href="{{ asset('libs/daterangepicker/css/daterangepicker.min.css') }}" rel="stylesheet">
+@extends('admin_layouts.main')
+@section('document-title','Articles')
+@push('css')
+    <link rel="stylesheet" href="{{asset('libs/select2/css/select2.min.css')}}">
+    <link href="{{asset('libs/bootstrap-datepicker/css/bootstrap-datepicker.min.css')}}" rel="stylesheet">
+    <link href="{{asset('libs/daterangepicker/css/daterangepicker.min.css')}}" rel="stylesheet">
     <link rel="stylesheet" href="{{asset('libs/dropify/css/dropify.min.css')}}">
-@endpush
-@section('page')
+    <link rel="stylesheet" href="{{asset('libs/spectrum-colorpicker2/spectrum.min.css')}}">
 
+
+@endpush
+@section('section')
     <div class="row">
         <div class="col-12">
             <div class="card">
                 <div class="card-body">
-                    <!-- #####--Card Title--##### -->
-                    <div class="card-title">
-                        <div class="d-flex switch-filter justify-content-between align-items-center">
-                            <div>
-                                <a href="{{ route('articles.liste') }}"><i class="fa fa-arrow-left"></i></a>
-                                <h5 class="m-0 float-end ms-3"><i class="mdi mdi-contacts me-2 text-success"></i>
-                                    Voir l'article : {{$o_article->designation}}
-                                </h5>
+                    <form id="articles-form" enctype="multipart/form-data" action="{{route('articles.sauvegarder')}}"
+                          method="post"   autocomplete="off">
+                        <!-- #####--Card Title--##### -->
+                        <div class="card-title">
+                            <div id="__fixed" class="d-flex justify-content-between align-items-center">
+                                <div>
+                                    <a href="{{route('articles.liste')}}"><i class="fa fa-arrow-left"></i></a>
+                                    <h5 class="m-0 float-end ms-3"><i class="fa  fas fa-boxes me-2 text-success"></i>
+                                        Modifier un Article</h5>
+                                </div>
+                                <div class="pull-right">
+                                    <button id="save-btn" class="btn btn-soft-info"><i class="fa fa-save"></i>
+                                        Sauvegarder
+                                    </button>
+                                </div>
                             </div>
-                            <a class="btn btn-soft-warning" href="{{route('articles.modifier',$o_article->id)}}"><i
-                                    class="fa fa-edit"></i> Modifier</a>
+                            <hr class="border">
                         </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-        <div class="col-xxl-3 col-xl-4  col-md-6 col-12">
-            <div class="card overflow-hidden">
-                <div class="rounded overflow-hidden "
-                     style="max-width: 100%">
-                    @if($o_article->image)
-                        <img src="{{route('article.image.load', $o_article->image)}}"
-                             class="border-0 w-100" alt="">
-                    @else
-                        <img src="https://placehold.co/150x150?text={{$o_article->reference}}"
-                             class="border-0 w-100" alt="">
-                    @endif
-                </div>
-                <div class="card-body overflow-hidden p-0">
-                    <div class="row mx-0">
-                        <div
-                            class="col-12 p-5 py-3 text-center d-flex flex-column align-items-center ">
-                            <h5 class="text-center text-primary-50 mt-3 mb-0">{{$o_article->designation}}
-                                <br>{{$o_article->reference}}
-                                @if($o_article->marque)
-                                <br>
-                                Marque: {{$o_article->marque->nom}}
-                            @endif
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-        <div class="col-xxl-9 col-xl-8 col-md-6 col-12 d-flex">
-            <div class="card w-100">
-                <div class="card-body">
-                    <div class="card-title">
-                        <h5>
-                           Information d'article
-                        </h5>
-                        <hr class="border">
-                    </div>
-                    <div class="row">
-                        <div class=" col-xl-3 col-lg-6  my-1   d-flex align-items-center">
-                            <div class="rounded bg-info  p-2 d-flex align-items-center justify-content-center"
-                                 style="width: 49px">
-                                <i class="fa fa-filter text-white fa-2x"></i>
-                            </div>
-                            <div class="ms-3 ">
-                                <span class="font-weight-bolder font-size-sm">Famille</span>
-                                <p class="mb-0 h5 text-black">{{$o_article->famille?->nom ?? '---'}}</p>
-                            </div>
-                        </div>
-                        <div class=" col-xl-3 col-lg-6  my-1  d-flex align-items-center">
-                            <div class="rounded bg-success  p-2 d-flex align-items-center justify-content-center"
-                                 style="width: 49px">
-                                <i class="fa fa-dollar-sign text-white fa-2x"></i>
-                            </div>
-                            <div class="ms-3 ">
-                                <span class="font-weight-bolder font-size-sm">Prix de vente</span>
-                                <p class="mb-0 h5 text-black">{{$o_article->prix_vente ?? '0'}} MAD</p>
-                            </div>
-                        </div>
-                        <div class=" col-xl-3 col-lg-6  my-1 d-flex align-items-center">
-                            <div class="rounded bg-danger  p-2 d-flex align-items-center justify-content-center"
-                                 style="width: 49px">
-                                <i class="fa fa-coins text-white fa-2x"></i>
-                            </div>
-                            <div class="ms-3 ">
-                                <span class="font-weight-bolder font-size-sm">Prix d'achat</span>
-                                <p class="mb-0 h5 text-black">{{$o_article->prix_achat ?? '0'}} MAD</p>
-                            </div>
-                        </div>
+                        @csrf
+                        <div class="row">
+                            <div class="col-sm-6 row mx-0 col-12">
+                                <div class="col-12 mt-2">
+                                    <h5 class="text-muted">Informations</h5>
+                                    <hr class="border border-success">
+                                </div>
+                                <div class=" col-12 col-lg-6 mb-3 ">
+                                    <label class="form-label required" for="reference-input">Titre</label>
+                                    <input  type="text"
+                                            class="form-control {{$errors->has('titre')? 'is-invalid' : ''}}"
+                                            id="titre" placeholder=""
+                                            name="titre" value="{{old('titre', $article->title)}}">
+                                    <div class="invalid-feedback">
+                                        @if($errors->has('titre'))
+                                            {{ $errors->first('titre') }}
+                                        @endif
+                                    </div>
+                                </div>
+                                <div class="col-12 col-lg-6 mb-3">
+                                    <label class="form-label required" for="categorie">Catégorie</label>
+                                    <div class="input-group">
+                                        <select
+                                            class="select2 form-control mb-3 custom-select {{ $errors->has('categorie') ? 'is-invalid' : '' }}"
+                                            name="categorie[]"
+                                            id="categorie"
+                                            multiple>
+                                            @foreach($categories as $category)
+                                                <option value="{{ $category->id }}"
+                                                    {{ in_array($category->id, $article->categories->pluck('id')->toArray()) ? 'selected' : '' }}>
+                                                    {{ $category->name }}
+                                                </option>
+                                            @endforeach
+                                        </select>
 
-                        <div class=" col-xl-3 col-lg-6  my-1   d-flex align-items-center">
-                            <div class="rounded bg-warning  p-2 d-flex align-items-center justify-content-center"
-                                 style="width: 49px">
-                                <i class="fa fa-percent text-white fa-2x"></i>
-                            </div>
-                            <div class="ms-3 ">
-                                <span class="font-weight-bolder font-size-sm">Taxe</span>
-                                <p class="mb-0 h5 text-black">{{$o_article->taxe ?? '0'}}%</p>
-                            </div>
-                        </div>
+                                        @if($errors->has('categorie'))
+                                            <div class="invalid-feedback">
+                                                {{ $errors->first('categorie') }}
+                                            </div>
+                                        @endif
+                                    </div>
+                                </div>
 
-                        <div class=" col-xl-3 col-lg-6 col-12  my-3 d-flex align-items-center">
-                            <div class="rounded bg-soft-info  p-2 d-flex align-items-center justify-content-center"
-                                 style="width: 49px">
-                                <i class="fa fa-warehouse fa-2x"></i>
+
+                                <div class="col-12 col-lg-6 mb-3 ">
+                                    <label class="form-label   required" for="short_description">Description courte</label>
+                                    <input  type="text"
+                                            class="form-control {{$errors->has('short_description')? 'is-invalid' : ''}}"
+                                            id="short_description"
+                                            placeholder=""
+                                            name="short_description" value="{{old('short_description', $article->short_description)}}">
+                                    <div class="invalid-feedback">
+                                        @if($errors->has('short_description'))
+                                            {{ $errors->first('short_description') }}
+                                        @endif
+                                    </div>
+                                </div>
+
+                                <div class="col-12 col-lg-6 mb-3">
+                                    <label class="form-label required" for="desc-input">Description</label>
+                                    <textarea name="description"
+                                              class="form-control {{$errors->has('description')? 'is-invalid' : ''}}"
+                                              style="resize: vertical"
+                                              placeholder="Tapez votre description ici..." id="description" cols="30"
+                                              rows="8">{{old('description', $article->description)}}</textarea>
+                                    <div class="invalid-feedback">
+                                        @if($errors->has('description'))
+                                            {{ $errors->first('description') }}
+                                        @endif
+                                    </div>
+                                </div>
+
+                                {{--                                    <div class="col-12 col-lg-6 mb-3 ">--}}
+                                {{--                                        <label for="i_image"--}}
+                                {{--                                               class="form-label {{$errors->has('i_image')? 'is-invalid' : ''}}">Image</label>--}}
+                                {{--                                        <input name="i_image" type="file" id="i_image" accept="image/*">--}}
+                                {{--                                        <div class="invalid-feedback">--}}
+                                {{--                                            @if($errors->has('i_image'))--}}
+                                {{--                                                {{ $errors->first('i_image') }}--}}
+                                {{--                                            @endif--}}
+                                {{--                                        </div>--}}
+                                {{--                                    </div>--}}
+
                             </div>
-                            <div class="ms-3 ">
-                                <span class="font-weight-bolder font-size-sm">Total actuel</span>
-                                <p class="mb-0 h5 text-black">{{$magasins->sum('quantite') ?? '0'}}</p>
+                            <div class="col-sm-6 row mx-0 a col-12 align-content-start">
+                                <div class="col-12 mt-2">
+                                    <h5 class="text-muted">Prix</h5>
+                                    <hr class="border border-success">
+                                </div>
+                                <div class="col-12 col-lg-6 mb-3 ">
+                                    <label class="form-label   required" for="vente-input">Prix de vente</label>
+                                    <div class="input-group">
+                                        <input required type="number" step="0.01"
+                                               class="form-control {{$errors->has('sale_price')? 'is-invalid' : ''}}"
+                                               id="sale_price" min="0"
+                                               name="sale_price" value="{{old('sale_price',$article->sale_price)}}">
+                                        <span class="input-group-text">MAD</span>
+                                        <div class="invalid-feedback">
+                                            @if($errors->has('sale_price'))
+                                                {{ $errors->first('sale_price') }}
+                                            @endif
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class=" col-12 col-lg-6 mb-3 ">
+                                    <label class="form-label   " for="price">Prix d'achat</label>
+                                    <div class="input-group">
+                                        <input type="number" step="0.01" min="0"
+                                               class="form-control {{$errors->has('price')? 'is-invalid' : ''}}"
+                                               id="price"
+                                               name="price" value="{{old('price', $article->price)}}">
+                                        <span class="input-group-text">MAD</span>
+                                        <div class="invalid-feedback">
+                                            @if($errors->has('price'))
+                                                {{ $errors->first('price') }}
+                                            @endif
+                                        </div>
+                                    </div>
+                                </div>
                             </div>
                         </div>
-                        <div class=" col-xl-3 col-lg-6 col-12  my-3 d-flex align-items-center">
-                            <div class="rounded bg-soft-success  p-2 d-flex align-items-center justify-content-center"
-                                 style="width: 49px">
-                                <i class="fas fa-truck fa-2x"></i>
-                            </div>
-                            <div class="ms-3 ">
-                                <span class="font-weight-bolder font-size-sm">Total vendu</span>
-                                <p class="mb-0 h5 text-black">{{$magasins->sum('qte_vente') ?? '0'}} </p>
-                            </div>
-                        </div>
-                        <div class=" col-xl-3 col-lg-6 col-12  my-3 d-flex align-items-center">
-                            <div class="rounded bg-soft-danger  p-2 d-flex align-items-center justify-content-center"
-                                 style="width: 49px">
-                                <i class="fas fa-truck-loading fa-2x"></i>
-                            </div>
-                            <div class="ms-3 ">
-                                <span class="font-weight-bolder font-size-sm">Total acheté</span>
-                                <p class="mb-0 h5 text-black">{{$magasins->sum('qte_achat') ?? '0'}}</p>
-                            </div>
-                        </div>
-                        <div class=" col-xl-3 col-lg-6 col-12  my-3 d-flex align-items-center">
-                            <div class="rounded bg-soft-warning  p-2 d-flex align-items-center justify-content-center"
-                                 style="width: 49px">
-                                <i class="fas fa-undo fa-2x"></i>
-                            </div>
-                            <div class="ms-3 ">
-                                <span class="font-weight-bolder font-size-sm">Total retour</span>
-                                <p class="mb-0 h5 text-black">{{$magasins->sum('qte_retour') ?? '0'}}</p>
-                            </div>
-                        </div>
-                        <h5>Déscription :</h5>
-                        <div class="bg-soft-light text-primary rounded w-100 h-100 p-3">
-                            {{$o_article->description ?? 'Acune déscription'}}
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-        <div class="col-12">
-            <div class="card">
-                <div class="card-body">
-                    <div class="card-title">
-                        <h5>Sotck et quantité</h5>
-                        <hr class="border">
-                    </div>
-                    <table class="table table-bordered table-striped " style="border-collapse: collapse !important;">
-                        <thead>
-                        <tr>
-                            <th>Référence</th>
-                            <th>Nom</th>
-                            <th>Vendu</th>
-                            <th>Acheté</th>
-                            <th>Retour</th>
-                            <th>Retour d'achat</th>
-                            <th>Quantité</th>
-                        </tr>
-                        </thead>
-                        <tbody>
-                        @foreach($magasins as $magasin)
-                            <tr>
-                                <td>{{$magasin->reference}}</td>
-                                <td>{{$magasin->nom}}</td>
-                                <td>{{$magasin->qte_vente}}</td>
-                                <td>{{$magasin->qte_achat}}</td>
-                                <td>{{$magasin->qte_retour}}</td>
-                                <td>{{$magasin->qte_retour_achat}}</td>
-                                <td>{{$magasin->quantite}}</td>
-                            </tr>
-                        @endforeach
-                        </tbody>
-                    </table>
+                    </form>
                 </div>
             </div>
         </div>
     </div>
+    <div class="modal fade" id="family-modal" tabindex="-1" aria-labelledby="add-cat-modal-title" aria-hidden="true"
+         style="display: none;">
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title align-self-center" id="add-cat-modal-title">Ajouter une famille</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <form method="post" id="family-form" action="{{route('categories.sauvegarder')}}" class="needs-validation" novalidate>
+                    @csrf
+                    <div class="modal-body">
+                        <div class="row">
+                            <div class="col-12 mb-3">
+                                <label class="form-label required " for="nom-input">Nom</label>
+                                <input type="text" required class="form-control" id="nom-input" name="i_nom">
+                                <div class="invalid-feedback">Veuillez d'abord entrer un nom</div>
+                            </div>
+                            <div class="col-12 mb-3">
+                                <label for="color-input" class="form-label">Couleur</label>
+                                <input type="text" name="i_couleur" class="form-control " value="#3b5461" id="couleur-input">
+                            </div>
+                        </div>
+                        <div class="col-12 mb-3">
+                            <div class="form-check-inline d-flex align-items-center">
+                                <label for="" class="form-check-label me-2" >Active</label>
+                                <input name="i_actif" value="1" type="checkbox" id="active-input" switch="bool" checked="">
+                                <label for="active-input" data-on-label="Oui" data-off-label="Non"></label>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-light" data-bs-dismiss="modal">Fermer</button>
+                        <button class="btn btn-primary">Ajouter</button>
+                    </div>
+                </form>
+            </div>
+            <!-- /.modal-content -->
+        </div>
+        <!-- /.modal-dialog -->
+    </div>
+
+
 @endsection
 @push('scripts')
+    <script src="{{asset('libs/spectrum-colorpicker2/spectrum.min.js')}}" ></script>
+    <script src="{{asset('libs/select2/js/select2.full.min.js')}}"></script>
+    <script src="{{asset('libs/daterangepicker/js/daterangepicker.js')}}"></script>
+    <script src="{{asset('libs/dropify/js/dropify.min.js')}}"></script>
+    {{--    @vite('resources/js/article_create.js')--}}
 
+    <script>
+        $("#i_image").dropify({
+            messages: {
+                default: "Glissez-déposez un fichier ici ou cliquez",
+                replace: "Glissez-déposez un fichier ou cliquez pour remplacer",
+                remove: "Supprimer",
+                error: "Désolé, le fichier trop volumineux",
+            },
+        });
+
+        $("#marque").select2({
+            allowClear : true,
+            placeholder: "...",
+            minimumResultsForSearch: -1,
+        });
+    </script>
+    <script>
+        $("#categorie").select2({
+            placeholder: "...",
+            ajax: {
+                url: "{{ route('categories.select') }}",
+                dataType: "json",
+                delay: 250,
+                data: function (params) {
+                    return {
+                        term: params.term,
+                    };
+                },
+                processResults: function (data) {
+                    return {
+                        results: data,
+                    };
+                },
+                cache: false,
+            },
+            minimumInputLength: 1,
+        });
+    </script>
 @endpush

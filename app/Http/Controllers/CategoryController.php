@@ -41,6 +41,33 @@ class CategoryController extends Controller
         return view('categories.liste');
 
     }
+//    public function liste()
+//    {
+//        if (\request()->ajax()){
+//            $query = Category::all();
+//            $table = DataTables::of($query);
+//            $table->addColumn('actions',function ($row){
+//                $crudRoutePart = 'categories';
+//                $id = $row->id;
+//                $delete = 'supprimer';
+//                $edit_modal = ['url'=>route('marques.modifier',$row->id),'modal_id'=>'edit-marque-modal'];
+//                return view('partials.__datatable-action',compact('id','edit_modal','delete','crudRoutePart'));
+//            });
+//            $table->rawColumns(['actions','selectable_td']);
+//            return $table->make();
+//        }
+//        return view('categories.liste2');
+//    }
+    public function categories_select(Request $request)
+    {
+        if ($request->ajax()) {
+            $search = '%' . $request->get('term') . '%';
+            $data = Category::where('name', 'LIKE', $search)->get(['id', 'name as text']);
+            return response()->json($data, 200);
+        }
+        abort(404);
+    }
+
 
     /**
      * Show the form for creating a new resource.

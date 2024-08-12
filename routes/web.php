@@ -56,5 +56,7 @@ Route::group(['prefix' => 'categories', 'controller' => \App\Http\Controllers\Ca
     Route::get('/{id}/modifier','modifier')->name('categories.modifier');
     Route::put('/{id}', 'mettre_a_jour')->name('categories.mettre_a_jour');
     Route::delete('/categories/{category}', 'supprimer')->name('categories.supprimer');
+    Route::get('/categories-select', 'categories_select')->name('categories.select');
 
 });
+
