@@ -13,7 +13,7 @@
 </head>
 <body class="bg-body-tertiary">
 @include('layouts.nav-bar')
-<div class="container pt-4">
+<div class="container py-4">
     @yield('page')
 </div>
 <script src="{{asset('js/bootstrap.bundle.min.js')}}"></script>

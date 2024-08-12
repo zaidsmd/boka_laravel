@@ -255,3 +255,15 @@ $(document).on('change','.change-city select',function (){
         }
     })
 })
+$(document).on('change','.shipping-checkbox',function (){
+    if ($(this).is(':checked')){
+        $('.shipping-side').find('input:not([type="checkbox"]),select').removeAttr('disabled','')
+
+    }else{
+        $('.shipping-side').find('input:not([type="checkbox"]),select').attr('disabled','')
+    }
+})
+$(document).on('change','.payment-option input',function (){
+    $('.payment-option').removeClass('active')
+    $(this).closest('.payment-option').addClass('active')
+})

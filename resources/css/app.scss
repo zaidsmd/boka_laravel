@@ -176,3 +176,44 @@ label.required {
 .cursor-pointer {
     cursor: pointer !important;
 }
+.payment-option {
+    transition: all ease .3s;
+    *{
+        color:white !important;
+    }
+    &.active {
+        background-color: white;
+        *{
+            color: unset !important ;
+        }
+    }
+}
+
+.confirmation-box {
+    background: linear-gradient(-90deg, $primary, $yellow-500);
+    color: white;
+    padding: 20px 40px;
+    border-radius: 8px;
+    text-align: center;
+    position: relative;
+    font-size: 1.5em;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    width: 100%;
+}
+
+.icon-check {
+    position: absolute;
+    top: -20px;
+    left: 50%;
+    transform: translateX(-50%);
+    background-color: white;
+    border-radius: 50%;
+    width: 40px;
+    height: 40px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    border: 2px solid #FFA726;
+    font-size: 24px;
+    color: #FFA726;
+}
