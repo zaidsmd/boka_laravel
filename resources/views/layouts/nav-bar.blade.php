@@ -18,6 +18,10 @@
                     <a class="nav-link @if(\Illuminate\Support\Facades\Request::segment(1) == '') active @endif" aria-current="page"  href="{{url('/')}}"><span>
                             الصفحة الرئيسية</span></a>
                 </li>
+                <li class="nav-item ">
+                    <a class="nav-link @if(\Illuminate\Support\Facades\Request::segment(1) == 'shop') active @endif" aria-current="page"  href="{{route('shop')}}"><span>
+                            المتجر</span></a>
+                </li>
                 <li class="nav-item">
                     <a class="nav-link" href="#">Features</a>
                 </li>

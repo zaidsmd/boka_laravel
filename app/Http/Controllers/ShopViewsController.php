@@ -24,4 +24,10 @@ class ShopViewsController extends Controller
     public function checkout(){
         return view('checkout');
     }
+    public function shop(Request $request){
+        if ($request->ajax()){
+        }
+        $articles = Article::paginate(10);
+        return view('shop',compact('articles'));
+    }
 }
