@@ -46,6 +46,7 @@ Route::get('checkout/confirmation/{number}', [\App\Http\Controllers\OrderControl
 
 Route::group(['prefix' => 'articles', 'controller' => \App\Http\Controllers\ArticleController::class], function () {
     Route::get('/', 'liste')->name('articles.liste');
+    Route::get('/admin', 'admin')->name('articles.admin');
     Route::get('/{id}/afficher', 'afficher')->name('articles.afficher');
     Route::get('/ajouter', 'ajouter')->name('articles.ajouter');
     Route::post('/', 'sauvegarder')->name('articles.sauvegarder');
