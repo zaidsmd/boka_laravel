@@ -22,7 +22,6 @@ $(document).on('click','.add-to-cart-card',function (){
             success.css('top',btn_boundaries['y']+(btn_boundaries['height']/2)+window.scrollY+'px')
             success.css('left',btn_boundaries['x']+(btn_boundaries['width']/2)+window.scrollX+'px')
             $('body').append(success)
-            console.log(response);
             cart_total = response.total;
             notyf.success(response.message)
             setTimeout(()=>{
@@ -266,119 +265,59 @@ $(document).on('change','.shipping-checkbox',function (){
 $(document).on('change','.payment-option input',function (){
     $('.payment-option').removeClass('active')
     $(this).closest('.payment-option').addClass('active')
+});
+
+$(document).ready(function (){
+    let img = $('.card-img');
+    img.css('height',img.width())
+})
+
+$(document).on('click','.add-to-cart-card-single',function (){
+    let cart = $('.cart')
+    let btn = $(this);
+    let btn_html = btn.html();
+    btn.append($('<div class="spinner-border m-0 spinner-border-sm" role="status">' +
+        '  <span class="visually-hidden">Loading...</span>' +
+        '</div>'))
+    $.ajax({
+        url:window.origin+'/add-to-cart',
+        data: {
+            article:btn.data('id'),
+            quantity: btn.siblings('input').val()
+        },
+        success :function (response){
+            btn.siblings('input').val(1)
+            btn.append($('<span class="success-cart position-absolute" ><i class="fa fa-check" ></i></span>'))
+            let success =$('<div class="btn-primary btn rounded-circle position-absolute translate-middle d-flex align-items-center d-flex justify-content-center" style="height: 30px;width: 30px;z-index: 50;filter: blur(1px)" ><span class="text-white" ><i class="fa fa-check" ></i></span></div>')
+            let card_boundaries = cart[0].getBoundingClientRect()
+            let btn_boundaries = btn[0].getBoundingClientRect()
+            success.css('transition',"all ease-in-out .5s")
+            success.css('top',btn_boundaries['y']+(btn_boundaries['height']/2)+window.scrollY+'px')
+            success.css('left',btn_boundaries['x']+(btn_boundaries['width']/2)+window.scrollX+'px')
+            $('body').append(success)
+            cart_total = response.total;
+            notyf.success(response.message)
+
+            setTimeout(()=>{
+                success.css('top',card_boundaries['y']+(card_boundaries['height']/2)+window.scrollY+'px')
+                success.css('left',card_boundaries['x']+(card_boundaries['width']/2)+window.scrollX+'px')
+            },100)
+            setTimeout(()=>{
+                btn.html(btn_html)
+            },200)
+            setTimeout(()=>{
+                success.css('opacity',0)
+            },250)
+            setTimeout(()=>{
+                document.dispatchEvent(cart_change_event)
+                success.remove()
+            },550)
+        },
+        error: function (xhr){
+            notyf.error(xhr.responseText);
+            btn.html(btn_html)
+        }
+    })
 })
 
 
-// $(document).on('click', '.__datatable-edit-modal', function () {
-//     if (processing === 0) {
-//         processing = 1;
-//         let html = $(this).html();
-//         $(this).attr('disabled', '').html('<span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>')
-//         let url = $(this).data('url');
-//         let target = '#' + $(this).data('target');
-//         $.ajax({
-//             url: url, method: 'GET', success: response => {
-//                 processing = 0;
-//                 $(this).removeAttr('disabled').html(html)
-//                 $(target).find('.modal-content').html(response);
-//                 $(target).modal('show');
-//             }, error: xhr => {
-//                 processing = 0;
-//                 $(this).removeAttr('disabled').html(html)
-//                 if(xhr.status !== undefined) {
-//                     if (xhr.status === 403) {
-//                         toastr.warning("Vous n'avez pas l'autorisation nécessaire pour effectuer cette action");
-//                         return
-//                     }
-//                 }
-//                 toastr.error('Un erreur est produit')
-//             }
-//         })
-//     }
-//
-// })
-
-// $(document).on('click', '.sa-warning', function () {
-//     Swal.fire({
-//         title: "Est-vous sûr?",
-//         text: "Vous ne pourrez pas revenir en arrière !",
-//         icon: "warning",
-//         showCancelButton: true,
-//         confirmButtonText: "Oui, supprimez!",
-//         buttonsStyling: false,
-//         customClass: {
-//             confirmButton: 'btn btn-soft-danger mx-2', cancelButton: 'btn btn-soft-secondary mx-2',
-//         },
-//         didOpen: () => {
-//             $('.btn').blur()
-//         },
-//         preConfirm: async () => {
-//             Swal.showLoading();
-//             try {
-//                 const [response] = await Promise.all([new Promise((resolve, reject) => {
-//                     $.ajax({
-//                         url: $(this).data('url'), method: 'DELETE', headers: {
-//                             'X-CSRF-TOKEN': __csrf_token
-//                         }, success: resolve, error: (_, jqXHR) => reject(_)
-//                     });
-//                 })]);
-//
-//                 return response;
-//             } catch (jqXHR) {
-//                 let errorMessage = "Une erreur s'est produite lors de la demande.";
-//                 if(jqXHR.status !== undefined) {
-//                     if (jqXHR.status === 404) {
-//                         errorMessage = "La ressource n'a pas été trouvée.";
-//                     }
-//                     if (jqXHR.status === 403) {
-//                         errorMessage = "Vous n'avez pas l'autorisation nécessaire pour effectuer cette action";
-//                     }
-//                 }
-//                 Swal.fire({
-//                     title: 'Erreur',
-//                     text: errorMessage,
-//                     icon: 'error',
-//                     buttonsStyling: false,
-//                     confirmButtonText: 'OK',
-//                     customClass: {
-//                         confirmButton: 'btn btn-soft-danger mx-2',
-//                     },
-//                 });
-//
-//                 throw jqXHR;
-//             }
-//         }
-//     }).then((result) => {
-//         if (result.isConfirmed) {
-//             if (result.value) {
-//                 Swal.fire({
-//                     title: 'Succès',
-//                     text: result.value,
-//                     icon: 'success',
-//                     buttonsStyling: false,
-//                     confirmButtonText: 'OK',
-//                     customClass: {
-//                         confirmButton: 'btn btn-soft-success mx-2',
-//                     },
-//                 }).then(result => {
-//                     if (typeof table != 'undefined') {
-//                         table.ajax.reload();
-//                     } else {
-//                         location.reload();
-//                     }
-//                 });
-//             } else {
-//                 Swal.fire({
-//                     title: 'Erreur',
-//                     text: "Une erreur s'est produite lors de la demande.",
-//                     icon: 'error',
-//                     buttonsStyling: false,
-//                     confirmButtonText: 'OK',
-//                     customClass: {
-//                         confirmButton: 'btn btn-soft-danger mx-2',
-//                     },
-//                 });
-//             }
-//         }
-//     })
-// });

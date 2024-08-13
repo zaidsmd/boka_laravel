@@ -19,10 +19,12 @@ Route::get('/cart', [\App\Http\Controllers\ShopViewsController::class, 'cart'])-
 Route::get('my-account', [\App\Http\Controllers\ShopViewsController::class, 'myAccount'])->name('my-account');
 Route::get('checkout', [\App\Http\Controllers\ShopViewsController::class, 'checkout'])->name('checkout');
 Route::get('/shop',[\App\Http\Controllers\ShopViewsController::class,'shop'])->name('shop');
+Route::get('product/{slug}',[\App\Http\Controllers\ShopViewsController::class,'single'])->name('single');
 
 Route::get('/import',[\App\Http\Controllers\ImportController::class,'import']);
 
 Route::get('/add-to-cart', [\App\Http\Controllers\CartController::class, 'addLine'])->name('cart.add-line');
+Route::get('/add-to-cart-single', [\App\Http\Controllers\CartController::class, 'addLineFromSingle'])->name('cart.add-line');
 Route::get('/cart-canvas', [\App\Http\Controllers\CartController::class, 'cartOffCanvas'])->name('cart.cart-off-canvas');
 Route::delete('/cart-ligne', [\App\Http\Controllers\CartController::class, 'deleteCartLigne'])->name('cart.delete-cart-ligne');
 Route::post('/cart-item-quantity', [\App\Http\Controllers\CartController::class, 'updateLineQuantity'])->name('cart.update-line-quantity');
@@ -31,6 +33,7 @@ Route::post('/cart-city', [\App\Http\Controllers\CartController::class, 'updateC
 
 Route::POST('checkout', [\App\Http\Controllers\OrderController::class, 'completeOrder'])->name('complete-checkout');
 Route::get('checkout/confirmation/{number}', [\App\Http\Controllers\OrderController::class, 'orderConfirmation'])->name('order.confirmations');
+
 
 
 //admin routes

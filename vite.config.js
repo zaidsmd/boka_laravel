@@ -9,6 +9,7 @@ const css = [
 ]
 const js = [
     'resources/js/app.js',
+    'resources/js/shop.js',
 ]
 
 export default defineConfig({

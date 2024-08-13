@@ -20,8 +20,8 @@
     .card-img {
         aspect-ratio: 1/1 !important;
         overflow: clip;
-    }
 
+    }
     &:hover {
         box-shadow: $box-shadow !important;
 
@@ -66,6 +66,7 @@
 }
 
 nav.navbar {
+    z-index: 99 !important;
     background-color: rgba(255, 255, 255, .65);
     backdrop-filter: blur(8px);
 
@@ -217,3 +218,84 @@ label.required {
     font-size: 24px;
     color: #FFA726;
 }
+#carousel-single {
+    width: min(40% , 500px);
+    min-width: min(40% , 500px);
+    @media screen and (max-width: breakpoint-max('md')) {
+        width:100% ;
+        min-width: 100%;
+    }
+    .carousel-indicators button.thumbnail {
+        width: 65px;
+        height: unset;
+        text-indent: unset;
+    }
+    .carousel-indicators button.thumbnail:not(.active) {
+        opacity: 0.7;
+    }
+    .carousel-indicators {
+        position: static;
+    }
+}
+
+@media screen and (max-width: breakpoint-max('sm')) {
+    .notyf {
+        display: none;
+    }
+}
+
+
+// Mixin for Skeleton Animation
+@mixin skeleton-animation {
+    background-color: #e0e0e0;
+    animation: skeleton-loading 1.5s infinite linear;
+    border-radius: 4px;
+}
+
+// Skeleton Animation Keyframes
+@keyframes skeleton-loading {
+    0% {
+        background-color: #e0e0e0;
+    }
+    50% {
+        background-color: #f0f0f0;
+    }
+    100% {
+        background-color: #e0e0e0;
+    }
+}
+
+// General Skeleton Styles
+.skeleton-sale-price, .skeleton-img, .skeleton-title, .skeleton-price {
+    @include skeleton-animation;
+}
+
+// Skeleton for Sale Price Badge
+.skeleton-sale-price {
+    width: 60px;
+    height: 20px;
+    position: absolute;
+    top: 16px;
+    left: 16px;
+}
+
+// Skeleton for Image
+.skeleton-img {
+    width: 100%;
+    padding-bottom: 90%; // Maintain a 4:3 aspect ratio
+}
+
+// Skeleton for Title
+.skeleton-title {
+    width: 80%;
+    height: 16px;
+    margin: 16px auto 8px auto;
+}
+
+// Skeleton for Price
+.skeleton-price {
+    width: 50%;
+    height: 20px;
+    margin: 8px auto;
+}
+

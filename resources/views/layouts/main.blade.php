@@ -9,6 +9,7 @@
     <title>{{config('app.name')}} | @yield('document-title')</title>
     <link rel="stylesheet" href="{{asset('libs/notyf/notyf.min.css')}}">
     @vite(['resources/css/app.scss'])
+    @stack('styles')
     <script src="{{asset('js/jquery/jquery-3.7.1.min.js')}}"></script>
 </head>
 <body class="bg-body-tertiary">
@@ -29,6 +30,6 @@
     @endif
 </script>
 @vite(['resources/js/app.js'])
-
+@stack('scripts')
 </body>
 </html>

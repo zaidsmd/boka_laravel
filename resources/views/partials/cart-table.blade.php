@@ -14,10 +14,10 @@
                     <span class="delete-cart-item text-muted"> <span class="fa fa-times"></span> </span>
                     <div class="rounded-circle overflow-hidden d-flex align-items-center justify-content-center"
                          style="width: 50px;height: 50px">
-                        <img src="https://picsum.photos/id/{{$ligne->article->id+100}}/300/300" class="img-fluid w-100"
+                        <img src="{{$ligne->article->getFirstMediaUrl('images')}}" class="img-fluid w-100"
                              alt="">
                     </div>
-                    <h5 class="text-orange-300 fw-normal">
+                    <h5 class="text-orange-300 fw-normal col-4 text-truncate">
                         {{$ligne->article->title}}
                     </h5>
                 </div>

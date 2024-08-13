@@ -17,8 +17,8 @@ return new class extends Migration
             $table->string('slug')->unique();
             $table->decimal('price',26,2);
             $table->decimal('sale_price',26,2)->nullable();
-            $table->string('short_description')->nullable();
-            $table->string('description')->nullable();
+            $table->text('short_description')->nullable();
+            $table->longText('description')->nullable();
             $table->timestamps();
         });
     }

@@ -4,10 +4,10 @@
             <div class="col-12 my-2  py-2  border-bottom cart-item">
                 <div class="d-flex justify-content-between">
                     <div class="col-3">
-                        <img src="https://picsum.photos/id/{{$line->article->id+100}}/300/300" class="img-fluid w-100"
+                        <img src="{{$line->article->getFirstMediaUrl('principal')}}" class="img-fluid w-100"
                              alt="">
                     </div>
-                    <div>
+                    <div class="pe-3 w-100" >
                         <h5 class="text-primary">{{$line->article->title}}</h5>
                         <div class="d-flex gap-1">
                             <p>{{$line->quantity}}</p>
