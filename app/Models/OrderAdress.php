@@ -10,4 +10,9 @@ class OrderAdress extends Model
     protected $fillable = [
         'type', 'first_name', 'last_name', 'city', 'address', 'phone_number', 'email', 'order_id'
     ];
+
+    public function order()
+    {
+        return $this->belongsTo(Order::class);
+    }
 }

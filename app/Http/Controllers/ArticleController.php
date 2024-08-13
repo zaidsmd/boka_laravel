@@ -4,49 +4,20 @@ namespace App\Http\Controllers;
 
 use App\Models\Article;
 use App\Models\Category;
-use App\Services\LimiteService;
 use App\Services\LogService;
-use Carbon\Carbon;
 use Illuminate\Http\Request;
+use Illuminate\Routing\ResponseFactory;
+use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\Str;
 use Illuminate\Validation\Rule;
+use Spatie\MediaLibrary\MediaCollections\Models\Media;
+use Symfony\Component\Console\Application;
 use Yajra\DataTables\DataTables;
+use Illuminate\Support\Facades\DB;
 
 class ArticleController extends Controller
 {
-
-
-
-    public function admin(Request $request)
-    {
-        if ($request->ajax()) {
-            $query = Article::with('categories');
-
-            $table = DataTables::of($query);
-            $table->addColumn(
-                'selectable_td',
-                function ($row) {
-                    $id = $row['id'];
-                    return '<input type="checkbox" class="row-select form-check-input" value="' . $id . '">';
-                }
-            )->addColumn('quantite', function ($row) {
-                return $row->quantite;
-            });
-            $table->addColumn('actions', function ($row) {
-                $crudRoutePart = 'articles';
-                $show = 'afficher';
-                $delete = 'supprimer';
-                $edit = 'modifier';
-                $id = $row->id;
-                return view('partials.__datatable-action', compact('id', 'crudRoutePart', 'edit', 'delete', 'show'));
-            });
-
-            $table->rawColumns(['selectable_td', 'actions']);
-            return $table->make();
-        }
-        return view('articles.admin');
-    }
 
     /**
      * Display a listing of the resource.
@@ -62,16 +33,15 @@ class ArticleController extends Controller
                     $id = $row['id'];
                     return '<input type="checkbox" class="row-select form-check-input" value="' . $id . '">';
                 }
-            )->addColumn('quantite', function ($row) {
-                return $row->quantite;
+            );
+            $table->addColumn('actions', function ($row) {
+                $crudRoutePart = 'articles';
+                $delete = 'supprimer';
+                $edit = 'modifier';
+                $id = $row->id;
+                return view('partials.__datatable-action', compact('id', 'crudRoutePart', 'edit', 'delete'));
             });
-            $table->addColumn('actions', function ($article) {
-                return view('articles.partials.articles_actions', compact('article'))->render();
-            });
-            $table->editColumn('created_at', function ($row) {
-                return Carbon::make($row->created_at)->toDateString();
-            });
-            $table->rawColumns(['actions']);
+            $table->rawColumns(['actions', 'selectable_td']);
             return $table->make();
         }
         return view('articles.liste');
@@ -92,54 +62,100 @@ class ArticleController extends Controller
      */
     public function sauvegarder(Request $request)
     {
-        try {
+        // Start a database transaction
 
+        try {
+            // Validate the request
             $validator = Validator::make($request->all(), [
                 'titre' => 'required|string|max:255|unique:articles,title',
-                'short_description' => 'required|string',
                 'description' => 'required|string',
-                'sale_price' => 'required|numeric',
-                'price' => 'nullable|numeric',
+                'sale_price' => 'nullable|numeric|min:0',
+                'price' => 'required|numeric|min:0',
                 'categorie' => 'required|array',
+                'quantite' => 'required|numeric|min:0',
+                'i_image' => 'nullable|image|mimes:jpg,jpeg,png,bmp|max:2048',
+                'i_images.*' => 'nullable|image|mimes:jpg,jpeg,png,bmp|max:2048'
+            ], [
+                'titre.required' => 'العنوان مطلوب',
+                'titre.string' => 'العنوان يجب أن يكون نصاً',
+                'titre.max' => 'العنوان يجب أن لا يتجاوز 255 حرفاً',
+                'titre.unique' => 'العنوان موجود بالفعل',
+                'description.required' => 'الوصف مطلوب',
+                'description.string' => 'الوصف يجب أن يكون نصاً',
+                'sale_price.numeric' => 'سعر الخصم يجب أن يكون رقماً',
+                'price.required' => 'السعر مطلوب',
+                'price.numeric' => 'السعر يجب أن يكون رقماً',
+                'categorie.required' => 'الفئة مطلوبة',
+                'categorie.array' => 'الفئة يجب أن تكون مصفوفة',
+                'quantite.required' => 'الكمية مطلوبة',
+                'quantite.numeric' => 'الكمية يجب أن تكون رقماً',
+                'quantite.min' => 'الكمية يجب أن تكون أكبر من أو تساوي 0',
+                'i_image.image' => 'الصورة الرئيسية يجب أن تكون صورة',
+                'i_image.mimes' => 'الصورة الرئيسية يجب أن تكون من نوع: jpg, jpeg, png, bmp',
+                'i_image.max' => 'الصورة الرئيسية يجب أن لا تتجاوز 2 ميجابايت',
+                'i_images.*.image' => 'الصور الأخرى يجب أن تكون صوراً',
+                'i_images.*.mimes' => 'الصور الأخرى يجب أن تكون من نوع: jpg, jpeg, png, bmp',
+                'i_images.*.max' => 'كل صورة يجب أن لا تتجاوز 2 ميجابايت',
             ]);
 
 
             if ($validator->fails()) {
-                // Redirect back to the specified error page with validation errors and input data
                 return redirect()->route('articles.ajouter')->withErrors($validator)->withInput();
+
             }
-            // Créer l'article
+            DB::beginTransaction();
+
+            // Create the article
             $article = Article::create([
                 'title' => $request->get('titre'),
-                'short_description' => $request->get('short_description'),
                 'description' => $request->get('description'),
-                'sale_price' => $request->get('sale_price'),
+                'sale_price' => $request->get('sale_price') ?? null,
                 'price' => $request->get('price') ?? null,
-                'slug' =>$request->get('titre'),
+                'slug' => $request->get('titre'),
+                'quantite' => $request->get('quantite'),
             ]);
 
-            // Associer les catégories à l'article
+            // Associate categories with the article
             $article->categories()->sync($request->get('categorie'));
 
-            return redirect()->route('articles.liste')->with('success', 'Article créé avec succès!');
-
-        }catch (\Exception $e)
-            {
-                LogService::logException($e);
-                return redirect()->route('articles.liste')->with('error', 'Article non crée!');
+            // Save the principal image
+            if ($request->hasFile('i_image')) {
+                $article->addMedia($request->file('i_image'))->toMediaCollection('principal');
             }
-}
 
+            // Handle other images upload
+            if ($request->hasFile('i_images')) {
+                foreach ($request->file('i_images') as $image) {
+                    $article->addMedia($image)->toMediaCollection('images');
+                }
+            }
+
+            // Commit the transaction
+            DB::commit();
+
+            return redirect()->route('articles.liste')->with('success', 'تم إنشاء المنتج بنجاح!');
+
+        } catch (\Exception $e) {
+            DB::rollBack();
+            LogService::logException($e);
+            return redirect()->route('articles.liste')->with('error', 'لم يتم إنشاء المنتج!');
+
+
+
+
+
+        }
+    }
 
     /**
      * Display the specified resource.
      */
     public function afficher($id)
     {
-        $article = Article::with('categories')->find($id);
+        $o_article = Article::with('categories')->find($id);
         $categories = Category::all();
 
-        return view('articles.afficher', compact('categories', 'article'));
+        return view('articles.afficher', compact('categories', 'o_article'));
 
     }
 
@@ -150,7 +166,9 @@ class ArticleController extends Controller
     {
         $article = Article::with('categories')->find($id);
         $categories = Category::all();
-        return view('articles.modifier', compact('categories', 'article'));
+        $principalImage = $article->getFirstMedia('principal');
+        $otherImages = $article->getMedia('images');
+        return view('articles.modifier', compact('categories', 'article','principalImage', 'otherImages'));
     }
 
     /**
@@ -158,7 +176,7 @@ class ArticleController extends Controller
      */
     public function mettre_a_jour(Request $request, $id)
     {
-
+//        dd($request->all());
         $article = Article::with('categories')->find($id);
         $articleId = $article->id;
 
@@ -170,12 +188,36 @@ class ArticleController extends Controller
                 'max:255',
                 Rule::unique('articles', 'title')->ignore($articleId)
             ],
-            'short_description' => 'required|string',
             'description' => 'required|string',
-            'sale_price' => 'required|numeric',
-            'price' => 'nullable|numeric',
+            'sale_price' => 'nullable|numeric|min:0',
+            'price' => 'required|numeric|min:0',
             'categorie' => 'required|array',
+            'quantite' => 'required|numeric|min:0',
+            'i_image' => 'nullable|image|mimes:jpg,jpeg,png,bmp|max:2048',
+            'i_images.*' => 'nullable|image|mimes:jpg,jpeg,png,bmp|max:2048',
+        ], [
+            'titre.required' => 'العنوان مطلوب',
+            'titre.string' => 'العنوان يجب أن يكون نصاً',
+            'titre.max' => 'العنوان يجب أن لا يتجاوز 255 حرفاً',
+            'titre.unique' => 'العنوان موجود بالفعل',
+            'description.required' => 'الوصف مطلوب',
+            'description.string' => 'الوصف يجب أن يكون نصاً',
+            'sale_price.numeric' => 'سعر الخصم يجب أن يكون رقماً',
+            'price.required' => 'السعر مطلوب',
+            'price.numeric' => 'السعر يجب أن يكون رقماً',
+            'categorie.required' => 'الفئة مطلوبة',
+            'categorie.array' => 'الفئة يجب أن تكون مصفوفة',
+            'quantite.required' => 'الكمية مطلوبة',
+            'quantite.numeric' => 'الكمية يجب أن تكون رقماً',
+            'quantite.min' => 'الكمية يجب أن تكون أكبر من أو تساوي 0',
+            'i_image.image' => 'الصورة الرئيسية يجب أن تكون صورة',
+            'i_image.mimes' => 'الصورة الرئيسية يجب أن تكون من نوع: jpg, jpeg, png, bmp',
+            'i_image.max' => 'الصورة الرئيسية يجب أن لا تتجاوز 2 ميجابايت',
+            'i_images.*.image' => 'الصور الأخرى يجب أن تكون صوراً',
+            'i_images.*.mimes' => 'الصور الأخرى يجب أن تكون من نوع: jpg, jpeg, png, bmp',
+            'i_images.*.max' => 'كل صورة يجب أن لا تتجاوز 2 ميجابايت',
         ]);
+
         if ($validator->fails()) {
             // Redirect back to the specified error page with validation errors and input data
             return redirect()->route('articles.modifier', $articleId)->withErrors($validator)->withInput();
@@ -183,20 +225,52 @@ class ArticleController extends Controller
         try{
             $article->update([
                 'title' => $request->input('titre'),
-                'short_description' => $request->input('short_description'),
                 'description' => $request->input('description'),
                 'sale_price' => $request->input('sale_price'),
                 'price' => $request->input('price'),
                 'slug' => Str::slug($request->input('titre')), // Ensure slug is updated
+                'quantite' => $request->get('quantite'),
             ]);
-
-            // Sync categories
             $article->categories()->sync($request->input('categorie'));
-            return redirect()->route('articles.liste')->with('success', 'Article modifié avec succès!');
+
+
+            //Principal image
+            if ($request->hasFile('i_image')) {
+                $article->clearMediaCollection('principal');
+                $article->addMedia($request->file('i_image'))->toMediaCollection('principal');
+            }
+            if ($request->get('i_supprimer_image')==1) {
+                $article->clearMediaCollection('principal');
+            }
+
+
+
+
+            //other images
+
+            if ($request->filled('deleted')) {
+                $deletedIds = explode(',', $request->input('deleted')[0]);
+                foreach ($deletedIds as $deletedId) {
+                    $media = $article->getMedia('images')->where('id', $deletedId)->first();
+                    if ($media) {
+                        $media->delete();
+                    }
+                }
+            }
+
+            // Handle new images
+            if ($request->hasFile('i_images')) {
+                foreach ($request->file('i_images') as $image) {
+                    $article->addMedia($image)->toMediaCollection('images');
+                }
+            }
+
+
+            return redirect()->route('articles.liste')->with('success', 'تم تعديل المنتج بنجاح!');
 
         }catch (\Exception $e){
             LogService::logException($e);
-            return redirect()->route('articles.liste')->with('error', 'Article non modifié!');
+            return redirect()->route('articles.liste')->with('error', 'لم يتم تعديل المنتج!');
         }
 
 
@@ -205,15 +279,54 @@ class ArticleController extends Controller
     /**
      * Remove the specified resource from storage.
      */
-    public function supprimer(Article $article)
+
+    public function supprimer($id)
     {
-        try {
-            $article->delete();
-            // Redirect with success message
-            return redirect()->route('articles.liste')->with('success', __('lang.product_deleted_success'));
-        }catch(\Exception $e){
-            LogService::logException($e);
-            return redirect()->route('articles.liste')->with('error', __('lang.product_not_found'));
+        if (\request()->ajax()) {
+            $article = Article::find($id);
+            if ($article) {
+                $article->delete();
+                return response('تم حذف المنتج', 200);
+            } else {
+                return response('خطأ', 404);
+            }
         }
+    }
+    public function upload(Request $request)
+    {
+        $request->validate([
+            'file' => 'required|image|mimes:jpg,jpeg,png,bmp|max:2048',
+        ]);
+
+        // Handle file upload
+        $file = $request->file('file');
+        $fileName = Str::uuid() . '.' . $file->getClientOriginalExtension();
+        $filePath = $file->storeAs('public/uploads', $fileName);
+
+        // Create a new media record
+        $media = new Media();
+        $media->uuid = Str::uuid();
+        $media->collection_name = 'other_images';
+        $media->name = $fileName;
+        $media->file_name = $fileName;
+        $media->mime_type = $file->getClientMimeType();
+        $media->disk = 'public';
+        $media->size = $file->getSize();
+        $media->save();
+
+        return response()->json([
+            'uuid' => $media->uuid,
+            'file' => $fileName,
+        ]);
+    }
+
+    public function load($media, ResponseFactory $responseFactory)
+    {
+        $image = Media::find($media);
+
+
+            header('Content-Type: image/png');
+            return $responseFactory->make(readfile($image->getPath()));
+
     }
 }

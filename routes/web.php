@@ -46,13 +46,16 @@ Route::get('checkout/confirmation/{number}', [\App\Http\Controllers\OrderControl
 
 Route::group(['prefix' => 'articles', 'controller' => \App\Http\Controllers\ArticleController::class], function () {
     Route::get('/', 'liste')->name('articles.liste');
-    Route::get('/admin', 'admin')->name('articles.admin');
     Route::get('/{id}/afficher', 'afficher')->name('articles.afficher');
     Route::get('/ajouter', 'ajouter')->name('articles.ajouter');
     Route::post('/', 'sauvegarder')->name('articles.sauvegarder');
     Route::get('/{id}/modifier', 'modifier')->name('articles.modifier');
     Route::put('/{id}', 'mettre_a_jour')->name('articles.mettre_a_jour');
-    Route::delete('/articles/{article}', 'supprimer')->name('articles.supprimer');
+    Route::delete('/{id}', 'supprimer')->name('articles.supprimer');
+    Route::get('load/{media}', 'load')->name('articles.load');
+    Route::get('/upload}', 'upload')->name('articles.upload');
+
+
 
 });
 
@@ -68,3 +71,14 @@ Route::group(['prefix' => 'categories', 'controller' => \App\Http\Controllers\Ca
 
 });
 
+
+Route::group(['prefix' => 'utilisateurs','controller' => \App\Http\Controllers\UserController::class], function (){
+    Route::get('/','liste')->name('utilisateurs.liste');
+    Route::get('ajouter','ajouter')->name('utilisateurs.ajouter');
+    Route::post('sauvegarder','sauvegarder')->name('utilisateurs.sauvegarder');
+    Route::put('mettre_a_jour/{id}','mettre_a_jour')->name('utilisateurs.mettre_jour');
+    Route::get('modifier/{id}','modifier')->name('utilisateurs.modifier');
+    Route::delete('supprimer/{id}','supprimer')->name('utilisateurs.supprimer');
+    Route::get('/connexion/{id}','connexion')->name('utilisateurs.connexion');
+    Route::get('/ma-licence','maLicence')->name('utilisateurs.ma_licence');
+});

@@ -272,14 +272,14 @@ var table = $(__dataTable_id).DataTable({
         {extend: 'copy', className: 'btn-soft-primary'},
         {extend: 'excel', className: 'btn-soft-primary'},
         {extend: 'pdf', className: 'btn-soft-primary'},
-        {extend: 'colvis', className: 'btn-soft-primary'}
+        // {extend: 'colvis', className: 'btn-soft-primary'}
     ],
     columnDefs: [
-        {
-            orderable: false,
-            className: 'select-checkbox',
-            targets: 0
-        },
+        // {
+        //     orderable: false,
+        //     className: 'select-checkbox',
+        //     targets: 0
+        // },
         {
             className: 'last-col',
             targets: -1,

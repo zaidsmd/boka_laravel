@@ -1,11 +1,14 @@
 @extends('admin_layouts.main')
-@section('document-title','Articles')
+@section('document-title',__('lang.articles.titre'))
 @push('css')
     <link rel="stylesheet" href="{{asset('libs/select2/css/select2.min.css')}}">
     <link href="{{asset('libs/bootstrap-datepicker/css/bootstrap-datepicker.min.css')}}" rel="stylesheet">
     <link href="{{asset('libs/daterangepicker/css/daterangepicker.min.css')}}" rel="stylesheet">
     <link rel="stylesheet" href="{{asset('libs/dropify/css/dropify.min.css')}}">
     <link rel="stylesheet" href="{{asset('libs/spectrum-colorpicker2/spectrum.min.css')}}">
+    <link rel="stylesheet" href="{{asset('libs/filepond/plugins/css/filepond-plugin-image-preview.css')}}">
+    <link rel="stylesheet" href="{{asset('libs/filepond/css/filepond.css')}}">
+    <link href="{{ asset('libs/summernote/summernote.min.css') }}" rel="stylesheet">
 
 
 @endpush
@@ -22,11 +25,11 @@
                                 <div>
                                     <a href="{{route('articles.liste')}}"><i class="fa fa-arrow-left"></i></a>
                                     <h5 class="m-0 float-end ms-3"><i class="fa  fas fa-boxes me-2 text-success"></i>
-                                        Ajouter une Article</h5>
+                                         إضافة منتج</h5>
                                 </div>
                                 <div class="pull-right">
                                     <button id="save-btn" class="btn btn-soft-info"><i class="fa fa-save"></i>
-                                        Sauvegarder
+                                        {{__('lang.articles.save')}}
                                     </button>
                                 </div>
                             </div>
@@ -34,13 +37,13 @@
                         </div>
                         @csrf
                         <div class="row">
-                            <div class="col-sm-6 row mx-0 col-12">
+                            <div class="col-sm-6 row mx-0 col-12 align-content-start">
                                 <div class="col-12 mt-2">
-                                    <h5 class="text-muted">Informations</h5>
+                                    <h5 class="text-muted">  {{__('lang.articles.info')}}</h5>
                                     <hr class="border border-success">
                                 </div>
                                 <div class=" col-12 col-lg-6 mb-3 ">
-                                    <label class="form-label required" for="reference-input">Titre</label>
+                                    <label class="form-label required" for="reference-input">  {{__('lang.articles.title')}}</label>
                                     <input  type="text"
                                            class="form-control {{$errors->has('titre')? 'is-invalid' : ''}}"
                                            id="titre" placeholder=""
@@ -52,7 +55,7 @@
                                     </div>
                                 </div>
                                 <div class="col-12 col-lg-6 mb-3 ">
-                                    <label class="form-label required" for="categorie">Catégorie</label>
+                                    <label class="form-label required" for="categorie">  {{__('lang.articles.category')}}</label>
                                     <div class="input-group">
                                         <select
                                             class="select2 form-control mb-3 custom-select {{$errors->has('categorie')? 'is-invalid' : ''}}"
@@ -70,70 +73,40 @@
                                 </div>
 
 
-                                <div class="col-12 col-lg-6 mb-3 ">
-                                    <label class="form-label   required" for="short_description">Description courte</label>
-                                    <input  type="text"
-                                           class="form-control {{$errors->has('short_description')? 'is-invalid' : ''}}"
-                                           id="short_description"
-                                           placeholder=""
-                                           name="short_description" value="{{old('short_description')}}">
-                                    <div class="invalid-feedback">
-                                        @if($errors->has('short_description'))
-                                            {{ $errors->first('short_description') }}
-                                        @endif
-                                    </div>
+                                <div class="col-12 col-lg-12 mb-3 ">
+
+                                    <label class="form-label required" for="description">  الوصف</label>
+                                    <textarea name="description" id="description" cols="30" rows="10">{{ old('description') }}</textarea>
                                 </div>
 
-                                <div class="col-12 col-lg-6 mb-3">
-                                    <label class="form-label required" for="desc-input">Description</label>
-                                    <textarea name="description"
-                                              class="form-control {{$errors->has('description')? 'is-invalid' : ''}}"
-                                              style="resize: vertical"
-                                              placeholder="Tapez votre description ici..." id="description" cols="30"
-                                              rows="8">{{old('description')}}</textarea>
-                                    <div class="invalid-feedback">
-                                        @if($errors->has('description'))
-                                            {{ $errors->first('description') }}
-                                        @endif
-                                    </div>
-                                </div>
 
-                                    <div class="col-12 col-lg-6 mb-3 ">
-                                        <label for="i_image"
-                                               class="form-label {{$errors->has('i_image')? 'is-invalid' : ''}}">Image</label>
-                                        <input name="i_image" type="file" id="i_image" accept="image/*" multiple>
-                                        <div class="invalid-feedback">
-                                            @if($errors->has('i_image'))
-                                                {{ $errors->first('i_image') }}
-                                            @endif
-                                        </div>
-                                    </div>
+                                {{--                                --}}
+{{--                                <div class="col-12 col-lg-6 mb-3">--}}
+{{--                                    <label class="form-label required" for="desc-input">  {{__('lang.articles.description')}}</label>--}}
+{{--                                    <textarea name="description"--}}
+{{--                                              class="form-control {{$errors->has('description')? 'is-invalid' : ''}}"--}}
+{{--                                              style="resize: vertical"--}}
+{{--                                              placeholder="Tapez votre description ici..." id="description" cols="30"--}}
+{{--                                              rows="8">{{old('description')}}</textarea>--}}
+{{--                                    <div class="invalid-feedback">--}}
+{{--                                        @if($errors->has('description'))--}}
+{{--                                            {{ $errors->first('description') }}--}}
+{{--                                        @endif--}}
+{{--                                    </div>--}}
+{{--                                </div>--}}
+
 
                             </div>
                             <div class="col-sm-6 row mx-0 a col-12 align-content-start">
                                 <div class="col-12 mt-2">
-                                    <h5 class="text-muted">Prix</h5>
+                                    <h5 class="text-muted">  سعر و صور</h5>
                                     <hr class="border border-success">
                                 </div>
-                                <div class="col-12 col-lg-6 mb-3 ">
-                                    <label class="form-label   required" for="vente-input">Prix de vente</label>
-                                    <div class="input-group">
-                                        <input required type="number" step="0.01"
-                                               class="form-control {{$errors->has('sale_price')? 'is-invalid' : ''}}"
-                                               id="sale_price" min="0"
-                                               name="sale_price" value="{{old('sale_price',0)}}">
-                                        <span class="input-group-text">MAD</span>
-                                        <div class="invalid-feedback">
-                                            @if($errors->has('sale_price'))
-                                                {{ $errors->first('sale_price') }}
-                                            @endif
-                                        </div>
-                                    </div>
-                                </div>
+
                                 <div class=" col-12 col-lg-6 mb-3 ">
-                                    <label class="form-label   " for="price">Prix d'achat</label>
+                                    <label class="form-label  required " for="price">  {{__('lang.articles.sale_price')}} </label>
                                     <div class="input-group">
-                                        <input type="number" step="0.01" min="0"
+                                        <input type="number" step="1" min="0"
                                                class="form-control {{$errors->has('price')? 'is-invalid' : ''}}"
                                                id="price"
                                                name="price" value="{{old('price')}}">
@@ -145,52 +118,62 @@
                                         </div>
                                     </div>
                                 </div>
+
+
+                                <div class="col-12 col-lg-6 mb-3 ">
+                                    <label class="form-label   " for="vente-input">  {{__('lang.articles.reduit_price')}}</label>
+                                    <div class="input-group">
+                                        <input  type="number" step="1"
+                                               class="form-control {{$errors->has('sale_price')? 'is-invalid' : ''}}"
+                                               id="sale_price"
+                                               name="sale_price" value="{{old('sale_price')}}">
+                                        <span class="input-group-text">MAD</span>
+                                        <div class="invalid-feedback">
+                                            @if($errors->has('sale_price'))
+                                                {{ $errors->first('sale_price') }}
+                                            @endif
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-12 col-lg-6 mb-3 ">
+                                    <label class="form-label   required" for="quantite"> {{__('lang.articles.quantity')}}</label>
+                                    <div class="input-group">
+                                        <input  type="number" step="1"
+                                               class="form-control {{$errors->has('quantite')? 'is-invalid' : ''}}"
+                                               id="quantite"
+                                               name="quantite" value="{{old('quantite')}}">
+                                        <div class="invalid-feedback">
+                                            @if($errors->has('quantite'))
+                                                {{ $errors->first('quantite') }}
+                                            @endif
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-12 col-lg-6 mb-3 ">
+                                    <label for="i_image"
+                                           class="form-label {{$errors->has('i_image')? 'is-invalid' : ''}}">  الصورة الرئيسية</label>
+                                    <input name="i_image" type="file" id="i_image" accept="image/*" >
+                                    <div class="invalid-feedback">
+                                        @if($errors->has('i_image'))
+                                            {{ $errors->first('i_image') }}
+                                        @endif
+                                    </div>
+                                </div>
+                                <div class="col-12 col-lg-6 mb-3 ">
+
+                                    <label for="i_images" class="form-label">  صور إضافية</label>
+                                    <input type="file" id="i_images" name="i_images[]" multiple>
+                                </div>
+
+
+
+
                             </div>
                         </div>
                     </form>
                 </div>
             </div>
         </div>
-    </div>
-    <div class="modal fade" id="family-modal" tabindex="-1" aria-labelledby="add-cat-modal-title" aria-hidden="true"
-         style="display: none;">
-        <div class="modal-dialog modal-dialog-centered">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h5 class="modal-title align-self-center" id="add-cat-modal-title">Ajouter une famille</h5>
-                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                </div>
-                <form method="post" id="family-form" action="{{route('categories.sauvegarder')}}" class="needs-validation" novalidate>
-                    @csrf
-                    <div class="modal-body">
-                        <div class="row">
-                            <div class="col-12 mb-3">
-                                <label class="form-label required " for="nom-input">Nom</label>
-                                <input type="text" required class="form-control" id="nom-input" name="i_nom">
-                                <div class="invalid-feedback">Veuillez d'abord entrer un nom</div>
-                            </div>
-                            <div class="col-12 mb-3">
-                                <label for="color-input" class="form-label">Couleur</label>
-                                <input type="text" name="i_couleur" class="form-control " value="#3b5461" id="couleur-input">
-                            </div>
-                        </div>
-                        <div class="col-12 mb-3">
-                            <div class="form-check-inline d-flex align-items-center">
-                                <label for="" class="form-check-label me-2" >Active</label>
-                                <input name="i_actif" value="1" type="checkbox" id="active-input" switch="bool" checked="">
-                                <label for="active-input" data-on-label="Oui" data-off-label="Non"></label>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="modal-footer">
-                        <button type="button" class="btn btn-light" data-bs-dismiss="modal">Fermer</button>
-                        <button class="btn btn-primary">Ajouter</button>
-                    </div>
-                </form>
-            </div>
-            <!-- /.modal-content -->
-        </div>
-        <!-- /.modal-dialog -->
     </div>
 
 
@@ -200,23 +183,27 @@
     <script src="{{asset('libs/select2/js/select2.full.min.js')}}"></script>
     <script src="{{asset('libs/daterangepicker/js/daterangepicker.js')}}"></script>
     <script src="{{asset('libs/dropify/js/dropify.min.js')}}"></script>
-{{--    @vite('resources/js/article_create.js')--}}
+
+    <script src="{{asset('libs/filepond/plugins/js/filepond-plugin-image-preview.js')}}"></script>
+    <script src="{{asset('libs/filepond/js/filepond.js')}}"></script>
+    <script src="{{asset('libs/filepond/plugins/js/filepond-plugin-image-validate-size.js')}}"></script>
+    <script src="{{asset('libs/filepond/plugins/js/filepond-plugin-file-validate-type.js')}}"></script>
+
+
+    <script src="{{ asset('libs/tinymce/tinymce.min.js') }}"></script>
+    <script src="{{ asset('js/tinymce_ar.js') }}"></script>
 
     <script>
         $("#i_image").dropify({
             messages: {
-                default: "Glissez-déposez un fichier ici ou cliquez",
-                replace: "Glissez-déposez un fichier ou cliquez pour remplacer",
-                remove: "Supprimer",
-                error: "Désolé, le fichier trop volumineux",
+                default: 'اسحب وأفلت ملفًا هنا أو انقر لاختيار ملف',
+                replace: 'اسحب وأفلت ملفًا هنا لاستبداله',
+                remove: 'إزالة',
+                error: 'عذرًا، حدث خطأ'
             },
         });
 
-        $("#marque").select2({
-            allowClear : true,
-            placeholder: "...",
-            minimumResultsForSearch: -1,
-        });
+
     </script>
     <script>
         $("#categorie").select2({
@@ -238,6 +225,69 @@
                 cache: false,
             },
             minimumInputLength: 1,
+        });
+    </script>
+
+    <script>
+        FilePond.registerPlugin(
+            FilePondPluginImagePreview,
+            FilePondPluginFileValidateType,
+            FilePondPluginImageValidateSize
+        );
+
+        // Get a reference to the file input element
+        const inputElement = document.querySelector('input[id="i_images"]');
+
+        // Create a FilePond instance
+        const pond = FilePond.create(inputElement, {
+            labelIdle: 'اسحب وأفلت ملفًا هنا أو انقر لاختيار ملف',
+            labelInvalidField: 'الحقل يحتوي على ملفات غير صالحة',
+            labelFileWaitingForSize: 'في انتظار الحجم',
+            labelFileSizeNotAvailable: 'الحجم غير متاح',
+            labelFileLoading: 'جارٍ التحميل',
+            labelFileLoadError: 'حدث خطأ أثناء التحميل',
+            labelFileProcessing: 'جارٍ الرفع',
+            labelFileProcessingComplete: 'تم الرفع',
+            labelFileProcessingAborted: 'تم إلغاء الرفع',
+            labelFileProcessingError: 'حدث خطأ أثناء الرفع',
+            labelFileProcessingRevertError: 'حدث خطأ أثناء التراجع',
+            labelFileRemoveError: 'حدث خطأ أثناء الإزالة',
+            labelTapToCancel: 'انقر للإلغاء',
+            labelTapToRetry: 'انقر لإعادة المحاولة',
+            labelTapToUndo: 'انقر للتراجع',
+            labelButtonRemoveItem: 'إزالة',
+            labelButtonAbortItemLoad: 'إيقاف',
+            labelButtonRetryItemLoad: 'إعادة المحاولة',
+            labelButtonAbortItemProcessing: 'إلغاء',
+            labelButtonUndoItemProcessing: 'تراجع',
+            labelButtonRetryItemProcessing: 'إعادة المحاولة',
+            labelButtonProcessItem: 'رفع',
+            acceptedFileTypes: ['image/*'],
+            maxFileSize: '2MB',
+            allowMultiple: true,
+            storeAsFile: true
+        });
+    </script>
+    <script>
+        const  __tinymce_toolbar  = 'fontsizeselect bold | forecolor backcolor | lists | code | table | alignleft aligncenter ' +
+            'alignright alignjustify | bullist numlist outdent indent | ' +
+            'removeformat';
+        const __tinymce_plugins = [
+            'advlist','paste','textcolor', 'autolink', 'lists', 'link', 'image', 'charmap', 'preview',
+            'anchor', 'searchreplace', 'visualblocks', 'code', 'fullscreen',
+            'insertdatetime', 'media', 'table', 'help', 'wordcount'
+        ];
+        tinymce.init({
+            selector: "#description",
+            height: 300,
+            menubar: !0,
+            oninit: "setPlainText",
+            plugins: __tinymce_plugins,
+            toolbar: __tinymce_toolbar,
+            language : 'ar',
+            toolbar_mode: "floating",
+            content_style:
+                "body { font-family:Helvetica,Arial,sans-serif; font-size:16px }",
         });
     </script>
 @endpush

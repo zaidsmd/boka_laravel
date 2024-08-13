@@ -103,7 +103,7 @@ class CategoryController extends Controller
         if ($request->ajax()){
             return $o_categorie;
         }
-        session()->flash('success','Catégorie ajouté !');
+        session()->flash('success', 'تم إضافة الفئة!');
         return redirect()->route('categories.liste');
     }
 
@@ -138,10 +138,10 @@ class CategoryController extends Controller
         $slug = Str::slug($request->get('name'));
         $categorie->update([
             'name' => $request->name,
-            'slug'=> $slug,
-            ]);
+            'slug' => $slug,
+        ]);
         return redirect()->route('categories.liste')
-            ->with('success', __('lang.Label de catégorie mis à jour avec succès'));
+            ->with('success', __('.تم تحديث تسمية الفئة بنجاح'));
     }
 
     /**
@@ -152,10 +152,10 @@ class CategoryController extends Controller
         try {
             $category->delete();
             // Redirect with success message
-            return redirect()->route('categories.liste')->with('success', __('lang.product_deleted_success'));
+            return redirect()->route('categories.liste')->with('success', 'تم حذف الفئة بنجاح!');
         }catch(\Exception $e){
             LogService::logException($e);
-            return redirect()->route('categories.liste')->with('error', __('lang.product_not_found'));
+            return redirect()->route('categories.liste')->with('error', 'الفئة غير موجودة!');
         }
     }
 }

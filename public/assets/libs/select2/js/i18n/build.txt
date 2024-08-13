@@ -3,9 +3,9 @@ af.js
 ----------------
 af.js
 
-ar.js
+tinymce_ar.js
 ----------------
-ar.js
+tinymce_ar.js
 
 az.js
 ----------------

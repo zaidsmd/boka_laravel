@@ -22,7 +22,7 @@
 {{--                            Ajouter une catégorie--}}
 {{--                        </a>--}}
 
-                        <button class="btn btn-soft-success" data-bs-target="#add-marque-modal"
+                        <button class="btn btn-primary" data-bs-target="#add-marque-modal"
                                 data-bs-toggle="modal"><i class="mdi mdi-plus"></i> {{__('lang.category.add')}}
                         </button>
 
@@ -43,8 +43,8 @@
                         <thead>
                         <tr>
                             <th style="display:none;">id </th>
-                            <th>Nom </th>
-                            <th style="width: 10%">Actions</th>
+                            <th>الإسم </th>
+                            <th style="width: 10%">الإجراءات</th>
                         </tr>
                         </thead>
                     </table>
@@ -58,7 +58,7 @@
         <div class="modal-dialog modal-dialog-centered">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h5 class="modal-title align-self-center" id="add-marque-modal-title">Ajouter une catégorie</h5>
+                    <h5 class="modal-title align-self-center" id="add-marque-modal-title">{{__('lang.category.add')}}</h5>
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
                 <form method="post" action="{{ route('categories.sauvegarder') }}" class="needs-validation" novalidate>
@@ -66,14 +66,15 @@
                     <div class="modal-body">
                         <div class="row">
                             <div class="col-12 mb-3">
-                                <label class="form-label required" for="name">Nom</label>
+                                <label class="form-label required" for="name">الإسم</label>
                                 <input type="text" required class="form-control" id="name" name="name">
                             </div>
                         </div>
                     </div>
                     <div class="modal-footer">
-                        <button type="button" class="btn btn-light" data-bs-dismiss="modal">Fermer</button>
-                        <button class="btn btn-primary">Ajouter</button>
+                        <button type="button" class="btn btn-light" data-bs-dismiss="modal">إغلاق</button>
+                        <button class="btn btn-primary">إضافة</button>
+
                     </div>
                 </form>
             </div>
@@ -85,7 +86,7 @@
         <div class="modal-dialog modal-dialog-centered">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h5 class="modal-title" id="modalEditChargeLabel">{{ __('lang.edit_charge') }}</h5>
+                    <h5 class="modal-title" id="modalEditChargeLabel">تحديث الفئة</h5>
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="{{ __('lang.buttons.close') }}"></button>
                 </div>
                 <div class="modal-body center-block">
@@ -93,7 +94,6 @@
                         @csrf
                         @method('PUT')
                         <div class="mb-3 form-group">
-                            <label for="name" class="form-label">{{ __('lang.edit_charge_description') }}</label>
                             <input class="form-control" type="text" id="name" required name="name" placeholder="{{ __('lang.edit_charge_description') }}">
                         </div>
                         <button type="submit" class="btn btn-primary w-100">{{ __('lang.buttons.edit') }}</button>

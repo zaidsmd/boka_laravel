@@ -3,12 +3,8 @@
 <meta name="csrf-token" content="{{ csrf_token() }}">
 
 <head>
-
-    <style>
-        @yield('css')
-    </style>
     <meta charset="utf-8" />
-    <title>{{__('lang.app_title')}}</title>
+    <title></title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta content="Premium Multipurpose Admin & Dashboard Template" name="description" />
     <meta content="Themesbrand" name="author" />
@@ -27,6 +23,8 @@
     <link href="{{ asset('assets/libs/datatables.net-bs4/css/dataTables.bootstrap4.min.css') }}" rel="stylesheet" type="text/css" />
     <link href="{{ asset('assets/libs/datatables.net-buttons-bs4/css/buttons.bootstrap4.min.css') }}" rel="stylesheet" type="text/css" />
     <link href="{{ asset('assets/libs/datatables.net-responsive-bs4/css/responsive.bootstrap4.min.css') }}" rel="stylesheet" type="text/css" />
+    <link rel="stylesheet" href="{{asset('assets/libs/dropzone/min/dropzone.min.css')}}"  type="text/css" />
+
 
     <link rel="shortcut icon" href="{{ asset('assets/images/favicon.ico') }}">
     <style>
@@ -128,77 +126,15 @@
                         <li>
                             <a href="{{ route('articles.liste') }}" class="waves-effect">
                                 <i class="mdi mdi-view-dashboard-variant"></i>
-                                <span>Produits</span>
+                                <span>المنتجات</span>
                             </a>
                         </li>
                     <li>
                             <a href="{{ route('categories.liste') }}" class="waves-effect">
                                 <i class="mdi mdi-view-dashboard-variant"></i>
-                                <span>Catégories</span>
+                                <span>الفئات</span>
                             </a>
                         </li>
-{{--                    @endif--}}
-
-{{--                    @if(Auth::user()->role === '1')--}}
-
-{{--                        <li>--}}
-{{--                            <a href="{{ route('home.ventes') }}" class="waves-effect">--}}
-{{--                                <i class="mdi mdi-view-dashboard"></i>--}}
-{{--                                <span>{{ __("lang.ventes_title") }}</span>--}}
-{{--                            </a>--}}
-{{--                        </li>--}}
-{{--                    @endif--}}
-
-
-{{--                    <li>--}}
-{{--                        <a href="{{ route('ventes.index') }}" class="waves-effect">--}}
-{{--                            <i class="mdi mdi-store"></i>--}}
-{{--                            <span>{{__("sidebar.gestion_ventes")}}</span>--}}
-{{--                        </a>--}}
-{{--                    </li>--}}
-{{--                    @if(Auth::user()->role === '1')--}}
-
-{{--                        <li>--}}
-{{--                            <a href="{{ route('achats.index') }}" class="waves-effect">--}}
-{{--                                <i class="mdi mdi-cash-multiple"></i>--}}
-{{--                                <span>{{__("sidebar.gestion_achats")}}</span>--}}
-{{--                            </a>--}}
-{{--                        </li>--}}
-{{--                        --}}{{--                    <li>--}}
-{{--                        --}}{{--                        <a href="{{ route('clients.index') }}" class="waves-effect">--}}
-{{--                        --}}{{--                            <i class="mdi mdi-account"></i>--}}
-{{--                        --}}{{--                            <span>{{__("sidebar.gestion_clients")}}</span>--}}
-{{--                        --}}{{--                        </a>--}}
-{{--                        --}}{{--                    </li>--}}
-
-
-{{--                        <li>--}}
-{{--                            <a href="{{ route('fruits.index') }}" class="waves-effect">--}}
-{{--                                <i class="mdi mdi-food-apple"></i>--}}
-{{--                                <span>{{__("sidebar.gestion_fruits")}}</span>--}}
-{{--                            </a>--}}
-{{--                        </li>--}}
-{{--                        <li>--}}
-{{--                            <a href="{{ route('fournisseurs.index') }}" class="waves-effect">--}}
-{{--                                <i class="mdi mdi-crown"></i>--}}
-{{--                                <span>{{__("sidebar.gestion_fournisseurs")}}</span>--}}
-{{--                            </a>--}}
-{{--                        </li>--}}
-
-{{--                        <li>--}}
-{{--                            <a href="{{ route('charge_additionelle.index') }}" class="waves-effect">--}}
-{{--                                <i class="mdi mdi-cash-register"></i>--}}
-{{--                                <span>{{__("lang.charges_additionelles")}}</span>--}}
-{{--                            </a>--}}
-{{--                        </li>--}}
-
-{{--                        <li>--}}
-{{--                            <a href="{{ route('users.index') }}" class="waves-effect">--}}
-{{--                                <i class="mdi mdi-face"></i>--}}
-{{--                                <span>{{__("lang.users")}}</span>--}}
-{{--                            </a>--}}
-{{--                        </li>--}}
-{{--                    @endif--}}
                 </ul>
             </div>
             <!-- Sidebar -->
@@ -243,6 +179,9 @@
         <script src="{{ asset('libs/jquery-knob/jquery.knob.min.js') }}"></script>
         <script src="{{ asset('libs/metrojs/release/MetroJs.Full/MetroJs.min.js') }}"></script>
 
+        <script src="{{asset('assets/libs/dropzone/min/dropzone.min.js')}}"></script>
+        <script src="{{asset('assets/js/pages/form-fileuploads.init.js')}}"></script>
+
         <script src="{{ asset('libs/sweetalert2/sweetalert2.min.js') }}"></script>
         <script src="{{ asset('assets/js/pages/sweet-alerts.init.js') }}"></script>
 
@@ -253,63 +192,9 @@
 
         <script src="{{ asset('assets/js/app.js') }}"></script>
 
-        <script >
-            document.addEventListener('DOMContentLoaded', function () {
-                // Get all language dropdown items
-                const dropdownItems = document.querySelectorAll('.dropdown-item');
-
-                // Function to update button content
-                function updateButtonContent(language, languageText, flagSrc) {
-                    // Update button content with selected language and flag
-                    document.getElementById('selected-language-text').innerText = languageText;
-                    document.getElementById('selected-flag').setAttribute('src', flagSrc);
-
-                    // Update hidden input value
-                    document.getElementById('selected-language-input').value = language;
-                }
-
-                // Function to handle language switch
-                function handleLanguageSwitch() {
-                    const language = this.getAttribute('data-language');
-                    const languageText = this.querySelector('.align-middle').innerText.trim();
-                    const flagSrc = this.querySelector('img').getAttribute('src');
-
-                    // Update button content with selected language and flag
-                    updateButtonContent(language, languageText, flagSrc);
-
-                    // Save selected language to local storage
-                    localStorage.setItem('selectedLanguage', language);
-
-                    // Submit form
-                    document.getElementById('language-form').submit();
-                }
-
-                // Add click event listener to each dropdown item
-                dropdownItems.forEach(item => {
-                    item.addEventListener('click', handleLanguageSwitch);
-                });
-
-                // Retrieve selected language from local storage on page load
-                const selectedLanguage = localStorage.getItem('selectedLanguage');
-
-                if (selectedLanguage) {
-                    // Get the dropdown item corresponding to the selected language
-                    const selectedItem = document.querySelector(`.dropdown-item[data-language="${selectedLanguage}"]`);
-
-                    if (selectedItem) {
-                        // Get language details from the selected item
-                        const languageText = selectedItem.querySelector('.align-middle').innerText.trim();
-                        const flagSrc = selectedItem.querySelector('img').getAttribute('src');
-
-                        // Update button content with selected language and flag
-                        updateButtonContent(selectedLanguage, languageText, flagSrc);
-                    }
-                }
-            });
-
+        <script>
+            const __csrf_token = '{{csrf_token()}}'
         </script>
-
-
 
 @yield('scripts')
 @yield('javascript')
