@@ -1,6 +1,17 @@
 const __dataTable_filter = function (data) {
     d = __datatable_ajax_callback(data);
 };
+function __datatable_ajax_callback(data){
+    for (var i = 0, len = data.columns.length; i < len; i++) {
+        if (! data.columns[i].search.value) delete data.columns[i].search;
+        if (data.columns[i].searchable === true) delete data.columns[i].searchable;
+        if (data.columns[i].orderable === true) delete data.columns[i].orderable;
+        if (data.columns[i].data === data.columns[i].name) delete data.columns[i].name;
+    }
+    delete data.search.regex;
+
+    return data;
+}
 if (typeof  __sort_column != "undefined") {
     var sortby = __sort_column;
 } else {
@@ -13,248 +24,248 @@ var table = $(__dataTable_id).DataTable({
     serverSide: true,
     responsive: true,
     language: {
-        "emptyTable": "Aucune donnée disponible dans le tableau",
-        "loadingRecords": "Chargement...",
-        "processing": "Traitement...",
+        "emptyTable": "لا توجد بيانات متاحة في الجدول",
+        "loadingRecords": "جاري التحميل...",
+        "processing": "جاري المعالجة...",
         "select": {
             "rows": {
-                "_": "%d lignes sélectionnées",
-                "1": "1 ligne sélectionnée"
+                "_": "%d صفوف محددة",
+                "1": "صف واحد محدد"
             },
             "cells": {
-                "1": "1 cellule sélectionnée",
-                "_": "%d cellules sélectionnées"
+                "1": "خلية واحدة محددة",
+                "_": "%d خلايا محددة"
             },
             "columns": {
-                "1": "1 colonne sélectionnée",
-                "_": "%d colonnes sélectionnées"
+                "1": "عمود واحد محدد",
+                "_": "%d أعمدة محددة"
             }
         },
         "autoFill": {
-            "cancel": "Annuler",
-            "fill": "Remplir toutes les cellules avec <i>%d<\/i>",
-            "fillHorizontal": "Remplir les cellules horizontalement",
-            "fillVertical": "Remplir les cellules verticalement"
+            "cancel": "إلغاء",
+            "fill": "املأ جميع الخلايا بـ <i>%d<\/i>",
+            "fillHorizontal": "املأ الخلايا أفقيًا",
+            "fillVertical": "املأ الخلايا عموديًا"
         },
         "searchBuilder": {
             "conditions": {
                 "date": {
-                    "after": "Après le",
-                    "before": "Avant le",
-                    "between": "Entre",
-                    "empty": "Vide",
-                    "not": "Différent de",
-                    "notBetween": "Pas entre",
-                    "notEmpty": "Non vide",
-                    "equals": "Égal à"
+                    "after": "بعد",
+                    "before": "قبل",
+                    "between": "بين",
+                    "empty": "فارغ",
+                    "not": "ليس",
+                    "notBetween": "ليس بين",
+                    "notEmpty": "غير فارغ",
+                    "equals": "يساوي"
                 },
                 "number": {
-                    "between": "Entre",
-                    "empty": "Vide",
-                    "gt": "Supérieur à",
-                    "gte": "Supérieur ou égal à",
-                    "lt": "Inférieur à",
-                    "lte": "Inférieur ou égal à",
-                    "not": "Différent de",
-                    "notBetween": "Pas entre",
-                    "notEmpty": "Non vide",
-                    "equals": "Égal à"
+                    "between": "بين",
+                    "empty": "فارغ",
+                    "gt": "أكبر من",
+                    "gte": "أكبر أو يساوي",
+                    "lt": "أقل من",
+                    "lte": "أقل أو يساوي",
+                    "not": "ليس",
+                    "notBetween": "ليس بين",
+                    "notEmpty": "غير فارغ",
+                    "equals": "يساوي"
                 },
                 "string": {
-                    "contains": "Contient",
-                    "empty": "Vide",
-                    "endsWith": "Se termine par",
-                    "not": "Différent de",
-                    "notEmpty": "Non vide",
-                    "startsWith": "Commence par",
-                    "equals": "Égal à",
-                    "notContains": "Ne contient pas",
-                    "notEndsWith": "Ne termine pas par",
-                    "notStartsWith": "Ne commence pas par"
+                    "contains": "يحتوي",
+                    "empty": "فارغ",
+                    "endsWith": "ينتهي بـ",
+                    "not": "ليس",
+                    "notEmpty": "غير فارغ",
+                    "startsWith": "يبدأ بـ",
+                    "equals": "يساوي",
+                    "notContains": "لا يحتوي",
+                    "notEndsWith": "لا ينتهي بـ",
+                    "notStartsWith": "لا يبدأ بـ"
                 },
                 "array": {
-                    "empty": "Vide",
-                    "contains": "Contient",
-                    "not": "Différent de",
-                    "notEmpty": "Non vide",
-                    "without": "Sans",
-                    "equals": "Égal à"
+                    "empty": "فارغ",
+                    "contains": "يحتوي",
+                    "not": "ليس",
+                    "notEmpty": "غير فارغ",
+                    "without": "بدون",
+                    "equals": "يساوي"
                 }
             },
-            "add": "Ajouter une condition",
+            "add": "إضافة شرط",
             "button": {
-                "0": "Recherche avancée",
-                "_": "Recherche avancée (%d)"
+                "0": "بحث متقدم",
+                "_": "بحث متقدم (%d)"
             },
-            "clearAll": "Effacer tout",
-            "condition": "Condition",
-            "data": "Donnée",
-            "deleteTitle": "Supprimer la règle de filtrage",
-            "logicAnd": "Et",
-            "logicOr": "Ou",
+            "clearAll": "مسح الكل",
+            "condition": "شرط",
+            "data": "بيانات",
+            "deleteTitle": "حذف قاعدة التصفية",
+            "logicAnd": "و",
+            "logicOr": "أو",
             "title": {
-                "0": "Recherche avancée",
-                "_": "Recherche avancée (%d)"
+                "0": "بحث متقدم",
+                "_": "بحث متقدم (%d)"
             },
-            "value": "Valeur",
-            "leftTitle": "Désindenter le critère",
-            "rightTitle": "Indenter le critère"
+            "value": "قيمة",
+            "leftTitle": "إلغاء الفقرة",
+            "rightTitle": "إضافة الفقرة"
         },
         "searchPanes": {
-            "clearMessage": "Effacer tout",
+            "clearMessage": "مسح الكل",
             "count": "{total}",
-            "title": "Filtres actifs - %d",
+            "title": "فلاتر نشطة - %d",
             "collapse": {
-                "0": "Volet de recherche",
-                "_": "Volet de recherche (%d)"
+                "0": "لوحة البحث",
+                "_": "لوحة البحث (%d)"
             },
             "countFiltered": "{shown} ({total})",
-            "emptyPanes": "Pas de volet de recherche",
-            "loadMessage": "Chargement du volet de recherche...",
-            "collapseMessage": "Réduire tout",
-            "showMessage": "Montrer tout"
+            "emptyPanes": "لا توجد لوحات بحث",
+            "loadMessage": "جاري تحميل لوحة البحث...",
+            "collapseMessage": "طي الكل",
+            "showMessage": "إظهار الكل"
         },
         "buttons": {
-            "collection": "Collection",
-            "colvis": "Visibilité colonnes",
-            "colvisRestore": "Rétablir visibilité",
-            "copy": "Copier",
+            "collection": "مجموعة",
+            "colvis": "ظهور الأعمدة",
+            "colvisRestore": "استعادة الظهور",
+            "copy": "نسخ",
             "copySuccess": {
-                "1": "1 ligne copiée dans le presse-papier",
-                "_": "%d lignes copiées dans le presse-papier"
+                "1": "تم نسخ صف واحد إلى الحافظة",
+                "_": "تم نسخ %d صفوف إلى الحافظة"
             },
-            "copyTitle": "Copier dans le presse-papier",
+            "copyTitle": "نسخ إلى الحافظة",
             "csv": "CSV",
             "excel": "Excel",
             "pageLength": {
-                "-1": "Afficher toutes les lignes",
-                "_": "Afficher %d lignes",
-                "1": "Afficher 1 ligne"
+                "-1": "عرض جميع الصفوف",
+                "_": "عرض %d صفوف",
+                "1": "عرض صف واحد"
             },
             "pdf": "PDF",
-            "print": "Imprimer",
-            "copyKeys": "Appuyez sur ctrl ou u2318 + C pour copier les données du tableau dans votre presse-papier.",
-            "createState": "Créer un état",
-            "removeAllStates": "Supprimer tous les états",
-            "removeState": "Supprimer",
-            "renameState": "Renommer",
-            "savedStates": "États sauvegardés",
-            "stateRestore": "État %d",
-            "updateState": "Mettre à jour"
+            "print": "طباعة",
+            "copyKeys": "اضغط على Ctrl أو ⌘ + C لنسخ بيانات الجدول إلى الحافظة.",
+            "createState": "إنشاء حالة",
+            "removeAllStates": "إزالة جميع الحالات",
+            "removeState": "إزالة",
+            "renameState": "إعادة تسمية",
+            "savedStates": "الحالات المحفوظة",
+            "stateRestore": "استعادة الحالة %d",
+            "updateState": "تحديث"
         },
         "decimal": ",",
         "datetime": {
-            "previous": "Précédent",
-            "next": "Suivant",
-            "hours": "Heures",
-            "minutes": "Minutes",
-            "seconds": "Secondes",
+            "previous": "السابق",
+            "next": "التالي",
+            "hours": "الساعات",
+            "minutes": "الدقائق",
+            "seconds": "الثواني",
             "unknown": "-",
             "amPm": [
-                "am",
-                "pm"
+                "ص",
+                "م"
             ],
             "months": {
-                "0": "Janvier",
-                "2": "Mars",
-                "3": "Avril",
-                "4": "Mai",
-                "5": "Juin",
-                "6": "Juillet",
-                "8": "Septembre",
-                "9": "Octobre",
-                "10": "Novembre",
-                "1": "Février",
-                "11": "Décembre",
-                "7": "Août"
+                "0": "يناير",
+                "2": "مارس",
+                "3": "أبريل",
+                "4": "مايو",
+                "5": "يونيو",
+                "6": "يوليو",
+                "8": "سبتمبر",
+                "9": "أكتوبر",
+                "10": "نوفمبر",
+                "1": "فبراير",
+                "11": "ديسمبر",
+                "7": "أغسطس"
             },
             "weekdays": [
-                "Dim",
-                "Lun",
-                "Mar",
-                "Mer",
-                "Jeu",
-                "Ven",
-                "Sam"
+                "أحد",
+                "إثنين",
+                "ثلاثاء",
+                "أربعاء",
+                "خميس",
+                "جمعة",
+                "سبت"
             ]
         },
         "editor": {
-            "close": "Fermer",
+            "close": "إغلاق",
             "create": {
-                "title": "Créer une nouvelle entrée",
-                "button": "Nouveau",
-                "submit": "Créer"
+                "title": "إنشاء إدخال جديد",
+                "button": "جديد",
+                "submit": "إنشاء"
             },
             "edit": {
-                "button": "Editer",
-                "title": "Editer Entrée",
-                "submit": "Mettre à jour"
+                "button": "تحرير",
+                "title": "تحرير الإدخال",
+                "submit": "تحديث"
             },
             "remove": {
-                "button": "Supprimer",
-                "title": "Supprimer",
-                "submit": "Supprimer",
+                "button": "حذف",
+                "title": "حذف",
+                "submit": "حذف",
                 "confirm": {
-                    "_": "Êtes-vous sûr de vouloir supprimer %d lignes ?",
-                    "1": "Êtes-vous sûr de vouloir supprimer 1 ligne ?"
+                    "_": "هل أنت متأكد أنك تريد حذف %d صفوف؟",
+                    "1": "هل أنت متأكد أنك تريد حذف صف واحد؟"
                 }
             },
             "multi": {
-                "title": "Valeurs multiples",
-                "info": "Les éléments sélectionnés contiennent différentes valeurs pour cette entrée. Pour modifier et définir tous les éléments de cette entrée à la même valeur, cliquez ou tapez ici, sinon ils conserveront leurs valeurs individuelles.",
-                "restore": "Annuler les modifications",
-                "noMulti": "Ce champ peut être modifié individuellement, mais ne fait pas partie d'un groupe. "
+                "title": "قيم متعددة",
+                "info": "العناصر المحددة تحتوي على قيم مختلفة لهذا الإدخال. لتعديل وتحديد جميع العناصر بنفس القيمة لهذا الإدخال، انقر هنا أو اضغط على هنا، وإلا فستحتفظ بقيمها الفردية.",
+                "restore": "إلغاء التغييرات",
+                "noMulti": "يمكن تعديل هذا الحقل بشكل فردي، لكنه ليس جزءًا من مجموعة."
             },
             "error": {
-                "system": "Une erreur système s'est produite (<a target=\"\\\" rel=\"nofollow\" href=\"\\\">Plus d'information<\/a>)."
+                "system": "حدث خطأ في النظام (<a target=\"\\\" rel=\"nofollow\" href=\"\\\">مزيد من المعلومات<\/a>)."
             }
         },
         "stateRestore": {
-            "removeSubmit": "Supprimer",
+            "removeSubmit": "حذف",
             "creationModal": {
-                "button": "Créer",
-                "order": "Tri",
-                "paging": "Pagination",
-                "scroller": "Position du défilement",
-                "search": "Recherche",
-                "select": "Sélection",
+                "button": "إنشاء",
+                "order": "ترتيب",
+                "paging": "ترقيم الصفحات",
+                "scroller": "موقع التمرير",
+                "search": "بحث",
+                "select": "تحديد",
                 "columns": {
-                    "search": "Recherche par colonne",
-                    "visible": "Visibilité des colonnes"
+                    "search": "بحث حسب العمود",
+                    "visible": "ظهور الأعمدة"
                 },
-                "name": "Nom :",
-                "searchBuilder": "Recherche avancée",
-                "title": "Créer un nouvel état",
-                "toggleLabel": "Inclus :"
+                "name": "اسم:",
+                "searchBuilder": "بحث متقدم",
+                "title": "إنشاء حالة جديدة",
+                "toggleLabel": "تضمين:"
             },
-            "renameButton": "Renommer",
-            "duplicateError": "Il existe déjà un état avec ce nom.",
-            "emptyError": "Le nom ne peut pas être vide.",
-            "emptyStates": "Aucun état sauvegardé",
-            "removeConfirm": "Voulez vous vraiment supprimer %s ?",
-            "removeError": "Échec de la suppression de l'état.",
-            "removeJoiner": "et",
-            "removeTitle": "Supprimer l'état",
-            "renameLabel": "Nouveau nom pour %s :",
-            "renameTitle": "Renommer l'état"
+            "renameButton": "إعادة تسمية",
+            "duplicateError": "يوجد بالفعل حالة بنفس الاسم.",
+            "emptyError": "لا يمكن أن يكون الاسم فارغًا.",
+            "emptyStates": "لا توجد حالات محفوظة",
+            "removeConfirm": "هل تريد حقًا حذف %s؟",
+            "removeError": "فشل في حذف الحالة.",
+            "removeJoiner": "و",
+            "removeTitle": "حذف الحالة",
+            "renameLabel": "اسم جديد لـ %s:",
+            "renameTitle": "إعادة تسمية الحالة"
         },
-        "info": "Affichage de _START_ à _END_ sur _TOTAL_ entrées",
-        "infoEmpty": "Affichage de 0 à 0 sur 0 entrées",
-        "infoFiltered": "(filtrées depuis un total de _MAX_ entrées)",
-        "lengthMenu": "Afficher _MENU_ entrées",
+        "info": "عرض _START_ إلى _END_ من _TOTAL_ إدخالات",
+        "infoEmpty": "عرض 0 إلى 0 من 0 إدخالات",
+        "infoFiltered": "(مفلترة من إجمالي _MAX_ إدخالات)",
+        "lengthMenu": "عرض _MENU_ إدخالات",
         "paginate": {
-            "first": "Première",
-            "last": "Dernière",
-            "next": "Suivante",
-            "previous": "Précédente"
+            "first": "الأولى",
+            "last": "الأخيرة",
+            "next": "التالي",
+            "previous": "السابق"
         },
-        "zeroRecords": "Aucune entrée correspondante trouvée",
+        "zeroRecords": "لم يتم العثور على سجلات مطابقة",
         "aria": {
-            "sortAscending": " : activer pour trier la colonne par ordre croissant",
-            "sortDescending": " : activer pour trier la colonne par ordre décroissant"
+            "sortAscending": ": تفعيل لفرز العمود تصاعديًا",
+            "sortDescending": ": تفعيل لفرز العمود تنازليًا"
         },
         "infoThousands": " ",
-        "search": "Rechercher :",
+        "search": "بحث:",
         "thousands": " "
     },
     buttons: [

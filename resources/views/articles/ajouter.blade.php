@@ -98,16 +98,16 @@
                                     </div>
                                 </div>
 
-{{--                                    <div class="col-12 col-lg-6 mb-3 ">--}}
-{{--                                        <label for="i_image"--}}
-{{--                                               class="form-label {{$errors->has('i_image')? 'is-invalid' : ''}}">Image</label>--}}
-{{--                                        <input name="i_image" type="file" id="i_image" accept="image/*">--}}
-{{--                                        <div class="invalid-feedback">--}}
-{{--                                            @if($errors->has('i_image'))--}}
-{{--                                                {{ $errors->first('i_image') }}--}}
-{{--                                            @endif--}}
-{{--                                        </div>--}}
-{{--                                    </div>--}}
+                                    <div class="col-12 col-lg-6 mb-3 ">
+                                        <label for="i_image"
+                                               class="form-label {{$errors->has('i_image')? 'is-invalid' : ''}}">Image</label>
+                                        <input name="i_image" type="file" id="i_image" accept="image/*" multiple>
+                                        <div class="invalid-feedback">
+                                            @if($errors->has('i_image'))
+                                                {{ $errors->first('i_image') }}
+                                            @endif
+                                        </div>
+                                    </div>
 
                             </div>
                             <div class="col-sm-6 row mx-0 a col-12 align-content-start">

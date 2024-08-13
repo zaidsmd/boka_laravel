@@ -15,6 +15,39 @@ use Yajra\DataTables\DataTables;
 
 class ArticleController extends Controller
 {
+
+
+
+    public function admin(Request $request)
+    {
+        if ($request->ajax()) {
+            $query = Article::with('categories');
+
+            $table = DataTables::of($query);
+            $table->addColumn(
+                'selectable_td',
+                function ($row) {
+                    $id = $row['id'];
+                    return '<input type="checkbox" class="row-select form-check-input" value="' . $id . '">';
+                }
+            )->addColumn('quantite', function ($row) {
+                return $row->quantite;
+            });
+            $table->addColumn('actions', function ($row) {
+                $crudRoutePart = 'articles';
+                $show = 'afficher';
+                $delete = 'supprimer';
+                $edit = 'modifier';
+                $id = $row->id;
+                return view('partials.__datatable-action', compact('id', 'crudRoutePart', 'edit', 'delete', 'show'));
+            });
+
+            $table->rawColumns(['selectable_td', 'actions']);
+            return $table->make();
+        }
+        return view('articles.admin');
+    }
+
     /**
      * Display a listing of the resource.
      */
