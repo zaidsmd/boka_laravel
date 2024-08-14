@@ -34,12 +34,36 @@ class ShopViewsController extends Controller
         return view('checkout');
     }
     public function shop(Request $request){
-        if ($request->ajax()){
-            return  new ArticleCollection(Article::paginate(10));
-        }
         $categories = Category::get();
         $articles_sale_count = Article::whereNotNull('sale_price')->count();
         return view('shop',compact('categories','articles_sale_count'));
+    }
+
+    public function shopAjax(Request $request){
+        if ($request->ajax()){
+            $query = Article::query();
+            if ($request->input('search')){
+                $search = '%'.$request->input('search').'%';
+                $query->where('title','LIKE',$search);
+            }
+            if ($request->input('min')){
+                $query->where('price','>=',$request->input('min'));
+            }
+            if ($request->input('max')){
+                $query->where('price','<=',$request->input('max'));
+            }
+            if ($request->input('categories')){
+                $categories = $request->input('categories');
+                $query->whereHas('categories',function (Builder $query) use ($categories){
+                   $query->whereIn('categories.id',$categories);
+                });
+            }
+            if ($request->input('sale')){
+                $query->whereNotNull('sale_price');
+            }
+            return  new ArticleCollection($query->paginate(12));
+        }
+        abort(404);
     }
 
     public function single(string $slug){

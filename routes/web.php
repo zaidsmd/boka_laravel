@@ -19,6 +19,7 @@ Route::get('/cart', [\App\Http\Controllers\ShopViewsController::class, 'cart'])-
 Route::get('my-account', [\App\Http\Controllers\ShopViewsController::class, 'myAccount'])->name('my-account');
 Route::get('checkout', [\App\Http\Controllers\ShopViewsController::class, 'checkout'])->name('checkout');
 Route::get('/shop',[\App\Http\Controllers\ShopViewsController::class,'shop'])->name('shop');
+Route::get('/shop-ajax',[\App\Http\Controllers\ShopViewsController::class,'shopAjax'])->name('shop.ajax');
 Route::get('product/{slug}',[\App\Http\Controllers\ShopViewsController::class,'single'])->name('single');
 
 Route::get('/import',[\App\Http\Controllers\ImportController::class,'import']);

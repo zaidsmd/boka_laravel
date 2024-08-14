@@ -1,7 +1,7 @@
 var next = '';
 var current_page = '';
 var total = 0;
-var per_page_count = 10;
+var per_page_count = 12;
 var skeleton = '<div class="col-xl-3 col-lg-4 col-6 py-2 d-flex skeleton-wrapper"><div class="card border-0 shadow-sm overflow-hidden product-card w-100" data-id=""><div class="skeleton-sale-price"></div><div class="card-img w-100 position-relative"><div class="skeleton-img"></div></div><div class="card-body text-center"><p class="skeleton-title"></p><p class="skeleton-price"></p></div></div></div>';
 function skeletonPaster(count){
     let html = '';
@@ -28,10 +28,10 @@ function createProductCard(article) {
 
     var $cardImg = $('<div>', { class: 'card-img w-100 position-relative' });
 
-    var $cartIcon = $('<div>', { class: 'add-to-cart-card' }).append($('<i>', { class: 'fa-solid fa-cart-shopping' }));
+    var $cartIcon = $('<div>', { class: 'add-to-cart-card d-sm-block d-none' }).append($('<i>', { class: 'fa-solid fa-cart-shopping' }));
     $cardImg.append($cartIcon);
 
-    var $imageLink = $('<a>', { href: `/single/${article.slug}` });
+    var $imageLink = $('<a>', { href: window.origin+`/product/${article.slug}` });
     var $image = $('<img>', {
         src: article.media_url,
         class: 'img-fluid w-100',
@@ -42,7 +42,7 @@ function createProductCard(article) {
     $card.append($cardImg);
 
     var $cardBody = $('<div>', { class: 'card-body text-center' });
-    var $title = $('<p>', { class: 'fw-medium text-muted text-truncate', text: article.title });
+    var $title = $('<p>', { class: 'fw-medium text-muted text-truncate m-0', text: article.title });
     $cardBody.append($title);
 
     if (article.sale_price) {
@@ -62,7 +62,8 @@ function createProductCard(article) {
         });
         $cardBody.append($price);
     }
-    $card.append($('<a>', { href: `/single/${article.slug}`, class: 'text-decoration-none' }).append($cardBody));
+    $card.append($('<a>', { href: window.origin+`/product/${article.slug}`, class: 'text-decoration-none' }).append($cardBody));
+    $card.append($(' <div class="btn btn-primary add-to-cart-card-mobile d-md-none d-block text-white mt-auto mb-3 mx-3" ><i class="fa-solid fa-cart-shopping"></i></div>'))
     $wrapper.append($card)
     return $wrapper;
 }
@@ -74,15 +75,25 @@ function populateProductCards(data){
     })
     $('.shop-cards-container').replaceWith(cards)
 }
-function fetchProducts(count,url =window.origin + '/shop'){
+function fetchProducts(count,url =window.origin + '/shop-ajax'){
     $('.shop-cards-container').append(skeletonPaster(count))
+    let categories = [];
+    $('[name=categories]:checked').each(function (){
+        categories.push($(this).val());
+    })
     $.ajax({
         url: url ,
         headers: {
             'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
         },
+        data:{
+            search:$('#search-input').val(),
+            min:$('#min').val(),
+            max:$('#max').val(),
+            categories: categories,
+            sale: $('#sale:checked').val()
+        },
         success: function (response) {
-            console.log(response)
             populateProductCards(response.data);
             let img = $('.card-img');
             img.css('height',img.width());
@@ -90,6 +101,7 @@ function fetchProducts(count,url =window.origin + '/shop'){
             fetchingScroll = false;
             current_page = response.meta.current_page;
             total = response.meta.total;
+            $('.filter,.search').removeAttr('disabled')
         }
     })
 }
@@ -104,3 +116,20 @@ $(window).scroll(function() {
         fetchProducts(tofetch,next)
     }
 });
+
+$(document).on('change','.filter',function (){
+    $('.filter').attr('disabled','')
+    if (!fetchingScroll){
+        fetchingScroll = true;
+        $('.shop-cards-container').html('').append(skeletonPaster(per_page_count))
+        fetchProducts(per_page_count)
+    }
+})
+$(document).on('click','.search',function (){
+    $('.filter,.search').attr('disabled','')
+    if (!fetchingScroll){
+        fetchingScroll = true;
+        $('.shop-cards-container').html('').append(skeletonPaster(per_page_count))
+        fetchProducts(per_page_count)
+    }
+})

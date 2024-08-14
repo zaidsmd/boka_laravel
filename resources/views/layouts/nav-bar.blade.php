@@ -8,11 +8,18 @@
         <a class="navbar-brand" href="{{url('/')}}" style="max-width: 70px">
             <img src="{{asset('images/logo.png')}}" class="img-fluid" alt="">
         </a>
-        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNavDropdown"
-                aria-controls="navbarNavDropdown" aria-expanded="false" aria-label="Toggle navigation">
-            <span class="navbar-toggler-icon"></span>
-        </button>
-        <div class="collapse navbar-collapse">
+        <div class="div  gap-2 d-md-none d-flex">
+            <div class="cart  text-primary border shadow-sm btn bg-white  p-2 rounded" data-bs-toggle="offcanvas" data-bs-target="#cart-canvas" aria-controls="cart-canvas">
+                <i class=" fa-solid fa-cart-shopping mx-1"></i>
+                <span class="mx-1 total d-md-inline d-none" > {{number_format(cart()->total,2,',',' ') }}</span>
+                <span class="d-md-inline d-none" >د.م</span>
+            </div>
+            <button class="navbar-toggler bg-white " type="button" data-bs-toggle="collapse" data-bs-target="#navbarNavDropdown"
+                    aria-controls="navbarNavDropdown" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+        </div>
+        <div class="collapse navbar-collapse" id="navbarNavDropdown">
             <ul class="navbar-nav">
                 <li class="nav-item ">
                     <a class="nav-link @if(\Illuminate\Support\Facades\Request::segment(1) == '') active @endif" aria-current="page"  href="{{url('/')}}"><span>
@@ -45,10 +52,16 @@
             </ul>
 
         </div>
-        <div class="cart  text-primary border shadow-sm btn bg-white  p-2 rounded" data-bs-toggle="offcanvas" data-bs-target="#cart-canvas" aria-controls="cart-canvas">
-            <i class=" fa-solid fa-cart-shopping mx-1"></i>
-            <span class="mx-1 total" > {{number_format(cart()->total,2,',',' ') }}</span>
-            <span>د.م</span>
+        <div class="div  gap-2 d-md-flex d-none">
+            <div class="cart  text-primary border shadow-sm btn bg-white  p-2 rounded" data-bs-toggle="offcanvas" data-bs-target="#cart-canvas" aria-controls="cart-canvas">
+                <i class=" fa-solid fa-cart-shopping mx-1"></i>
+                <span class="mx-1 total d-md-inline d-none" > {{number_format(cart()->total,2,',',' ') }}</span>
+                <span class="d-md-inline d-none" >د.م</span>
+            </div>
+            <button class="navbar-toggler bg-white " type="button" data-bs-toggle="collapse" data-bs-target="#navbarNavDropdown"
+                    aria-controls="navbarNavDropdown" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
         </div>
     </div>
 </nav>
