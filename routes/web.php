@@ -21,8 +21,19 @@ Route::get('checkout', [\App\Http\Controllers\ShopViewsController::class, 'check
 Route::get('/shop',[\App\Http\Controllers\ShopViewsController::class,'shop'])->name('shop');
 Route::get('/shop-ajax',[\App\Http\Controllers\ShopViewsController::class,'shopAjax'])->name('shop.ajax');
 Route::get('product/{slug}',[\App\Http\Controllers\ShopViewsController::class,'single'])->name('single');
+Route::get('categories/{slug}',[\App\Http\Controllers\ShopViewsController::class,'category'])->name('category');
+Route::get('categories-ajax',[\App\Http\Controllers\ShopViewsController::class,'categoryAjax'])->name('category.ajax');
+Route::get('new',[\App\Http\Controllers\ShopViewsController::class,'new'])->name('new');
+Route::get('new-ajax',[\App\Http\Controllers\ShopViewsController::class,'newAjax'])->name('new.ajax');
+Route::get('best-seller',[\App\Http\Controllers\ShopViewsController::class,'bestSeller'])->name('best-seller');
+Route::get('best-seller-ajax',[\App\Http\Controllers\ShopViewsController::class,'bestSellerAjax'])->name('best-seller.ajax');
+Route::get('sale',[\App\Http\Controllers\ShopViewsController::class,'sale'])->name('sale');
 
 Route::get('/import',[\App\Http\Controllers\ImportController::class,'import']);
+
+//  Static
+Route::get('من-نحن',[\App\Http\Controllers\StaticPagesController::class,'aboutUs'])->name('static-pages.about-us');
+Route::get('الشروط-الأحكام',[\App\Http\Controllers\StaticPagesController::class,'termsAndConditions'])->name('static-pages.terms-and-conditions');
 
 Route::get('/add-to-cart', [\App\Http\Controllers\CartController::class, 'addLine'])->name('cart.add-line');
 Route::get('/add-to-cart-single', [\App\Http\Controllers\CartController::class, 'addLineFromSingle'])->name('cart.add-line');

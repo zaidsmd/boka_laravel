@@ -79,109 +79,40 @@ function populateProductCards(data){
     }
     $('.shop-cards-container').replaceWith(cards)
 }
-function fetchProducts(count,url =window.origin + '/shop-ajax'){
-    $('.shop-cards-container').html('').append(skeletonPaster(count))
-    let categories = [];
-    $('[name=categories]:checked').each(function (){
-        categories.push($(this).val());
-    })
+function fetchProducts(count,url =window.origin + '/categories-ajax'){
+    $('.shop-cards-container').append(skeletonPaster(count))
     $.ajax({
         url: url ,
         headers: {
             'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
         },
         data:{
-            search:$('#search-input').val(),
-            min:$('#min').val(),
-            max:$('#max').val(),
-            categories: categories,
-            sale: $('#sale:checked').val()
+            category:$('#_cat').val()
         },
         success: function (response) {
             populateProductCards(response.data);
-            if (response.data.length){
-                $('.pagination-container').html('').append(generatePagination(response.meta.links))
-
-            }else {
-                $('.pagination-container').html('')
-            }
             let img = $('.card-img');
             img.css('height',img.width());
             next = response.links.next
             fetchingScroll = false;
             current_page = response.meta.current_page;
             total = response.meta.total;
-            $('.filter,.search').removeAttr('disabled')
         }
     })
 }
-function generatePagination(pages) {
-    let pagination = $('<ul class="pagination justify-content-center"></ul>');
-    const totalPages = pages.length;
-    const currentPageIndex = pages.findIndex(page => page.active);
-
-    // Add "Previous" button
-    if (currentPageIndex > 1) {
-        pagination.append(`<li class="page-item"><a class="page-link" data-href="${pages[0].url}">${pages[0].label}</a></li>`);
-    }
-
-    // First pages
-    // if (currentPageIndex > 2) {
-    //     pagination.append(`<li class="page-item"><a class="page-link" data-href="${pages[1].url}">${pages[1].label}</a></li>`);
-    //     pagination.append('<li class="page-item"><span class="page-link disabled">...</span></li>');
-    // }
-
-    // Middle pages
-    for (let i = Math.max(1, currentPageIndex - 1); i <= Math.min(currentPageIndex + 1, totalPages - 2); i++) {
-        let li = $('<li class="page-item"></li>');
-        let a = $('<a class="page-link"></a>').text(pages[i].label).attr('data-href', pages[i].url);
-
-        if (pages[i].active) {
-            li.addClass('active');
-        }
-        li.append(a);
-        pagination.append(li);
-    }
-
-    // Ellipsis after middle pages if necessary
-    if (currentPageIndex < totalPages - 3) {
-        pagination.append('<li class="page-item"><span class="page-link disabled">...</span></li>');
-    }
-
-    // Last pages
-    if (currentPageIndex < totalPages - 3) {
-        pagination.append(`<li class="page-item"><a class="page-link" data-href="${pages[totalPages - 2].url}">${pages[totalPages - 2].label}</a></li>`);
-    }
-
-    // Add "Next" button
-    if (currentPageIndex < totalPages - 2) {
-        pagination.append(`<li class="page-item"><a class="page-link" data-href="${pages[totalPages - 1].url}">${pages[totalPages - 1].label}</a></li>`);
-    }
-
-    return pagination;
-}
-
-
-$(document).on('click','.page-link',function (){
-    let btn = $(this);
-    var fetchingScroll = false;
-    fetchProducts(per_page_count,btn.data('href'))
-})
 $(document).ready(function () {
     fetchProducts(per_page_count)
 })
 var fetchingScroll = false;
-// $(window).scroll(function() {
-//     if (!fetchingScroll && $(window).scrollTop() + $(window).height() >= $(document).height() - 200 && next) {
-//         fetchingScroll = true;
-//         let tofetch = (total - (current_page * per_page_count)) < per_page_count ? (total - (current_page * per_page_count)) : 10;
-//         fetchProducts(tofetch,next)
-//     }
-// });
-
+$(window).scroll(function() {
+    if (!fetchingScroll && $(window).scrollTop() + $(window).height() >= $(document).height() - 200 && next) {
+        fetchingScroll = true;
+        let tofetch = (total - (current_page * per_page_count)) < per_page_count ? (total - (current_page * per_page_count)) : 10;
+        fetchProducts(tofetch,next)
+    }
+});
 
 $(document).on('change','.filter',function (){
-    $('.filter').attr('disabled','')
     if (!fetchingScroll){
         fetchingScroll = true;
         $('.shop-cards-container').html('').append(skeletonPaster(per_page_count))
@@ -189,7 +120,6 @@ $(document).on('change','.filter',function (){
     }
 })
 $(document).on('click','.search',function (){
-    $('.filter,.search').attr('disabled','')
     if (!fetchingScroll){
         fetchingScroll = true;
         $('.shop-cards-container').html('').append(skeletonPaster(per_page_count))

@@ -1,4 +1,5 @@
 var next = '';
+var fetchingScroll = false;
 var current_page = '';
 var total = 0;
 var per_page_count = 12;
@@ -81,21 +82,13 @@ function populateProductCards(data){
 }
 function fetchProducts(count,url =window.origin + '/shop-ajax'){
     $('.shop-cards-container').html('').append(skeletonPaster(count))
-    let categories = [];
-    $('[name=categories]:checked').each(function (){
-        categories.push($(this).val());
-    })
     $.ajax({
         url: url ,
         headers: {
             'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
         },
-        data:{
-            search:$('#search-input').val(),
-            min:$('#min').val(),
-            max:$('#max').val(),
-            categories: categories,
-            sale: $('#sale:checked').val()
+        data :{
+            sale:1
         },
         success: function (response) {
             populateProductCards(response.data);
@@ -111,7 +104,6 @@ function fetchProducts(count,url =window.origin + '/shop-ajax'){
             fetchingScroll = false;
             current_page = response.meta.current_page;
             total = response.meta.total;
-            $('.filter,.search').removeAttr('disabled')
         }
     })
 }
@@ -170,7 +162,6 @@ $(document).on('click','.page-link',function (){
 $(document).ready(function () {
     fetchProducts(per_page_count)
 })
-var fetchingScroll = false;
 // $(window).scroll(function() {
 //     if (!fetchingScroll && $(window).scrollTop() + $(window).height() >= $(document).height() - 200 && next) {
 //         fetchingScroll = true;

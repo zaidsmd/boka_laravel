@@ -31,6 +31,15 @@
         <div class="section-divider">
             <span class="text-primary fw-bold">اختر الكتب حسب العمر</span>
         </div>
+        <div class="row py-5 justify-content-center">
+            <a href="{{route('category','0-3')}}" class="d-flex justify-content-center align-items-center home-age-cat"><img src="{{asset('images/1-1.png')}}" class="img-fluid" alt=""></a>
+            <a href="{{route('category','3-6')}}" class=" d-flex justify-content-center align-items-center home-age-cat"><img src="{{asset('images/2-1.png')}}"  class="img-fluid"alt=""></a>
+            <a  href="{{route('category','6-9')}}" class=" d-flex justify-content-center align-items-center home-age-cat"><img src="{{asset('images/3-1.png')}}" class="img-fluid" alt=""></a>
+            <a href="{{route('category','9-12')}}" class=" d-flex justify-content-center align-items-center home-age-cat"><img src="{{asset('images/4-1.png')}}" class="img-fluid" alt=""></a>
+            <a href="{{route('category','12-15')}}" class=" d-flex justify-content-center align-items-center home-age-cat"><img src="{{asset('images/5-1.png')}}" class="img-fluid" alt=""></a>
+            <a href="{{route('category','16')}}" class=" d-flex justify-content-center align-items-center home-age-cat"><img src="{{asset('images/6-1.png')}}" class="img-fluid" alt=""></a>
+            <a href="{{route('category','الوالدية')}}" class=" d-flex justify-content-center align-items-center home-age-cat"><img src="{{asset('images/7-1.png')}}" class="img-fluid" alt=""></a>
+        </div>
         <div class="section-divider">
             <span class="text-primary fw-bold">أحدث الإصدارات</span>
         </div>
