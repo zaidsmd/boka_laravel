@@ -207,7 +207,7 @@
 @yield('javascript')
 @stack('scripts')
 
-@vite(['resources/js/app.js'])
+@vite(['resources/js/admin.js'])
 
 </body>
 </html>
