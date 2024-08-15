@@ -95,6 +95,16 @@ Route::group(['prefix' => 'utilisateurs','controller' => \App\Http\Controllers\U
 });
 
 
+    Route::group(['prefix' => 'tags','controller' => \App\Http\Controllers\TagController::class], function (){
+        Route::get('/', 'liste')->name('tags.liste');
+        Route::get('/{id}/afficher', 'afficher')->name('tags.afficher');
+        Route::get('/ajouter', 'ajouter')->name('tags.ajouter');
+        Route::post('/', 'sauvegarder')->name('tags.sauvegarder');
+        Route::get('/{id}/modifier','modifier')->name('tags.modifier');
+        Route::put('/{id}', 'mettre_a_jour')->name('tags.mettre_a_jour');
+        Route::delete('supprimer/{id}','supprimer')->name('tags.supprimer');
+        Route::get('/tags-select', 'tags_select')->name('tags.select');
+    });
     Route::group(['prefix' => 'commandes','controller' => \App\Http\Controllers\CommandeController::class], function (){
         Route::get('/','liste')->name('commandes.liste');
         Route::get('ajouter','ajouter')->name('commandes.ajouter');

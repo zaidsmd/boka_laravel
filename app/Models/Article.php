@@ -25,6 +25,10 @@ class Article extends Model implements HasMedia
         return $this->belongsToMany(Category::class);
     }
 
+    function tags(){
+        return $this->belongsToMany(Tag::class);
+    }
+
 
     public function registerMediaConversions(?Media $media = null): void
     {

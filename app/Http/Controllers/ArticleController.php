@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Article;
 use App\Models\Category;
+use App\Models\Tag;
 use App\Services\LogService;
 use Illuminate\Http\Request;
 use Illuminate\Routing\ResponseFactory;
@@ -72,6 +73,7 @@ class ArticleController extends Controller
                 'sale_price' => 'nullable|numeric|min:0',
                 'price' => 'required|numeric|min:0',
                 'categorie' => 'required|array',
+                'tag' => 'required|array',
                 'quantite' => 'required|numeric|min:0',
                 'i_image' => 'nullable|image|mimes:jpg,jpeg,png,bmp|max:2048',
                 'i_images.*' => 'nullable|image|mimes:jpg,jpeg,png,bmp|max:2048'
@@ -87,6 +89,8 @@ class ArticleController extends Controller
                 'price.numeric' => 'السعر يجب أن يكون رقماً',
                 'categorie.required' => 'الفئة مطلوبة',
                 'categorie.array' => 'الفئة يجب أن تكون مصفوفة',
+                'tag.required' => 'الوسوم مطلوبة',
+                'tag.array' => 'الوسوم يجب أن تكون مصفوفة',
                 'quantite.required' => 'الكمية مطلوبة',
                 'quantite.numeric' => 'الكمية يجب أن تكون رقماً',
                 'quantite.min' => 'الكمية يجب أن تكون أكبر من أو تساوي 0',
@@ -117,6 +121,8 @@ class ArticleController extends Controller
 
             // Associate categories with the article
             $article->categories()->sync($request->get('categorie'));
+            $article->tags()->sync($request->get('tag'));
+
 
             // Save the principal image
             if ($request->hasFile('i_image')) {
@@ -166,9 +172,10 @@ class ArticleController extends Controller
     {
         $article = Article::with('categories')->find($id);
         $categories = Category::all();
+        $tags = Tag::all();
         $principalImage = $article->getFirstMedia('principal');
         $otherImages = $article->getMedia('images');
-        return view('articles.modifier', compact('categories', 'article','principalImage', 'otherImages'));
+        return view('articles.modifier', compact('categories', 'article','principalImage', 'otherImages', 'tags'));
     }
 
     /**
@@ -192,6 +199,7 @@ class ArticleController extends Controller
             'sale_price' => 'nullable|numeric|min:0',
             'price' => 'required|numeric|min:0',
             'categorie' => 'required|array',
+            'tag' => 'required|array',
             'quantite' => 'required|numeric|min:0',
             'i_image' => 'nullable|image|mimes:jpg,jpeg,png,bmp|max:2048',
             'i_images.*' => 'nullable|image|mimes:jpg,jpeg,png,bmp|max:2048',
@@ -207,6 +215,8 @@ class ArticleController extends Controller
             'price.numeric' => 'السعر يجب أن يكون رقماً',
             'categorie.required' => 'الفئة مطلوبة',
             'categorie.array' => 'الفئة يجب أن تكون مصفوفة',
+            'tag.required' => 'الوسوم مطلوبة',
+            'tag.array' => 'الوسوم يجب أن تكون مصفوفة',
             'quantite.required' => 'الكمية مطلوبة',
             'quantite.numeric' => 'الكمية يجب أن تكون رقماً',
             'quantite.min' => 'الكمية يجب أن تكون أكبر من أو تساوي 0',
@@ -232,6 +242,7 @@ class ArticleController extends Controller
                 'quantite' => $request->get('quantite'),
             ]);
             $article->categories()->sync($request->input('categorie'));
+            $article->tags()->sync($request->input('tag'));
 
 
             //Principal image

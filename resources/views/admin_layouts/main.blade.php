@@ -137,29 +137,36 @@
 {{--                    @if(Auth::user()->role === '1')--}}
                     <li>
                         <a href="{{ route('commandes.liste') }}" class="waves-effect">
-                            <i class="mdi mdi-view-dashboard-variant"></i>
+                            <i class="mdi mdi-shopping"></i>
                             <span>الطلبات</span>
                         </a>
                     </li>
                         <li>
                             <a href="{{ route('articles.liste') }}" class="waves-effect">
-                                <i class="mdi mdi-view-dashboard-variant"></i>
+                                <i class="mdi mdi-barcode"></i>
                                 <span>المنتجات</span>
                             </a>
                         </li>
                     <li>
                             <a href="{{ route('categories.liste') }}" class="waves-effect">
-                                <i class="mdi mdi-view-dashboard-variant"></i>
+                                <i class="mdi mdi-wallet"></i>
                                 <span>الفئات</span>
                             </a>
                         </li>
-
+                    <li>
+                        <a href="{{ route('tags.liste') }}" class="waves-effect">
+                            <i class="mdi mdi-cloud-tags"></i>
+                            <span>الوسوم</span>
+                        </a>
+                    </li>
                     <li>
                         <a href="{{ route('utilisateurs.liste') }}" class="waves-effect">
-                            <i class="mdi mdi-view-dashboard-variant"></i>
+                            <i class="mdi mdi-account-group"></i>
                             <span>المستخدمين</span>
                         </a>
                     </li>
+
+
 
                 </ul>
             </div>

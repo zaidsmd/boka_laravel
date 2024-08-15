@@ -117,6 +117,45 @@
                                     </div>
                                 </div>
 
+                                <div class="col-12 col-lg-6 mb-3 ">
+                                    <label class="form-label required" for="tag">  الوسوم</label>
+                                    <div class="input-group">
+                                        <select
+                                            class="select2 form-control mb-3 custom-select {{$errors->has('tag')? 'is-invalid' : ''}}"
+                                            name="tag[]"
+                                            id="tag" multiple>
+                                            @foreach($tags as $tag)
+                                                <option value="{{ $tag->id }}"
+                                                    {{ in_array($tag->id, $article->tags->pluck('id')->toArray()) ? 'selected' : '' }}>
+                                                    {{ $tag->name }}
+                                                </option>
+                                            @endforeach
+                                        </select>
+
+                                        {{--<button type="button" class="btn btn-light" data-bs-target="#family-modal" data-bs-toggle="modal" >+</button>--}}
+                                        @if($errors->has('tag'))
+                                            <div class="invalid-feedback">
+                                                {{ $errors->first('tag') }}
+                                            </div>
+                                        @endif
+                                    </div>
+                                </div>
+
+                                <div class="col-12 col-lg-6 mb-3 ">
+                                    <label class="form-label   required" for="quantite"> {{__('lang.articles.quantity')}}</label>
+                                    <div class="input-group">
+                                        <input required type="number" step="1"
+                                               class="form-control {{$errors->has('quantite')? 'is-invalid' : ''}}"
+                                               id="quantite"
+                                               name="quantite" value="{{old('quantite',$article->quantite)}}">
+                                        <div class="invalid-feedback">
+                                            @if($errors->has('quantite'))
+                                                {{ $errors->first('quantite') }}
+                                            @endif
+                                        </div>
+                                    </div>
+                                </div>
+
 
 
 
@@ -176,20 +215,7 @@
                                         </div>
                                     </div>
                                 </div>
-                                <div class="col-12 col-lg-6 mb-3 ">
-                                    <label class="form-label   required" for="quantite"> {{__('lang.articles.quantity')}}</label>
-                                    <div class="input-group">
-                                        <input required type="number" step="1"
-                                               class="form-control {{$errors->has('quantite')? 'is-invalid' : ''}}"
-                                               id="quantite"
-                                               name="quantite" value="{{old('quantite',$article->quantite)}}">
-                                        <div class="invalid-feedback">
-                                            @if($errors->has('quantite'))
-                                                {{ $errors->first('quantite') }}
-                                            @endif
-                                        </div>
-                                    </div>
-                                </div>
+
 
                                 <div class="col-12 col-lg-6 mb-3">
                                     <label for="i_image" class="form-label {{$errors->has('i_image') ? 'is-invalid' : ''}}">   الصورة الرئيسية</label>
@@ -280,6 +306,29 @@
             placeholder: "...",
             ajax: {
                 url: "{{ route('categories.select') }}",
+                dataType: "json",
+                delay: 250,
+                data: function (params) {
+                    return {
+                        term: params.term,
+                    };
+                },
+                processResults: function (data) {
+                    return {
+                        results: data,
+                    };
+                },
+                cache: false,
+            },
+            minimumInputLength: 1,
+        });
+    </script>
+
+    <script>
+        $("#tag").select2({
+            placeholder: "...",
+            ajax: {
+                url: "{{ route('tags.select') }}",
                 dataType: "json",
                 delay: 250,
                 data: function (params) {
