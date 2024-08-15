@@ -45,7 +45,19 @@
 
     <header id="page-topbar">
         <div class="navbar-header">
-            <div class="d-flex justify-content-between " style="width: 100%">
+            <div class="d-flex justify-content-between ">
+                <div class="navbar-brand-box">
+{{--                    <a href="index.html" class="logo logo-dark">--}}
+{{--                            <span class="logo-sm">--}}
+{{--                                <img src="assets/images/logo-sm.png" alt="" height="22">--}}
+{{--                            </span>--}}
+{{--                        <span class="logo-lg">--}}
+{{--                                <img src="assets/images/logo-dark.png" alt="" height="17">--}}
+{{--                            </span>--}}
+{{--                    </a>--}}
+
+
+                </div>
                 <div class="">
                     <button type="button" class="btn btn-sm  font-size-24 header-item waves-effect" id="vertical-menu-btn">
                         <i class="mdi mdi-menu"></i>
@@ -54,7 +66,7 @@
 
                 <div class="d-flex" >
                     <!-- User -->
-                    <div class="dropdown d-inline-block">
+                    <div class="dropdown d-inline-block" style="width: 100%">
                         <button  type="button" class="btn header-item waves-effect user-step" id="page-header-user-dropdown"
                                  data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                             <img class="rounded-circle header-profile-user" src="{{asset('assets/images/users/user-1.jpg')}}"
@@ -122,7 +134,12 @@
 
 
 {{--                    @if(Auth::user()->role === '1')--}}
-
+                    <li>
+                        <a href="{{ route('commandes.liste') }}" class="waves-effect">
+                            <i class="mdi mdi-view-dashboard-variant"></i>
+                            <span>الطلبات</span>
+                        </a>
+                    </li>
                         <li>
                             <a href="{{ route('articles.liste') }}" class="waves-effect">
                                 <i class="mdi mdi-view-dashboard-variant"></i>
@@ -142,6 +159,7 @@
                             <span>المستخدمين</span>
                         </a>
                     </li>
+
                 </ul>
             </div>
             <!-- Sidebar -->

@@ -80,22 +80,6 @@
                                 </div>
 
 
-                                {{--                                --}}
-{{--                                <div class="col-12 col-lg-6 mb-3">--}}
-{{--                                    <label class="form-label required" for="desc-input">  {{__('lang.articles.description')}}</label>--}}
-{{--                                    <textarea name="description"--}}
-{{--                                              class="form-control {{$errors->has('description')? 'is-invalid' : ''}}"--}}
-{{--                                              style="resize: vertical"--}}
-{{--                                              placeholder="Tapez votre description ici..." id="description" cols="30"--}}
-{{--                                              rows="8">{{old('description')}}</textarea>--}}
-{{--                                    <div class="invalid-feedback">--}}
-{{--                                        @if($errors->has('description'))--}}
-{{--                                            {{ $errors->first('description') }}--}}
-{{--                                        @endif--}}
-{{--                                    </div>--}}
-{{--                                </div>--}}
-
-
                             </div>
                             <div class="col-sm-6 row mx-0 a col-12 align-content-start">
                                 <div class="col-12 mt-2">
@@ -180,7 +164,7 @@
 @endsection
 @push('scripts')
     <script src="{{asset('libs/spectrum-colorpicker2/spectrum.min.js')}}" ></script>
-    <script src="{{asset('libs/select2/js/select2.full.min.js')}}"></script>
+    <script src="{{asset('assets/libs/select2/js/select2.min.js')}}"></script>
     <script src="{{asset('libs/daterangepicker/js/daterangepicker.js')}}"></script>
     <script src="{{asset('libs/dropify/js/dropify.min.js')}}"></script>
 
@@ -207,7 +191,8 @@
     </script>
     <script>
         $("#categorie").select2({
-            placeholder: "...",
+            placeholder: "البحث عن فئة",
+            language : 'ar',
             ajax: {
                 url: "{{ route('categories.select') }}",
                 dataType: "json",

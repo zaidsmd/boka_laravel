@@ -44,7 +44,7 @@ Route::get('checkout/confirmation/{number}', [\App\Http\Controllers\OrderControl
 //Route::get('/admin', [\App\Http\Controllers\ArticleController::class, 'index'])->name('index');
 
 
-Route::prefix('cp_admin')->group(function () {
+Route::prefix('cpadmin')->group(function () {
 
 Route::group(['prefix' => 'articles', 'controller' => \App\Http\Controllers\ArticleController::class], function () {
     Route::get('/', 'liste')->name('articles.liste');
@@ -81,9 +81,19 @@ Route::group(['prefix' => 'utilisateurs','controller' => \App\Http\Controllers\U
     Route::put('mettre_a_jour/{id}','mettre_a_jour')->name('utilisateurs.mettre_jour');
     Route::get('modifier/{id}','modifier')->name('utilisateurs.modifier');
     Route::delete('supprimer/{id}','supprimer')->name('utilisateurs.supprimer');
-    Route::get('/connexion/{id}','connexion')->name('utilisateurs.connexion');
-    Route::get('/ma-licence','maLicence')->name('utilisateurs.ma_licence');
 });
 
+
+    Route::group(['prefix' => 'commandes','controller' => \App\Http\Controllers\CommandeController::class], function (){
+        Route::get('/','liste')->name('commandes.liste');
+        Route::get('ajouter','ajouter')->name('commandes.ajouter');
+        Route::post('sauvegarder','sauvegarder')->name('commandes.sauvegarder');
+        Route::put('mettre_a_jour/{id}','mettre_a_jour')->name('commandes.mettre_jour');
+        Route::get('modifier/{id}','modifier')->name('commandes.modifier');
+        Route::delete('supprimer/{id}','supprimer')->name('commandes.supprimer');
+        Route::get('/afficher/{id}','afficher')->name('commandes.afficher');
+        Route::get('/status/{id}','status_modal')->name('commandes.status_modal');
+        Route::post('/status/{id}','modifier_status')->name('commandes.modifier_status');
+    });
 
 });

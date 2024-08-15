@@ -4,7 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\CartLine;
 use App\Models\Order;
-use App\Models\OrderAdress;
+use App\Models\OrderShippingAddress;
 use App\Models\OrderLine;
 use Carbon\Carbon;
 use DragonCode\Support\Facades\Helpers\Str;
@@ -47,14 +47,14 @@ class OrderController extends Controller
             }
             $order = Order::create([
                 'payment_method' => $request->input('payment_method') === 'cash' ? "نقدا عند الاستلام" : "تحويل مصرفي",
-                'status' =>  $request->input('payment_method') === 'cash' ? "processing" : "on-hold",
+                'status' =>  $request->input('payment_method') === 'cash' ? "قيد المعالجة" : "في الانتظار",
                 'billing_email' => $request->input('email'),
                 'user_id' => auth()?->id() ?? null,
                 'total' => $cart->total + $shipping_fee,
                 'number'=> $this->generateOrderNumber(),
                 'shipping_fee'=>$shipping_fee
             ]);
-            $billing_address = OrderAdress::create([
+            $billing_address = OrderShippingAddress::create([
                 'type'=>'billing',
                 'first_name' => $request->input('first_name'),
                 'last_name' => $request->input('last_name'),
@@ -65,7 +65,7 @@ class OrderController extends Controller
                 'order_id' => $order->id
             ]);
             if ($request->has('shipping')){
-                $shipping_address = OrderAdress::create([
+                $shipping_address = OrderShippingAddress::create([
                     'type' => 'shipping',
                     'first_name' => $request->input('shipping.first_name'),
                     'last_name' => $request->input('shipping.last_name'),
