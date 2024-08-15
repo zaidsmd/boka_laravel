@@ -35,7 +35,7 @@
   @if $enable-caret {
     &::after {
       display: inline-block;
-      margin-left: $spacing;
+      margin-right: $spacing;
       vertical-align: $vertical-align;
       content: "";
       @if $direction == down {

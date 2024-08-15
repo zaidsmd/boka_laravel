@@ -117,6 +117,9 @@ nav.navbar {
             }
         }
     }
+    .dropdown:hover .dropdown-menu {
+        display: block;
+    }
 }
 
 .success-cart {
@@ -299,3 +302,20 @@ label.required {
     margin: 8px auto;
 }
 
+.home-age-cat{
+    width: calc(100% / 7 );
+    padding: 1rem ;
+    @media screen and (max-width: breakpoint-max('lg')){
+        width: calc(100% / 5 );
+    }
+    @media screen and (max-width: breakpoint-max('md')){
+        width: calc(100% / 3 );
+    }
+    @media screen and (max-width: breakpoint-max('sm')){
+        width: calc(100% / 2 );
+    }
+}
+
+.page-link {
+    cursor: pointer;
+}
