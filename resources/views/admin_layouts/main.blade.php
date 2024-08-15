@@ -45,28 +45,29 @@
 
     <header id="page-topbar">
         <div class="navbar-header">
-            <div class="d-flex justify-content-between ">
-                <div class="navbar-brand-box">
-{{--                    <a href="index.html" class="logo logo-dark">--}}
-{{--                            <span class="logo-sm">--}}
-{{--                                <img src="assets/images/logo-sm.png" alt="" height="22">--}}
-{{--                            </span>--}}
-{{--                        <span class="logo-lg">--}}
-{{--                                <img src="assets/images/logo-dark.png" alt="" height="17">--}}
-{{--                            </span>--}}
-{{--                    </a>--}}
-
-
-                </div>
-                <div class="">
-                    <button type="button" class="btn btn-sm  font-size-24 header-item waves-effect" id="vertical-menu-btn">
+            <div class="d-flex justify-content-between w-100 ">
+                <div class="d-flex">
+                    <!-- LOGO -->
+                    <div class="navbar-brand-box">
+                        <a href="{{url('/')}}" class="logo ">
+                    <span class="logo-sm">
+                        <img src="{{asset('images/logo.png')}}" alt="" height="35">
+                    </span>
+                            <span class="logo-lg">
+                        <img src="{{asset('images/logo.png')}}" alt="" height="35">
+                    </span>
+                        </a>
+                    </div>
+                    <button type="button" class="btn btn-sm px-3 font-size-24 header-item waves-effect" id="vertical-menu-btn">
                         <i class="mdi mdi-menu"></i>
                     </button>
                 </div>
 
+
+
                 <div class="d-flex" >
                     <!-- User -->
-                    <div class="dropdown d-inline-block" style="width: 100%">
+                    <div class="dropdown d-inline-block" >
                         <button  type="button" class="btn header-item waves-effect user-step" id="page-header-user-dropdown"
                                  data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                             <img class="rounded-circle header-profile-user" src="{{asset('assets/images/users/user-1.jpg')}}"
@@ -176,11 +177,9 @@
         </div>
         <div class="rightbar-overlay"></div>
 
-
         <script src="{{ asset('libs/jquery/jquery.min.js') }}"></script>
         <script src="{{ asset('libs/bootstrap/js/bootstrap.bundle.min.js') }}"></script>
         <script src="{{ asset('libs/metismenu/metisMenu.min.js') }}"></script>
-        <script src="{{ asset('libs/simplebar/simplebar.min.js') }}"></script>
         <script src="{{ asset('libs/node-waves/waves.min.js') }}"></script>
 
         <script src="{{ asset('libs/datatables.net/js/jquery.dataTables.min.js') }}"></script>
@@ -196,27 +195,10 @@
         <script src="{{ asset('libs/datatables.net-responsive/js/dataTables.responsive.min.js') }}"></script>
         <script src="{{ asset('libs/datatables.net-responsive-bs4/js/responsive.bootstrap4.min.js') }}"></script>
 
-
 {{--        <script src="{{ asset('assets/js/pages/datatables.init.js') }}"></script>--}}
 
-        <script src="{{ asset('libs/morris.js/morris.min.js') }}"></script>
-        <script src="{{ asset('libs/raphael/raphael.min.js') }}"></script>
-        <script src="{{ asset('libs/jquery-knob/jquery.knob.min.js') }}"></script>
-        <script src="{{ asset('libs/metrojs/release/MetroJs.Full/MetroJs.min.js') }}"></script>
-
-        <script src="{{asset('assets/libs/dropzone/min/dropzone.min.js')}}"></script>
-        <script src="{{asset('assets/js/pages/form-fileuploads.init.js')}}"></script>
-
         <script src="{{ asset('libs/sweetalert2/sweetalert2.min.js') }}"></script>
-        <script src="{{ asset('assets/js/pages/sweet-alerts.init.js') }}"></script>
-
-        <script src="{{ asset('libs/tippy.js/tippy.all.min.js') }}"></script>
-
-        <script src="{{ asset('assets/js/pages/tooltipster.init.js') }}"></script>
-        <script src="{{ asset('assets/js/pages/materialdesign.init.js') }}"></script>
-
         <script src="{{ asset('assets/js/app.js') }}"></script>
-
         <script>
             const __csrf_token = '{{csrf_token()}}'
         </script>
