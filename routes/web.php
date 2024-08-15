@@ -21,6 +21,13 @@ Route::get('checkout', [\App\Http\Controllers\ShopViewsController::class, 'check
 Route::get('/shop',[\App\Http\Controllers\ShopViewsController::class,'shop'])->name('shop');
 Route::get('/shop-ajax',[\App\Http\Controllers\ShopViewsController::class,'shopAjax'])->name('shop.ajax');
 Route::get('product/{slug}',[\App\Http\Controllers\ShopViewsController::class,'single'])->name('single');
+Route::get('categories/{slug}',[\App\Http\Controllers\ShopViewsController::class,'category'])->name('category');
+Route::get('categories-ajax',[\App\Http\Controllers\ShopViewsController::class,'categoryAjax'])->name('category.ajax');
+Route::get('new',[\App\Http\Controllers\ShopViewsController::class,'new'])->name('new');
+Route::get('new-ajax',[\App\Http\Controllers\ShopViewsController::class,'newAjax'])->name('new.ajax');
+Route::get('best-seller',[\App\Http\Controllers\ShopViewsController::class,'bestSeller'])->name('best-seller');
+Route::get('best-seller-ajax',[\App\Http\Controllers\ShopViewsController::class,'bestSellerAjax'])->name('best-seller.ajax');
+Route::get('sale',[\App\Http\Controllers\ShopViewsController::class,'sale'])->name('sale');
 
 Route::get('/import',[\App\Http\Controllers\ImportController::class,'import']);
 

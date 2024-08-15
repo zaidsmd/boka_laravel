@@ -10,6 +10,10 @@ const css = [
 const js = [
     'resources/js/app.js',
     'resources/js/shop.js',
+    'resources/js/category.js',
+    'resources/js/new.js',
+    'resources/js/best-seller.js',
+    'resources/js/sale.js',
 ]
 
 export default defineConfig({

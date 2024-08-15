@@ -25,29 +25,36 @@
                     <a class="nav-link @if(\Illuminate\Support\Facades\Request::segment(1) == '') active @endif" aria-current="page"  href="{{url('/')}}"><span>
                             الصفحة الرئيسية</span></a>
                 </li>
-                <li class="nav-item ">
-                    <a class="nav-link @if(\Illuminate\Support\Facades\Request::segment(1) == 'shop') active @endif" aria-current="page"  href="{{route('shop')}}"><span>
+                <li class="nav-item dropdown">
+                    <a class="nav-link dropdown-toggle @if(\Illuminate\Support\Facades\Request::segment(1) == 'shop') active @endif" aria-current="page"  href="{{route('shop')}}"><span>
                             المتجر</span></a>
+                    <ul class="dropdown-menu" >
+                        <a class=" dropdown-item text-end @if(\Illuminate\Support\Facades\Request::url() === route('category','ألعاب-تعليمية')) active @endif" aria-current="page"  href="{{route('category','ألعاب-تعليمية')}}"><span>
+                            ألعاب تعليمية</span></a>
+                        <a class=" dropdown-item text-end @if(\Illuminate\Support\Facades\Request::url() === route('category','هدايا-بوكادوبوكس')) active @endif" aria-current="page"  href="{{route('category','هدايا-بوكادوبوكس')}}"><span>
+                            هدايا بوكادوبوكس</span></a>
+                        <a class=" dropdown-item text-end @if(\Illuminate\Support\Facades\Request::url() === route('category','قصص-و-كتب')) active @endif" aria-current="page"  href="{{route('category','قصص-و-كتب')}}"><span>
+                            قصص و كتب</span></a>
+                    </ul>
                 </li>
-                <li class="nav-item">
-                    <a class="nav-link" href="#">Features</a>
+                <li class="nav-item ">
+                    <a class="nav-link @if(\Illuminate\Support\Facades\Request::segment(1) == 'new') active @endif" aria-current="page"  href="{{route('new')}}"><span>
+                            جديدنا</span></a>
                 </li>
-                <li class="nav-item">
-                    <a class="nav-link" href="#">Pricing</a>
+                <li class="nav-item ">
+                    <a class="nav-link @if(\Illuminate\Support\Facades\Request::segment(1) == 'best-seller') active @endif" aria-current="page"  href="{{route('best-seller')}}"><span>
+                            الأكثر مبيعا</span></a>
+                </li>
+                <li class="nav-item ">
+                    <a class="nav-link @if(\Illuminate\Support\Facades\Request::segment(1) == 'sale') active @endif" aria-current="page"  href="{{route('sale')}}"><span>
+                            التخفيضات</span></a>
+                </li>
+                <li class="nav-item ">
+                    <a class="nav-link @if(\Illuminate\Support\Facades\Request::url() == route('category','كتب-رمضان-والعيد')) active @endif" aria-current="page"  href="{{route('category','كتب-رمضان-والعيد')}}"><span>
+                           كتب رمضان والعيد</span></a>
                 </li>
                 <li class="nav-item">
                     <a class="nav-link @if(\Illuminate\Support\Facades\Request::segment(1) === 'my-account') active @endif" href="{{route('my-account')}}">لوحة حسابي</a>
-                </li>
-                <li class="nav-item dropdown">
-                    <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown"
-                       aria-expanded="false">
-                        Dropdown link
-                    </a>
-                    <ul class="dropdown-menu">
-                        <li><a class="dropdown-item" href="#">Action</a></li>
-                        <li><a class="dropdown-item" href="#">Another action</a></li>
-                        <li><a class="dropdown-item" href="#">Something else here</a></li>
-                    </ul>
                 </li>
             </ul>
 

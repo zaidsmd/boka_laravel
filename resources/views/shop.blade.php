@@ -47,7 +47,9 @@
             {{--               @include('partials.article-card',compact('article'))--}}
             {{--            @endforeach--}}
             {{--                {{$articles->links()}}--}}
-
+            <div class="py-3 text-center ">
+                <nav class="pagination-container" dir="ltr" ></nav>
+            </div>
         </div>
     </div>
 

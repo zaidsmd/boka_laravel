@@ -1,7 +1,7 @@
 const cart_change_event = new Event('cart-change')
 var cart_total = 0;
 $(document).on('click', '.add-to-cart-card,.add-to-cart-card-mobile', function () {
-    let cart = $('.cart')
+    let cart = $('.cart:visible')
     let btn = $(this);
     let product = btn.closest('.product-card')
     let btn_html = btn.html();
@@ -22,7 +22,6 @@ $(document).on('click', '.add-to-cart-card,.add-to-cart-card-mobile', function (
             success.css('top', btn_boundaries['y'] + (btn_boundaries['height'] / 2) + window.scrollY + 'px')
             success.css('left', btn_boundaries['x'] + (btn_boundaries['width'] / 2) + window.scrollX + 'px')
             $('body').append(success)
-            console.log(response);
             cart_total = response.total;
             notyf.success(response.message)
             setTimeout(() => {

@@ -17,6 +17,7 @@
 <div class="container py-4">
     @yield('page')
 </div>
+@include('layouts.footer')
 <script src="{{asset('js/bootstrap.bundle.min.js')}}"></script>
 <script src="{{asset('js/fontawesome.js')}}"></script>
 <script src="{{asset('libs/notyf/notyf.min.js')}}"></script>
