@@ -51,22 +51,17 @@ class OrderController extends Controller
                 'billing_email' => $request->input('email'),
                 'user_id' => auth()?->id() ?? null,
                 'total' => $cart->total + $shipping_fee,
-                'number'=> $this->generateOrderNumber(),
-                'shipping_fee'=>$shipping_fee
-            ]);
-            $billing_address = OrderShippingAddress::create([
-                'type'=>'billing',
                 'first_name' => $request->input('first_name'),
                 'last_name' => $request->input('last_name'),
                 'phone_number' => $request->input('phone_number'),
-                'email' => $request->input('email'),
                 'city' => $request->input('city'),
                 'address' => $request->input('address'),
-                'order_id' => $order->id
+                'number'=> $this->generateOrderNumber(),
+                'type' => $request->has('shipping') ? '1' : '0',
+                'shipping_fee'=>$shipping_fee
             ]);
             if ($request->has('shipping')){
                 $shipping_address = OrderShippingAddress::create([
-                    'type' => 'shipping',
                     'first_name' => $request->input('shipping.first_name'),
                     'last_name' => $request->input('shipping.last_name'),
                     'city' => $request->input('shipping.city'),
@@ -149,7 +144,7 @@ class OrderController extends Controller
     }
     function generateOrderNumber()
     {
-        $date = Carbon::now()->format('ymisd');
+        $date = Carbon::now()->format('ymisdH');
         $randomString = Str::upper(Str::random(3));
         $orderNumber = $randomString . $date ;
 
