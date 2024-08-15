@@ -26,7 +26,7 @@ class TagController extends Controller
             );
 
             $table->addColumn('actions', function ($o_tag) {
-                $edit_modal = ['url' => route('tags.modifier', $o_tag->id), 'modal_id' => 'edit-categories-modal'];
+                $edit_modal = ['url' => route('tags.modifier', $o_tag->id), 'modal_id' => 'edit-tag-modal'];
                 return view('tags.partials.tags_actions', compact('o_tag', 'edit_modal'))->render();
             });
             $table->editColumn('type', function ($row){

@@ -30,7 +30,7 @@ class CategoryController extends Controller
             );
 
             $table->addColumn('actions', function ($categorie) {
-                $edit_modal = ['url' => route('categories.modifier', $categorie->id), 'modal_id' => 'edit-categories-modal'];
+                $edit_modal = ['url' => route('categories.modifier', $categorie->id), 'modal_id' => 'edit-categorie-modal'];
                 return view('categories.partials.categories_actions', compact('categorie', 'edit_modal'))->render();
             });
                 $table->rawColumns(['selectable_td', 'actions']);

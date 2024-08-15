@@ -80,28 +80,15 @@
         </div>
     </div>
 
-
-    <div class="modal fade" id="edit-categorie-modal" tabindex="-1" aria-labelledby="edit-categorie-modal-title" aria-hidden="true" style="position:fixed;">
+    <div class="modal fade" id="edit-categorie-modal" tabindex="-1" aria-labelledby="edit-categorie-modal-title" aria-hidden="true"
+         style="display: none;">
         <div class="modal-dialog modal-dialog-centered">
             <div class="modal-content">
-                <div class="modal-header">
-                    <h5 class="modal-title" id="modalEditChargeLabel">تحديث الفئة</h5>
-                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="{{ __('lang.buttons.close') }}"></button>
-                </div>
-                <div class="modal-body center-block">
-                    <form id="form_edit_charge" method="POST" action="">
-                        @csrf
-                        @method('PUT')
-                        <div class="mb-3 form-group">
-                            <input class="form-control" type="text" id="name" required name="name" placeholder="{{ __('lang.edit_charge_description') }}">
-                        </div>
-                        <button type="submit" class="btn btn-primary w-100">{{ __('lang.buttons.edit') }}</button>
-                    </form>
-                </div>
             </div>
+            <!-- /.modal-content -->
         </div>
+        <!-- /.modal-dialog -->
     </div>
-
 
 @endsection
 @push('scripts')
@@ -112,40 +99,35 @@
     <script src="{{asset('libs/daterangepicker/js/daterangepicker.js')}}"></script>
     <script>
 
-        // Handle edit button click
-        $('#categories_table').on('click', '.edit-categorie', function(event) {
-            event.preventDefault();
-            var categorieId = $(this).data('id-categorie');
-            $.ajax({
-                url: "{{ route('categories.modifier', ['id' => ':id']) }}".replace(':id', categorieId),
-                method: 'GET',
-                success: function(response) {
-                    // Populate the modal with category data
-                    $('#edit-name').val(response.name);
-                    $('#edit-id').val(response.id);
-                    // Set the form action to include the category id
-                    $('#edit-categorie-form').attr('action', "{{ route('categories.mettre_a_jour', ['id' => ':id']) }}".replace(':id', response.id));
-                    $('#edit-categorie-modal').modal('show');
-                },
-                error: function(xhr) {
-                    console.error('Error fetching category data:', xhr);
-                }
-            });
-        });
+        var processing = 0;
+        $(document).on('click', '.__datatable-edit-modal', function () {
+            if (processing === 0) {
+                processing = 1;
+                let html = $(this).html();
+                $(this).attr('disabled', '').html('<span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>')
+                let url = $(this).data('url');
+                let target = '#' + $(this).data('target');
+                $.ajax({
+                    url: url, method: 'GET', success: response => {
+                        processing = 0;
+                        $(this).removeAttr('disabled').html(html)
+                        $(target).find('.modal-content').html(response);
+                        $(target).modal('show');
+                    }, error: xhr => {
+                        processing = 0;
+                        $(this).removeAttr('disabled').html(html)
+                        if(xhr.status !== undefined) {
+                            if (xhr.status === 403) {
+                                toastr.warning("Vous n'avez pas l'autorisation nécessaire pour effectuer cette action");
+                                return
+                            }
+                        }
+                        toastr.error('Un erreur est produit')
+                    }
+                })
+            }
 
-        function openEditModal(chargeId, chargeDescription) {
-            var modal = $('#edit-categorie-modal');
-            modal.find('#name').val(chargeDescription);
-
-            var formActionUrl = '{{ route("categories.mettre_a_jour", ["id" => ":id"]) }}'.replace(':id', chargeId);
-            modal.find('form').attr('action', formActionUrl);
-
-            // Ensure the form uses the PUT method
-            modal.find('form').append('<input type="hidden" name="_method" value="PUT">');
-
-            // Show the modal
-            modal.modal('show');
-        }
+        })
 
         $(document).ready(function(){
 
