@@ -44,6 +44,7 @@ Route::get('checkout/confirmation/{number}', [\App\Http\Controllers\OrderControl
 //Route::get('/admin', [\App\Http\Controllers\ArticleController::class, 'index'])->name('index');
 
 
+Route::prefix('cp_admin')->group(function () {
 
 Route::group(['prefix' => 'articles', 'controller' => \App\Http\Controllers\ArticleController::class], function () {
     Route::get('/', 'liste')->name('articles.liste');
@@ -67,7 +68,7 @@ Route::group(['prefix' => 'categories', 'controller' => \App\Http\Controllers\Ca
     Route::post('/', 'sauvegarder')->name('categories.sauvegarder');
     Route::get('/{id}/modifier','modifier')->name('categories.modifier');
     Route::put('/{id}', 'mettre_a_jour')->name('categories.mettre_a_jour');
-    Route::delete('/categories/{category}', 'supprimer')->name('categories.supprimer');
+    Route::delete('supprimer/{id}','supprimer')->name('categories.supprimer');
     Route::get('/categories-select', 'categories_select')->name('categories.select');
 
 });
@@ -82,4 +83,7 @@ Route::group(['prefix' => 'utilisateurs','controller' => \App\Http\Controllers\U
     Route::delete('supprimer/{id}','supprimer')->name('utilisateurs.supprimer');
     Route::get('/connexion/{id}','connexion')->name('utilisateurs.connexion');
     Route::get('/ma-licence','maLicence')->name('utilisateurs.ma_licence');
+});
+
+
 });

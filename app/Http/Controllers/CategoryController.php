@@ -28,36 +28,19 @@ class CategoryController extends Controller
                     return '<input type="checkbox" class="row-select form-check-input" value="' . $id . '">';
                 }
             );
-            $table->addColumn('actions', function($categorie) {
-                $edit_modal = ['url'=>route('categories.modifier',$categorie->id),'modal_id'=>'edit-categories-modal'];
+
+            $table->addColumn('actions', function ($categorie) {
+                $edit_modal = ['url' => route('categories.modifier', $categorie->id), 'modal_id' => 'edit-categories-modal'];
                 return view('categories.partials.categories_actions', compact('categorie', 'edit_modal'))->render();
             });
-            $table->editColumn('created_at', function ($row) {
-                return Carbon::make($row->created_at)->toDateString();
-            });
-            $table->rawColumns([ 'actions']);
-            return $table->make();
-        }
-        return view('categories.liste');
+                $table->rawColumns(['selectable_td', 'actions']);
+                    return $table->make();
+                }
+            return view('categories.liste');
 
-    }
-//    public function liste()
-//    {
-//        if (\request()->ajax()){
-//            $query = Category::all();
-//            $table = DataTables::of($query);
-//            $table->addColumn('actions',function ($row){
-//                $crudRoutePart = 'categories';
-//                $id = $row->id;
-//                $delete = 'supprimer';
-//                $edit_modal = ['url'=>route('marques.modifier',$row->id),'modal_id'=>'edit-marque-modal'];
-//                return view('partials.__datatable-action',compact('id','edit_modal','delete','crudRoutePart'));
-//            });
-//            $table->rawColumns(['actions','selectable_td']);
-//            return $table->make();
-//        }
-//        return view('categories.liste2');
-//    }
+        }
+
+
     public function categories_select(Request $request)
     {
         if ($request->ajax()) {
@@ -74,7 +57,7 @@ class CategoryController extends Controller
      */
     public function ajouter()
     {
-        return view('categories.ajouter');
+//        return view('categories.ajouter');
     }
 
     /**
@@ -147,15 +130,21 @@ class CategoryController extends Controller
     /**
      * Remove the specified resource from storage.
      */
-    public function supprimer(Category $category)
+    public function supprimer($id)
     {
-        try {
-            $category->delete();
-            // Redirect with success message
-            return redirect()->route('categories.liste')->with('success', 'تم حذف الفئة بنجاح!');
-        }catch(\Exception $e){
-            LogService::logException($e);
-            return redirect()->route('categories.liste')->with('error', 'الفئة غير موجودة!');
+        if (\request()->ajax()) {
+            $o_categorie = Category::with('articles')->find($id);
+            if ($o_categorie) {
+                if ($o_categorie->articles->count() > 0) {
+                    return response('لا يمكن حذف الفئة لأنها تحتوي على مقالات', 400);
+                }
+                $o_categorie->delete();
+                return response('تم حذف الفئة بنجاح', 200);
+            } else {
+                return response('Erreur', 404);
+            }
         }
+        abort(404);
     }
+
 }

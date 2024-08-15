@@ -135,6 +135,13 @@
                                 <span>الفئات</span>
                             </a>
                         </li>
+
+                    <li>
+                        <a href="{{ route('utilisateurs.liste') }}" class="waves-effect">
+                            <i class="mdi mdi-view-dashboard-variant"></i>
+                            <span>المستخدمين</span>
+                        </a>
+                    </li>
                 </ul>
             </div>
             <!-- Sidebar -->

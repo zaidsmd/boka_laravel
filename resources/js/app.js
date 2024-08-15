@@ -383,10 +383,13 @@ $(document).on('click', '.sa-warning', function () {
             } catch (jqXHR) {
                 let errorMessage = "Une erreur s'est produite lors de la demande.";
                 if (jqXHR.status !== undefined) {
-                    if (jqXHR.status === 404) {
+                    if (jqXHR.status === 400) {
+                        errorMessage = jqXHR.responseText; // Displaying the message returned by the controller
+                    }
+                    else if (jqXHR.status === 404) {
                         errorMessage = "La ressource n'a pas été trouvée.";
                     }
-                    if (jqXHR.status === 403) {
+                    else if (jqXHR.status === 403) {
                         errorMessage = "Vous n'avez pas l'autorisation nécessaire pour effectuer cette action";
                     }
                 }
@@ -426,7 +429,7 @@ $(document).on('click', '.sa-warning', function () {
             } else {
                 Swal.fire({
                     title: 'Erreur',
-                    text: "Une erreur s'est produite lors de la demande.",
+                    text: result.value,
                     icon: 'error',
                     buttonsStyling: false,
                     confirmButtonText: 'OK',

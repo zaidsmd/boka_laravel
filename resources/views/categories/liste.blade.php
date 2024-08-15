@@ -39,10 +39,9 @@
                     </div>
                 @endif
                 <div class="table-responsive">
-                    <table style="width: 100%;" id="categories_table" class="table table-bordered">
+                    <table style="width: 100%;" id="datatable" class="table table-bordered">
                         <thead>
                         <tr>
-                            <th style="display:none;">id </th>
                             <th>الإسم </th>
                             <th style="width: 10%">الإجراءات</th>
                         </tr>
@@ -106,45 +105,33 @@
 
 @endsection
 @push('scripts')
+    @include('layouts.partials.js.__datatable_js')
+    <script src="{{asset('libs/select2/js/select2.full.min.js')}}"></script>
+    <script src="{{asset('libs/bootstrap-datepicker/js/bootstrap-datepicker.min.js')}}"></script>
+    <script src="{{asset('libs/bootstrap-datepicker/locales/bootstrap-datepicker.fr.min.js')}}"></script>
+    <script src="{{asset('libs/daterangepicker/js/daterangepicker.js')}}"></script>
     <script>
-        $(document).ready(function() {
-            $('#categories_table').DataTable({
-                "processing": true,
-                "serverSide": true,
-                "ajax": "{{ route('categories.liste') }}",
-                "columns": [
-                    { "data": "name" },
-                    {"data" : "actions"}
-                ],
-                "language": {
-                    "sProcessing": "{{ __('datatable.processing') }}",
-                    "sLengthMenu": "{{ __('datatable.empty_table') }}",
-                    "sZeroRecords": "{{ __('datatable.zero_records') }}",
-                    "sEmptyTable": "{{ __('datatable.empty_table') }}",
-                    "sInfo": "{{ __('datatable.info') }}",
-                    "sInfoEmpty": "{{ __('datatable.info_empty') }}",
-                    "sInfoFiltered": "{{ __('datatable.info_filtered') }}",
-                    "sInfoPostFix": "{{ __('datatable.datatable_info_postfix') }}",
-                    "sSearch": "{{ __('datatable.search') }}",
-                    "sUrl": "{{ __('datatable.datatable_url') }}",
-                    "sInfoThousands": "{{ __('datatable.info_thousands') }}",
-                    "sLoadingRecords": "{{ __('datatable.loading_records') }}",
-                    "oPaginate": {
-                        "sFirst": "{{ __('datatable.datatable_first') }}",
-                        "sLast": "{{ __('datatable.datatable_last') }}",
-                        "sNext": "{{ __('datatable.datatable_next') }}",
-                        "sPrevious": "{{ __('datatable.datatable_previous') }}"
-                    },
-                    "oAria": {
-                        "sSortAscending": "{{ __('datatable.datatable_sort_ascending') }}",
-                        "sSortDescending": "{{ __('datatable.datatable_sort_descending') }}"
-                    }
+
+        // Handle edit button click
+        $('#categories_table').on('click', '.edit-categorie', function(event) {
+            event.preventDefault();
+            var categorieId = $(this).data('id-categorie');
+            $.ajax({
+                url: "{{ route('categories.modifier', ['id' => ':id']) }}".replace(':id', categorieId),
+                method: 'GET',
+                success: function(response) {
+                    // Populate the modal with category data
+                    $('#edit-name').val(response.name);
+                    $('#edit-id').val(response.id);
+                    // Set the form action to include the category id
+                    $('#edit-categorie-form').attr('action', "{{ route('categories.mettre_a_jour', ['id' => ':id']) }}".replace(':id', response.id));
+                    $('#edit-categorie-modal').modal('show');
+                },
+                error: function(xhr) {
+                    console.error('Error fetching category data:', xhr);
                 }
-
-
             });
         });
-
 
         function openEditModal(chargeId, chargeDescription) {
             var modal = $('#edit-categorie-modal');
@@ -160,35 +147,6 @@
             modal.modal('show');
         }
 
-        function redirectToCreatePage() {
-            window.location.href = "{{ route('categories.ajouter') }}";
-        }
-
-
-
-
-        $('#categories_table').on('click', '.delete-categorie', function() {
-            var categorieId = $(this).data('id');
-            Swal.fire({
-                title: "{{ __('lang.confirm_delete_title') }}",
-                text: "{{ __('lang.confirm_delete_text') }}",
-                icon: "{{ __('lang.confirm_delete_icon') }}",
-                showCancelButton: true,
-                confirmButtonColor: "#DD6B55",
-                confirmButtonText: "{{ __('lang.confirm_delete_button') }}",
-                cancelButtonText: "{{ __('lang.cancel_button') }}",
-                closeOnConfirm: false,
-                closeOnCancel: false
-            }).then((result) => {
-                if (result.isConfirmed) {
-                    // Submit the form
-                    $('#delete-form-' + categorieId).submit();
-                }
-            });
-        });
-
-
-
         $(document).ready(function(){
 
             var successMessage = '{{ session('success') }}';
@@ -202,25 +160,22 @@
                 });
             }
         });
-        {{--// Handle edit button click--}}
-        {{--$('#categories_table').on('click', '.edit-categorie', function(event) {--}}
-        {{--    event.preventDefault();--}}
-        {{--    var categorieId = $(this).data('id-categorie');--}}
-        {{--    $.ajax({--}}
-        {{--        url: "{{ route('categories.modifier', ['id' => ':id']) }}".replace(':id', categorieId),--}}
-        {{--        method: 'GET',--}}
-        {{--        success: function(response) {--}}
-        {{--            // Populate the modal with category data--}}
-        {{--            $('#edit-name').val(response.name);--}}
-        {{--            $('#edit-id').val(response.id);--}}
-        {{--            // Set the form action to include the category id--}}
-        {{--            $('#edit-categorie-form').attr('action', "{{ route('categories.mettre_a_jour', ['id' => ':id']) }}".replace(':id', response.id));--}}
-        {{--            $('#edit-categorie-modal').modal('show');--}}
-        {{--        },--}}
-        {{--        error: function(xhr) {--}}
-        {{--            console.error('Error fetching category data:', xhr);--}}
-        {{--        }--}}
-        {{--    });--}}
-        {{--});--}}
+
+        const __dataTable_columns =  [
+            // {data: 'selectable_td', orderable: false, searchable: false, class: 'check_sell'},
+            { "data": "name" },
+            {data: 'actions', name: 'actions', orderable: false,},
+        ];
+        const __dataTable_ajax_link = "{{ route('categories.liste') }}";
+        const __dataTable_id = "#datatable";
+        const __dataTable_filter_inputs_id = {
+            famille_id: '#cat-select',
+            designation: '#title-input',
+            reference: '#reference-input',
+        }
+        const __dataTable_filter_trigger_button_id ='#search-btn';
+
     </script>
+    <script src="{{asset('js/dataTable_init.js')}}"></script>
+
 @endpush

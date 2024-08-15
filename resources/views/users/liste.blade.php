@@ -20,11 +20,12 @@
             <div class="card-body">
                 <div class="row">
                     <div class="col-md-6">
-                        <h2>{{__('lang.product.article_list')}}</h2>
+                        <h2>قائمة المستخدمين
+                        </h2>
                     </div>
                     <div class="col-md-6 d-flex align-items-center justify-content-end">
                         <a href="{{ route('utilisateurs.ajouter') }}" class="btn btn-primary mr-3">
-                            {{__('lang.product.add_user')}}
+                            إضافة مستخدم
                         </a>
 
                     </div>
@@ -44,8 +45,9 @@
                         <thead>
                         <tr>
                             <th > {{__('lang.product.id')}}</th>
-                            <th > {{__('lang.product.name')}} </th>
-                            <th > {{__('lang.product.email')}}</th>
+                            <th > الاسم الشخصي</th>
+                            <th > الاسم العائلي </th>
+                            <th > البريد الإلكتروني</th>
                             <th > {{__('lang.product.actions')}}</th>
 
                         </tr>
@@ -85,6 +87,7 @@
             // {data: 'selectable_td', orderable: false, searchable: false, class: 'check_sell'},
             { "data": "id" },
             { "data": "first_name" },
+            { "data": "last_name" },
             { "data": "email" },
             {data: 'actions', name: 'actions', orderable: false,},
         ];
