@@ -31,6 +31,10 @@ Route::get('sale',[\App\Http\Controllers\ShopViewsController::class,'sale'])->na
 
 Route::get('/import',[\App\Http\Controllers\ImportController::class,'import']);
 
+//  Static
+Route::get('من-نحن',[\App\Http\Controllers\StaticPagesController::class,'aboutUs'])->name('static-pages.about-us');
+Route::get('الشروط-الأحكام',[\App\Http\Controllers\StaticPagesController::class,'termsAndConditions'])->name('static-pages.terms-and-conditions');
+
 Route::get('/add-to-cart', [\App\Http\Controllers\CartController::class, 'addLine'])->name('cart.add-line');
 Route::get('/add-to-cart-single', [\App\Http\Controllers\CartController::class, 'addLineFromSingle'])->name('cart.add-line');
 Route::get('/cart-canvas', [\App\Http\Controllers\CartController::class, 'cartOffCanvas'])->name('cart.cart-off-canvas');
