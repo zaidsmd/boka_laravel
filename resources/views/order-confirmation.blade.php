@@ -75,38 +75,38 @@
                         <div class="col-md-6">
                             <div class="d-flex gap-2">
                                 <p class="">الاسم الأول:</p>
-                                <p class="text-muted fw-bold">{{$order->billing_address->first_name}}</p>
+                                <p class="text-muted fw-bold">{{$order->first_name}}</p>
                             </div>
                         </div>
                         <div class="col-md-6">
                             <div class="d-flex gap-2">
                                 <p class="">الاسم الأخير:</p>
-                                <p class="text-muted fw-bold">{{$order->billing_address->last_name}}</p>
+                                <p class="text-muted fw-bold">{{$order->last_name}}</p>
                             </div>
                         </div>
                         <div class="col-md-6">
                             <div class="d-flex gap-2">
                                 <p class="">المدينة:</p>
-                                <p class="text-muted fw-bold">@lang('city.'.$order->billing_address->city)</p>
+                                <p class="text-muted fw-bold">@lang('city.'.$order->city)</p>
                             </div>
                         </div>
                         <div class="col-md-6">
                             <div class="d-flex gap-2">
                                 <p class="">الهاتف:</p>
-                                <p class="text-muted fw-bold">{{$order->billing_address->phone_number}}</p>
+                                <p class="text-muted fw-bold">{{$order->phone_number}}</p>
                             </div>
                         </div>
                         <div class="col-12">
                             <div class="d-flex gap-2">
                                 <p class="">العنوان:</p>
-                                <p class="text-muted fw-bold">{{$order->billing_address->address}}</p>
+                                <p class="text-muted fw-bold">{{$order->address}}</p>
                             </div>
                         </div>
 
                         <div class="col-12">
                             <div class="d-flex gap-2">
                                 <p class="">البريد الالكتروني:</p>
-                                <p class="text-muted fw-bold">{{$order->billing_address->email}}</p>
+                                <p class="text-muted fw-bold">{{$order->email}}</p>
                             </div>
                         </div>
                     </div>
@@ -123,26 +123,26 @@
                         <div class="col-md-6">
                             <div class="d-flex gap-2">
                                 <p class="">الاسم الأول:</p>
-                                <p class="text-muted fw-bold">{{$order->shipping_address->first_name}}</p>
+                                <p class="text-muted fw-bold">{{$order->shipping_address?->first_name ?? $order->first_name}}</p>
                             </div>
                         </div>
                         <div class="col-md-6">
                             <div class="d-flex gap-2">
                                 <p class="">الاسم الأخير:</p>
-                                <p class="text-muted fw-bold">{{$order->shipping_address->last_name}}</p>
+                                <p class="text-muted fw-bold">{{$order->shipping_address?->last_name ?? $order->last_name}}</p>
                             </div>
                         </div>
                         <div class="col-md-6">
                             <div class="d-flex gap-2">
                                 <p class="">المدينة:</p>
-                                <p class="text-muted fw-bold">@lang('city.'.$order->shipping_address->city)</p>
+                                <p class="text-muted fw-bold">@lang('city.'.$order->shipping_address?->city ?? $order->city)</p>
                             </div>
                         </div>
 
                         <div class="col-12">
                             <div class="d-flex gap-2">
                                 <p class="">العنوان:</p>
-                                <p class="text-muted fw-bold">{{$order->shipping_address->address}}</p>
+                                <p class="text-muted fw-bold">{{$order->shipping_address?->address ?? $order->address}}</p>
                             </div>
                         </div>
 
