@@ -329,6 +329,9 @@
                                 </div>
                                 <button class="btn btn-primary text-white">تسجيل الدخول</button>
                             </form>
+                            <div class="mt-3">
+                                <a href="{{ route('password.request') }}" class="text-decoration-none">نسيت كلمة المرور؟</a>
+                            </div>
                         </div>
                     </div>
                 </div>

@@ -10,6 +10,8 @@ use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Redirect;
 use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Str;
+use Illuminate\Support\Facades\Password;
+
 class PasswordSetupController extends Controller
 {
 
@@ -117,6 +119,46 @@ class PasswordSetupController extends Controller
         return Redirect::route('password.set', ['token' => $request->token])
             ->withErrors(['token' => 'لم نتمكن من تعيين كلمة المرور.']);
     }
+
+    public function showLinkRequestForm()
+    {
+        return view('auth.forgot_email');
+
+    }
+
+    public function sendResetLinkEmail(Request $request)
+    {
+        $this->validateEmail($request);
+
+        // Attempt to send the password reset link.
+        $response = $this->broker()->sendResetLink(
+            $request->only('email')
+        );
+
+        return $response === Password::RESET_LINK_SENT
+            ? back()->with('status', trans($response))
+            : back()->withErrors(
+                ['email' => trans($response)]
+            );
+    }
+
+    // Validate the email address.
+    protected function validateEmail(Request $request)
+    {
+
+        $request->validate([
+            'email' => 'required|email',
+        ] ) ;
+
+
+    }
+
+    // Get the password broker to be used during password resets.
+    protected function broker()
+    {
+        return Password::broker();
+    }
+
 
 
 }

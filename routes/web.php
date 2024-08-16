@@ -1,12 +1,19 @@
 <?php
 
 use App\Http\Controllers\PasswordSetupController;
+use App\Http\Controllers\PasswordResetController;
 use Illuminate\Support\Facades\Route;
 
 // In routes/web.php
 Route::get('/set-password/{token}', [PasswordSetupController::class, 'showForm'])->name('password.set');
 Route::post('/set-password', [PasswordSetupController::class, 'setPassword'])->name('password.update');
 Route::post('/register', [PasswordSetupController::class, 'register'])->name('register');
+Route::get('password/reset', [PasswordSetupController::class, 'showLinkRequestForm'])->name('password.request');
+Route::post('password/email', [PasswordSetupController::class, 'sendResetLinkEmail'])->name('password.email');
+Route::get('password/reset/{token}', [PasswordResetController ::class, 'showResetForm'])->name('password.reset');
+Route::post('password/reset', [PasswordResetController::class, 'reset'])->name('password.reset.update');
+
+
 
 
 Route::post('login', [\App\Http\Controllers\Auth\LoginController::class, 'authenticate'])->name('auth.login');
