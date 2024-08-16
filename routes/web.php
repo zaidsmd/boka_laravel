@@ -1,7 +1,12 @@
 <?php
 
+use App\Http\Controllers\PasswordSetupController;
 use Illuminate\Support\Facades\Route;
 
+// In routes/web.php
+Route::get('/set-password/{token}', [PasswordSetupController::class, 'showForm'])->name('password.set');
+Route::post('/set-password', [PasswordSetupController::class, 'setPassword'])->name('password.update');
+Route::post('/register', [PasswordSetupController::class, 'register'])->name('register');
 
 
 Route::post('login', [\App\Http\Controllers\Auth\LoginController::class, 'authenticate'])->name('auth.login');

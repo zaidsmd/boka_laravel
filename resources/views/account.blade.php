@@ -263,12 +263,18 @@
     @else
         <section>
             <div class="row">
-                <div class="col-lg-6 d-flex   ">
+                <div class="col-lg-6 d-flex">
                     <div class="card border-0 shadow-sm w-100">
                         <div class="card-body">
                             <h4>تسجيل جديد</h4>
                             <hr class="border">
-                            <form action="">
+                            <!-- Display status message -->
+                            @if(session('status'))
+                                <div class="alert alert-success">
+                                    {{ session('status') }}
+                                </div>
+                            @endif
+                            <form method="post" action="{{ route('register') }}">
                                 @csrf
                                 <label for="email-reg" class="form-label">البريد الإلكتروني</label>
                                 <input type="email" id="email-reg" name="email_reg"
@@ -290,12 +296,12 @@
                         </div>
                     </div>
                 </div>
-                <div class="col-lg-6 d-flex    ">
+                <div class="col-lg-6 d-flex">
                     <div class="card border-0 shadow-sm w-100">
                         <div class="card-body">
                             <h4>تسجيل الدخول</h4>
                             <hr class="border">
-                            <form action="{{route('auth.login')}}" method="post">
+                            <form action="{{ route('auth.login') }}" method="post">
                                 @csrf
                                 <div class="form-group my-3">
                                     <label for="email-log" class="form-label">البريد الإلكتروني</label>
