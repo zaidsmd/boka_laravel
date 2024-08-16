@@ -243,6 +243,32 @@
                                 </div>
 
 
+
+                                <div class="col-12 col-lg-12 mb-3">
+                                    <label class="form-label required" for="related_articles">منتجات ذات صلة</label>
+                                    <div class="input-group">
+                                        <select
+                                            class="select2 form-control mb-3 custom-select {{ $errors->has('related_articles') ? 'is-invalid' : '' }}"
+                                            name="related_articles[]"
+                                            id="related_articles" multiple>
+                                            @foreach($relatedArticles as $related)
+                                                <option value="{{ $related->related_article_id }}"
+                                                    selected >
+                                                    {{ $related->text }}
+                                                </option>
+                                            @endforeach
+                                        </select>
+                                        <div class="invalid-feedback">
+                                            @if($errors->has('related_articles'))
+                                                {{ $errors->first('related_articles') }}
+                                            @endif
+                                        </div>
+                                    </div>
+                                </div>
+
+
+
+
                                 <div class="col-12 col-lg-6 mb-3">
                                     <label for="i_image" class="form-label {{$errors->has('i_image') ? 'is-invalid' : ''}}">   الصورة الرئيسية</label>
                                     <input
@@ -474,5 +500,27 @@
                 "body { font-family:Helvetica,Arial,sans-serif; font-size:16px }",
         });
     </script>
-
+    <script>
+        $("#related_articles").select2({
+            placeholder: "البحث عن منتج",
+            language : 'ar',
+            ajax: {
+                url: "{{ route('articles.select') }}",
+                dataType: "json",
+                delay: 250,
+                data: function (params) {
+                    return {
+                        term: params.term,
+                    };
+                },
+                processResults: function (data) {
+                    return {
+                        results: data,
+                    };
+                },
+                cache: false,
+            },
+            minimumInputLength: 3,
+        });
+    </script>
 @endpush

@@ -16,6 +16,7 @@ Route::prefix('cpadmin')->group(function () {
         Route::delete('/{id}', 'supprimer')->name('articles.supprimer');
         Route::get('load/{media}', 'load')->name('articles.load');
         Route::get('/upload}', 'upload')->name('articles.upload');
+        Route::get('/articles-select', 'articles_select')->name('articles.select');
 
 
 

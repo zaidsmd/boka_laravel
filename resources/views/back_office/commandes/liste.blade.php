@@ -84,6 +84,26 @@
                             @enderror
                         </div>
                     </div>
+                    <div class=" col-lg-3  col-12 ">
+                        <label for="statut " class="form-label required">
+                            الحالة</label>
+                        <div class="input-group">
+
+
+                            <select name="statut" id="statut"
+                                    class="select2 form-control @error('statut') is-invalid @enderror " >
+                                <option value="0">--</option>
+                            @foreach($statuses as $status)
+                                    <option value="{{$status}}"> {{$status}}</option>
+                                @endforeach
+                            </select>
+                            @error('statut')
+                            <div class="invalid-feedback">
+                                {{ $message }}
+                            </div>
+                            @enderror
+                        </div>
+                    </div>
 
                     <div class="col-12 d-flex justify-content-end">
                         <button id="search-btn" class="btn btn-primary"><i class="mdi mdi-magnify"></i> بحث
@@ -134,8 +154,11 @@
             placeholder: "...",
             minimumResultsForSearch: -1,
             width: '100%'
-
-
+        })
+        $('#statut').select2({
+            placeholder: "...",
+            minimumResultsForSearch: -1,
+            width: '100%'
         })
         $(document).ready(function(){
 
@@ -212,6 +235,7 @@
             nom: '#nom',
             city: '#city',
             payment_method: '#payment_method',
+            statut: '#statut',
         }
         const __dataTable_filter_trigger_button_id ='#search-btn';
 

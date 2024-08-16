@@ -34,7 +34,7 @@
 
                                 <button id="status-btn"
                                         data-href="{{route('commandes.status_modal',$o_order->id)}}"
-                                        class="btn btn-soft-warning mx-1"><i class="fa fa-edit"></i> تحديث الحالة
+                                        class="btn btn-primary mx-1"><i class="fa fa-edit"></i> تحديث الحالة
                                 </button>
 
 

@@ -25,6 +25,8 @@ class CommandeController extends Controller
                 $query->where('city', $request->get('city'));
             }if ($request->get('payment_method')) {
                 $query->where('payment_method', $request->get('payment_method'));
+            }if ($request->get('statut')) {
+                $query->where('status', $request->get('statut'));
             }
 
             $table = DataTables::of($query);

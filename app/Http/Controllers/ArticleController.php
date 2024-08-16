@@ -75,6 +75,7 @@ class ArticleController extends Controller
                 'categorie' => 'required|array',
                 'tag' => 'nullable|array',
                 'quantite' => 'required|numeric|min:0',
+                'related_articles' => 'required|array',
                 'i_image' => 'nullable|image|mimes:jpg,jpeg,png,bmp|max:2048',
                 'i_images.*' => 'nullable|image|mimes:jpg,jpeg,png,bmp|max:2048'
             ], [
@@ -91,6 +92,7 @@ class ArticleController extends Controller
                 'categorie.array' => 'الفئة يجب أن تكون مصفوفة',
 //                'tag.required' => 'الوسوم مطلوبة',
                 'tag.array' => 'الوسوم يجب أن تكون مصفوفة',
+                'related_articles.required' => 'حقل المنتجات ذات الصلة مطلوب',
                 'quantite.required' => 'الكمية مطلوبة',
                 'quantite.numeric' => 'الكمية يجب أن تكون رقماً',
                 'quantite.min' => 'الكمية يجب أن تكون أكبر من أو تساوي 0',
@@ -122,6 +124,7 @@ class ArticleController extends Controller
             // Associate categories with the article
             $article->categories()->sync($request->get('categorie'));
             $article->tags()->sync($request->get('tag'));
+            $article->relatedArticles()->sync($request->get('related_articles'));
 
 
             // Save the principal image
@@ -170,12 +173,19 @@ class ArticleController extends Controller
      */
     public function modifier(Request $request, $id)
     {
-        $article = Article::with('categories')->find($id);
+        $article = Article::find($id);
         $categories = Category::all();
         $tags = Tag::all();
         $principalImage = $article->getFirstMedia('principal');
         $otherImages = $article->getMedia('images');
-        return view('back_office.articles.modifier', compact('categories', 'article','principalImage', 'otherImages', 'tags'));
+        $search = '%' . $request->get('term') . '%';
+
+        $relatedArticles = $article->relatedArticles()
+            ->where('title', 'LIKE', $search)
+            ->get(['related_article_id', 'title as text']);
+
+        return view('back_office.articles.modifier', compact('categories', 'article','principalImage', 'otherImages',
+            'tags', 'relatedArticles' ));
     }
 
     /**
@@ -199,11 +209,13 @@ class ArticleController extends Controller
             'sale_price' => 'nullable|numeric|min:0',
             'price' => 'required|numeric|min:0',
             'categorie' => 'required|array',
+            'related_articles' => 'required|array',
             'tag' => 'nullable|array',
             'quantite' => 'required|numeric|min:0',
             'i_image' => 'nullable|image|mimes:jpg,jpeg,png,bmp|max:2048',
             'i_images.*' => 'nullable|image|mimes:jpg,jpeg,png,bmp|max:2048',
         ], [
+            'related_articles.required' => 'حقل المنتجات ذات الصلة مطلوب',
             'titre.required' => 'العنوان مطلوب',
             'titre.string' => 'العنوان يجب أن يكون نصاً',
             'titre.max' => 'العنوان يجب أن لا يتجاوز 255 حرفاً',
@@ -243,6 +255,7 @@ class ArticleController extends Controller
             ]);
             $article->categories()->sync($request->input('categorie'));
             $article->tags()->sync($request->input('tag'));
+            $article->relatedArticles()->sync($request->get('related_articles'));
 
 
             //Principal image
@@ -339,5 +352,15 @@ class ArticleController extends Controller
             header('Content-Type: image/png');
             return $responseFactory->make(readfile($image->getPath()));
 
+    }
+
+    public function articles_select(Request $request)
+    {
+        if ($request->ajax()) {
+            $search = '%' . $request->get('term') . '%';
+            $data = Article::where('title', 'LIKE', $search)->get(['id', 'title as text']);
+            return response()->json($data, 200);
+        }
+        abort(404);
     }
 }

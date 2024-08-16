@@ -37,4 +37,9 @@ class Article extends Model implements HasMedia
             ->fit(Fit::Contain, 300, 300)
             ->nonQueued();
     }
+    public function relatedArticles()
+    {
+        return $this->belongsToMany(Article::class, 'article_related', 'article_id', 'related_article_id');
+    }
+
 }

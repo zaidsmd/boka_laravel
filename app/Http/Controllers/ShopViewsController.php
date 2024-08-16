@@ -104,13 +104,25 @@ class ShopViewsController extends Controller
     public function single(string $slug)
     {
         $article = Article::where('slug', $slug)->first();
-        $categories = $article->categories->pluck('id');
-        $relateds = Article::whereHas('categories', function (Builder $query) use ($categories) {
-            $query->whereIn('categories.id', $categories);
-        })->inRandomOrder()->limit(4)->get();
         if (!$article) {
             abort(404);
         }
+        $categories = $article->categories->pluck('id');
+        $relatedArticleIds = $article->relatedArticles->pluck('id')->toArray();
+        $relateds = Article::whereIn('id', $relatedArticleIds)
+            ->take(4) // Limit to a maximum of 4 related articles
+            ->get();
+        $additionalCount = max(0, 4 - $relateds->count());
+
+        $additionalArticles = Article::whereHas('categories', function (Builder $query) use ($categories) {
+            $query->whereIn('categories.id', $categories);
+                    })->whereNotIn('id', $relatedArticleIds) // Exclude already related articles
+                    ->inRandomOrder()
+                        ->limit($additionalCount)
+                        ->get();
+        $relateds = $relateds->merge($additionalArticles);
+
+
         return view('single-product', compact('article', 'relateds'));
     }
 
