@@ -44,7 +44,16 @@ class TagController extends Controller
         $validator = Validator::make($request->all(), [
             'name' => ['required','string','max:255','unique:categories,name'],
             'type' => ['required','string','max:255'],
+        ], [
+            'name.required' => 'اسم الوسم مطلوب.',
+            'name.string' => 'اسم الوسم يجب أن يكون نصاً.',
+            'name.max' => 'اسم الوسم لا يمكن أن يتجاوز 255 حرفاً.',
+            'name.unique' => 'اسم الوسم موجود مسبقاً.',
+            'type.required' => 'نوع الوسم مطلوب.',
+            'type.string' => 'نوع الوسم يجب أن يكون نصاً.',
+            'type.max' => 'نوع الوسم لا يمكن أن يتجاوز 255 حرفاً.',
         ]);
+
 
         if ($validator->fails()) {
             // Redirect back to the specified error page with validation errors and input data
@@ -89,21 +98,35 @@ class TagController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function mettre_a_jour(Request $request,$id)
+    public function mettre_a_jour(Request $request, $id)
     {
         $o_tag = Tag::find($id);
+
+        // Validate the request with custom Arabic messages
         $request->validate([
             'name' => 'required|string|max:255',
             'type' => 'required|string|max:255',
+        ], [
+            'name.required' => 'اسم الوسم مطلوب.',
+            'name.string' => 'اسم الوسم يجب أن يكون نصاً.',
+            'name.max' => 'اسم الوسم لا يمكن أن يتجاوز 255 حرفاً.',
+            'type.required' => 'نوع الوسم مطلوب.',
+            'type.string' => 'نوع الوسم يجب أن يكون نصاً.',
+            'type.max' => 'نوع الوسم لا يمكن أن يتجاوز 255 حرفاً.',
         ]);
+
         $slug = Str::slug($request->get('name'));
+
+        // Update the tag
         $o_tag->update([
             'name' => $request->name,
             'type' => $request->type,
             'slug' => $slug,
         ]);
+
+        // Redirect with a success message in Arabic
         return redirect()->route('tags.liste')
-            ->with('success', __('.تم تحديث تسمية الفئة بنجاح'));
+            ->with('success', 'تم تحديث تسمية الوسم بنجاح.');
     }
 
 
@@ -128,7 +151,7 @@ class TagController extends Controller
                     return response('لا يمكن حذف الوسم لأنها تحتوي على منتجات', 400);
                 }
                 $o_tag->delete();
-                return response('تم حذف الفئة بنجاح', 200);
+                return response('تم حذف الوسم بنجاح', 200);
             } else {
                 return response('Erreur', 404);
             }

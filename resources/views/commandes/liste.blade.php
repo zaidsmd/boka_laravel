@@ -70,8 +70,10 @@
                     <div class=" col-lg-3  col-12 ">
                         <label for="payment_method " class="form-label required"> طرق الدفع</label>
                         <div class="input-group">
+
                             <select name="payment_method" id="payment_method"
                                     class="select2 form-control @error('payment_method') is-invalid @enderror " >
+                                <option value="0">--</option>
                                 <option value="نقدا عند الاستلام">الدفع نقدًا عند الاستلام</option>
                                 <option value="تحويل مصرفي"> تحويل مصرفي مباشر</option>
                             </select>

@@ -72,7 +72,7 @@ $(document).on('click', '.sa-warning', function () {
                     }
                 }
                 Swal.fire({
-                    title: 'Erreur',
+                    title: 'خطأ',
                     text: errorMessage,
                     icon: 'error',
                     buttonsStyling: false,
@@ -89,7 +89,7 @@ $(document).on('click', '.sa-warning', function () {
         if (result.isConfirmed) {
             if (result.value) {
                 Swal.fire({
-                    title: 'Succès',
+                    title: 'تم بنجاح!',
                     text: result.value,
                     icon: 'success',
                     buttonsStyling: false,
@@ -106,7 +106,7 @@ $(document).on('click', '.sa-warning', function () {
                 });
             } else {
                 Swal.fire({
-                    title: 'Erreur',
+                    title: 'خطأ',
                     text: result.value,
                     icon: 'error',
                     buttonsStyling: false,

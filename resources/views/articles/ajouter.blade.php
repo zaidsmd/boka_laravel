@@ -73,7 +73,7 @@
                                 </div>
 
                                 <div class="col-12 col-lg-6 mb-3 ">
-                                    <label class="form-label required" for="tag">  الوسوم</label>
+                                    <label class="form-label " for="tag">  الوسوم</label>
                                     <div class="input-group">
                                         <select
                                             class="select2 form-control mb-3 custom-select {{$errors->has('tag')? 'is-invalid' : ''}}"
@@ -105,9 +105,14 @@
                                 </div>
 
                                 <div class="col-12 col-lg-12 mb-3 ">
-
                                     <label class="form-label required" for="description">  الوصف</label>
-                                    <textarea name="description" id="description" cols="30" rows="10">{{ old('description') }}</textarea>
+                                    <textarea  class="form-control {{$errors->has('description')? 'is-invalid' : ''}}"
+                                               name="description" id="description" cols="30" rows="10">{{ old('description') }}</textarea>
+                                    <div class="invalid-feedback">
+                                        @if($errors->has('description'))
+                                            {{ $errors->first('description') }}
+                                        @endif
+                                    </div>
                                 </div>
 
 
@@ -190,6 +195,7 @@
     <script src="{{asset('libs/filepond/js/filepond.js')}}"></script>
     <script src="{{asset('libs/filepond/plugins/js/filepond-plugin-image-validate-size.js')}}"></script>
     <script src="{{asset('libs/filepond/plugins/js/filepond-plugin-file-validate-type.js')}}"></script>
+    <script src="{{asset('assets/libs/select2/js/i18n/ar.js')}}"></script>
 
 
     <script src="{{ asset('libs/tinymce/tinymce.min.js') }}"></script>
@@ -198,7 +204,7 @@
     <script>
         $("#i_image").dropify({
             messages: {
-                default: 'اسحب وأفلت ملفًا هنا أو انقر لاختيار ملف',
+                default: 'ضع ملفاً هنا',
                 replace: 'اسحب وأفلت ملفًا هنا لاستبداله',
                 remove: 'إزالة',
                 error: 'عذرًا، حدث خطأ'
@@ -267,7 +273,7 @@
 
         // Create a FilePond instance
         const pond = FilePond.create(inputElement, {
-            labelIdle: 'اسحب وأفلت ملفًا هنا أو انقر لاختيار ملف',
+            labelIdle: 'ضع ملفاً هنا',
             labelInvalidField: 'الحقل يحتوي على ملفات غير صالحة',
             labelFileWaitingForSize: 'في انتظار الحجم',
             labelFileSizeNotAvailable: 'الحجم غير متاح',

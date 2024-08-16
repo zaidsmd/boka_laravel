@@ -14,39 +14,65 @@
     <link href="{{ asset('libs/summernote/summernote.min.css') }}" rel="stylesheet">
 
     <style>
-        .existing-images {
-            display: flex;
-            flex-wrap: wrap; /* Allows wrapping to the next line if there's not enough space */
-            gap: 10px; /* Space between images */
-        }
 
         .image-box {
+            display: inline-block;
+            margin: 5px;
             position: relative;
-            width: 100px; /* Fixed width for image boxes */
-            height: auto;
         }
 
         .image-thumbnail {
-            width: 100%; /* Ensure image fits the width of the box */
-            height: auto;
-            display: block;
+            width: 100px; /* Set a fixed width */
+            height: 100px; /* Set a fixed height */
+            object-fit: cover; /* Ensures the image covers the entire area without distortion */
+            border-radius: 5px; /* Optional: Adds rounded corners */
         }
 
         .delete-image {
             position: absolute;
-            top: 5px; /* Position at top-right */
-            right: 5px; /* Position at top-right */
-            background: rgba(255, 0, 0, 0.7); /* Red background with transparency */
+            top: 5px;
+            right: 5px;
+            background-color: rgba(255, 0, 0, 0.7); /* Red background for the delete button */
             border: none;
             color: white;
+            font-size: 12px;
             border-radius: 50%;
-            padding: 2px 5px;
             cursor: pointer;
         }
 
-        .delete-image:hover {
-            background: rgba(255, 0, 0, 1); /* Darker red on hover */
-        }
+        /*.existing-images {*/
+        /*    display: flex;*/
+        /*    flex-wrap: wrap; !* Allows wrapping to the next line if there's not enough space *!*/
+        /*    gap: 10px; !* Space between images *!*/
+        /*}*/
+
+        /*.image-box {*/
+        /*    position: relative;*/
+        /*    width: 100px; !* Fixed width for image boxes *!*/
+        /*    height: auto;*/
+        /*}*/
+
+        /*.image-thumbnail {*/
+        /*    width: 100%; !* Ensure image fits the width of the box *!*/
+        /*    height: auto;*/
+        /*    display: block;*/
+        /*}*/
+
+        /*.delete-image {*/
+        /*    position: absolute;*/
+        /*    top: 5px; !* Position at top-right *!*/
+        /*    right: 5px; !* Position at top-right *!*/
+        /*    background: rgba(255, 0, 0, 0.7); !* Red background with transparency *!*/
+        /*    border: none;*/
+        /*    color: white;*/
+        /*    border-radius: 50%;*/
+        /*    padding: 2px 5px;*/
+        /*    cursor: pointer;*/
+        /*}*/
+
+        /*.delete-image:hover {*/
+        /*    background: rgba(255, 0, 0, 1); !* Darker red on hover *!*/
+        /*}*/
     </style>
 
 @endpush
@@ -118,7 +144,7 @@
                                 </div>
 
                                 <div class="col-12 col-lg-6 mb-3 ">
-                                    <label class="form-label required" for="tag">  الوسوم</label>
+                                    <label class="form-label " for="tag">  الوسوم</label>
                                     <div class="input-group">
                                         <select
                                             class="select2 form-control mb-3 custom-select {{$errors->has('tag')? 'is-invalid' : ''}}"
@@ -144,7 +170,7 @@
                                 <div class="col-12 col-lg-6 mb-3 ">
                                     <label class="form-label   required" for="quantite"> {{__('lang.articles.quantity')}}</label>
                                     <div class="input-group">
-                                        <input required type="number" step="1"
+                                        <input  type="number" step="1"
                                                class="form-control {{$errors->has('quantite')? 'is-invalid' : ''}}"
                                                id="quantite"
                                                name="quantite" value="{{old('quantite',$article->quantite)}}">
@@ -236,7 +262,7 @@
                                 </div>
 
                                 <div class="col-12 col-lg-6 mb-3">
-                                    <label for="i_images" class="form-label">   صور إضافية</label>
+                                    <label for="i_images" class="form-label">صور إضافية</label>
                                     <input
                                         type="file"
                                         id="i_images"
@@ -254,6 +280,7 @@
                                         @endforeach
                                     </div>
                                 </div>
+
 
                             </div>
                         </div>
@@ -280,10 +307,11 @@
     <script src="{{asset('libs/filepond/js/filepond.js')}}"></script>
     <script src="{{asset('libs/filepond/plugins/js/filepond-plugin-image-validate-size.js')}}"></script>
     <script src="{{asset('libs/filepond/plugins/js/filepond-plugin-file-validate-type.js')}}"></script>
+    <script src="{{asset('assets/libs/select2/js/i18n/ar.js')}}"></script>
     <script>
         $("#i_image").dropify({
             messages: {
-                default: 'اسحب وأفلت ملفًا هنا أو انقر لاختيار ملف',
+                default: 'ضع ملفاً هنا',
                 replace: 'اسحب وأفلت ملفًا هنا لاستبداله',
                 remove: 'إزالة',
                 error: 'عذرًا، حدث خطأ'
@@ -303,7 +331,8 @@
     </script>
     <script>
         $("#categorie").select2({
-            placeholder: "...",
+            placeholder: "اختر فئة",
+            language : 'ar',
             ajax: {
                 url: "{{ route('categories.select') }}",
                 dataType: "json",
@@ -326,7 +355,8 @@
 
     <script>
         $("#tag").select2({
-            placeholder: "...",
+            placeholder: "اختر وسمًا",
+            language : 'ar',
             ajax: {
                 url: "{{ route('tags.select') }}",
                 dataType: "json",
@@ -386,7 +416,7 @@
             maxFileSize: '2MB',
             allowMultiple: true,
             storeAsFile: true,
-            labelIdle: 'اسحب وأفلت ملفًا هنا أو انقر لاختيار ملف',
+            labelIdle: 'ضع ملفاً هنا',
             labelInvalidField: 'الحقل يحتوي على ملفات غير صالحة',
             labelFileWaitingForSize: 'في انتظار الحجم',
             labelFileSizeNotAvailable: 'الحجم غير متاح',

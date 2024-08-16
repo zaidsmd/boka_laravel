@@ -68,6 +68,11 @@ class CategoryController extends Controller
 
         $validator = Validator::make($request->all(), [
             'name' => ['required','string','max:255','unique:categories,name'],
+        ],[
+            'name.required' => 'اسم الفئة مطلوب.',
+            'name.string' => 'اسم الفئة يجب أن يكون نصاً.',
+            'name.max' => 'اسم الفئة لا يمكن أن يتجاوز 255 حرفاً.',
+            'name.unique' => 'اسم الفئة موجود مسبقاً.',
         ]);
 
         if ($validator->fails()) {
@@ -112,20 +117,32 @@ class CategoryController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function mettre_a_jour(Request $request,$id)
+    public function mettre_a_jour(Request $request, $id)
     {
         $categorie = Category::find($id);
+
+        // Validate the request with custom Arabic messages
         $request->validate([
             'name' => 'required|string|max:255',
+        ], [
+            'name.required' => 'اسم الفئة مطلوب.',
+            'name.string' => 'اسم الفئة يجب أن يكون نصاً.',
+            'name.max' => 'اسم الفئة لا يمكن أن يتجاوز 255 حرفاً.',
         ]);
+
         $slug = Str::slug($request->get('name'));
+
+        // Update the category
         $categorie->update([
             'name' => $request->name,
             'slug' => $slug,
         ]);
+
+        // Redirect with a success message in Arabic
         return redirect()->route('categories.liste')
-            ->with('success', __('.تم تحديث تسمية الفئة بنجاح'));
+            ->with('success', 'تم تحديث تسمية الفئة بنجاح.');
     }
+
 
     /**
      * Remove the specified resource from storage.
