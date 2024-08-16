@@ -7,6 +7,7 @@ use App\Models\Article;
 use App\Models\Cart;
 use App\Models\Category;
 use App\Models\OrderLine;
+use App\Models\Tag;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
@@ -58,16 +59,22 @@ class ShopViewsController extends Controller
     /**
      * @return \Illuminate\Container\Container|\Illuminate\Contracts\View\Factory|\Illuminate\Contracts\View\View|\Illuminate\View\View|mixed|object|string|null
      */
-    public function shop()
+    public function shop($selected_tag = null,$selected_category=null,$sort=null,$sale = null)
     {
+        $selected_tag =\request()->route()->parameter('selected_tag');
+        $selected_category =\request()->route()->parameter('selected_category');
+        $sort =\request()->route()->parameter('sort');
+        $sale =\request()->route()->parameter('sale');
         $categories = Category::get();
+        $ages = Tag::where('type','فئة-عمرية')->get();
         $articles_sale_count = Article::whereNotNull('sale_price')->count();
-        return view('shop', compact('categories', 'articles_sale_count'));
+
+        return view('shop', compact('categories', 'articles_sale_count','ages','selected_category','selected_tag','sort','sale'));
     }
 
     /**
      * @param Request $request
-     * @return ArticleCollection|void
+     * @return ArticleCollection
      */
     public function shopAjax(Request $request)
     {
@@ -89,10 +96,48 @@ class ShopViewsController extends Controller
                     $query->whereIn('categories.id', $categories);
                 });
             }
+            if ($request->input('tags')) {
+                $tags = $request->input('tags');
+                $query->whereHas('tags', function (Builder $query) use ($tags) {
+                    $query->whereIn('tags.id', $tags);
+                });
+            }
             if ($request->input('sale')) {
                 $query->whereNotNull('sale_price');
             }
-            return new ArticleCollection($query->paginate(12));
+            if ($request->input('sort')){
+                $sort = $request->input('sort');
+                switch ($sort){
+                    case "date":
+                        $query->orderBy('created_at');
+                    case "date-desc":
+                        $query->orderByDesc('created_at');
+                        break;
+                    case "price":
+                        $query->orderBy('price');
+                        break;
+                    case "price-desc":
+                        $query->orderByDesc('price');
+                        break;
+                }
+            }
+
+            $filteredArticleIds = $query->pluck('id');
+            $allTags = Tag::select('tags.id', 'tags.slug')
+                ->leftJoin('article_tag', 'tags.id', '=', 'article_tag.tag_id')
+                ->where(function ($query) use ($filteredArticleIds) {
+                    $query->whereIn('article_tag.article_id', $filteredArticleIds)
+                        ->orWhereNull('article_tag.article_id');
+                })
+                ->groupBy('tags.id', 'tags.slug')
+                ->selectRaw('count(article_tag.article_id) as article_count')
+                ->get();
+
+            $paginatedArticles = new ArticleCollection($query->paginate(12));
+
+            return $paginatedArticles->additional([
+                'tagCounts' => $allTags
+            ]);
         }
         abort(404);
     }

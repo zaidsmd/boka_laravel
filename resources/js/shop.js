@@ -82,8 +82,12 @@ function populateProductCards(data){
 function fetchProducts(count,url =window.origin + '/shop-ajax'){
     $('.shop-cards-container').html('').append(skeletonPaster(count))
     let categories = [];
+    let tags = [];
     $('[name=categories]:checked').each(function (){
         categories.push($(this).val());
+    })
+    $('[name=tags]:checked').each(function (){
+        tags.push($(this).val());
     })
     $.ajax({
         url: url ,
@@ -95,7 +99,9 @@ function fetchProducts(count,url =window.origin + '/shop-ajax'){
             min:$('#min').val(),
             max:$('#max').val(),
             categories: categories,
-            sale: $('#sale:checked').val()
+            sale: $('#sale:checked').val(),
+            tags: tags,
+            sort: $('#sort-desktop').val()
         },
         success: function (response) {
             populateProductCards(response.data);
@@ -111,9 +117,29 @@ function fetchProducts(count,url =window.origin + '/shop-ajax'){
             fetchingScroll = false;
             current_page = response.meta.current_page;
             total = response.meta.total;
+            updateTagCounts(response.tagCounts)
             $('.filter,.search').removeAttr('disabled')
         }
     })
+}
+function updateTagCounts(tagCounts) {
+    const tagCountsMap = new Map(tagCounts.map(tag => [tag.slug, tag.article_count]));
+
+// Process all tags
+    $('input[name=tags]').each(function() {
+        const $checkbox = $(this);
+        const tagSlug = $checkbox.attr('id').replace('tag-', ''); // Extract tag slug from checkbox ID
+
+        // Get the count from the map or default to 0
+        const count = tagCountsMap.get(tagSlug) || 0;
+
+        // Update the label associated with the checkbox
+        const $label = $checkbox.siblings('label');
+        if ($label.length) {
+            $label.find('.text-muted').html(`(${count})`);
+        }
+    });
+
 }
 function generatePagination(pages) {
     let pagination = $('<ul class="pagination justify-content-center"></ul>');
@@ -194,5 +220,12 @@ $(document).on('click','.search',function (){
         fetchingScroll = true;
         $('.shop-cards-container').html('').append(skeletonPaster(per_page_count))
         fetchProducts(per_page_count)
+    }
+})
+$(document).on("show.bs.offcanvas","#filters-canvas",function (){
+    if (!$(this).find('#replaced').length){
+        console.log('dfs')
+        $(this).find('#canvas-replace').html($('.filters-container').html());
+        $('.filters-container').html('')
     }
 })

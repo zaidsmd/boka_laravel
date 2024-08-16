@@ -250,7 +250,7 @@ class ArticleController extends Controller
                 'description' => $request->input('description'),
                 'sale_price' => $request->input('sale_price'),
                 'price' => $request->input('price'),
-                'slug' => Str::slug($request->input('titre')), // Ensure slug is updated
+                'slug' =>arabic_slug($request->input('titre')), // Ensure slug is updated
                 'quantite' => $request->get('quantite'),
             ]);
             $article->categories()->sync($request->input('categorie'));

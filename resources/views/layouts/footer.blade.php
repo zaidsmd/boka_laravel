@@ -1,7 +1,7 @@
 <div class="w-100 bg-orange-300 py-5 mt-auto">
 <div class="container">
-    <div class="row">
-        <div class="col-4 text-center">
+    <div class="row gap-md-0 gap-3">
+        <div class="col-md-4 text-center">
             <a class="d-block" href="{{route('home')}}">
                 <img src="{{asset('images/logo-white.png')}}" style="max-width: 150px" class="img-fluid" alt="">
 
@@ -10,7 +10,7 @@
                 مكتبة بوكادوبوكس لكتب الأطفال و الناشئة بالمغرب
             </p>
         </div>
-        <div class="col-4">
+        <div class="col-md-4 text-center">
             <h5 class="text-white" >التصنيفات</h5>
             <a href="{{route('category','0-3')}}" class="text-decoration-none">
                 <h6 class="m-0 py-2 text-white text-decoration-none">
@@ -48,7 +48,7 @@
                 </h6>
             </a>
         </div>
-        <div class="col-4">
+        <div class="col-md-4 text-center">
             <h5 class="text-white" >روابط مهمة</h5>
             <a href="{{route('static-pages.about-us')}}" class="text-decoration-none">
                 <h6 class="m-0 py-2 text-white text-decoration-none">

@@ -1,5 +1,6 @@
 const cart_change_event = new Event('cart-change')
 var cart_total = 0;
+var cart_count = 0;
 $(document).on('click', '.add-to-cart-card,.add-to-cart-card-mobile', function () {
     let cart = $('.cart:visible')
     let btn = $(this);
@@ -23,6 +24,7 @@ $(document).on('click', '.add-to-cart-card,.add-to-cart-card-mobile', function (
             success.css('left', btn_boundaries['x'] + (btn_boundaries['width'] / 2) + window.scrollX + 'px')
             $('body').append(success)
             cart_total = response.total;
+            cart_count = response.count;
             notyf.success(response.message)
             setTimeout(() => {
                 success.css('top', card_boundaries['y'] + (card_boundaries['height'] / 2) + window.scrollY + 'px')
@@ -47,6 +49,7 @@ $(document).on('click', '.add-to-cart-card,.add-to-cart-card-mobile', function (
 })
 $(document).on('cart-change', function () {
     $('.cart .total').html(Number(cart_total).toLocaleString('fr', {minimumFractionDigits: 2,}))
+    $('.cart .badge').html(cart_count)
 })
 $(document).on('click', '.password-input-group .input-group-text', function () {
     $(this).parent().find('.input-group-text').toggleClass('d-none');
@@ -78,7 +81,6 @@ $(document).on('submit', '.form-my-account', function (e) {
             btn.find('.spinner-border').remove()
             form.find('[type="password"]').val("");
             notyf.success(response);
-
         },
         error: function (xhr) {
             btn.removeAttr('disabled')
@@ -140,6 +142,7 @@ $(document).on('click', '.offcanvas-body .delete-cart-item', function () {
         success: function (response) {
             notyf.success(response.message);
             cart_total = response.total;
+            cart_count = response.count;
             off_canvas_body.html(response.cart)
             document.dispatchEvent(cart_change_event)
         },
@@ -167,6 +170,7 @@ $(document).on('click', '.cart-item-quantity-plus', function () {
         },
         success: function (response) {
             cart_total = response.total;
+            cart_count = response.count;
             document.dispatchEvent(cart_change_event)
             $('.cart-container').html(response.cart)
             $('.cart-container .cart-loader').remove();
@@ -195,6 +199,7 @@ $(document).on('click', '.cart-item-quantity-minus', function () {
         },
         success: function (response) {
             cart_total = response.total;
+            cart_count = response.count;
             document.dispatchEvent(cart_change_event)
             $('.cart-container').html(response.cart)
             $('.cart-container .cart-loader').remove();
@@ -219,6 +224,7 @@ $(document).on('click', '.cart-container .delete-cart-item', function () {
         },
         success: function (response) {
             cart_total = response.total;
+            cart_count = response.count;
             document.dispatchEvent(cart_change_event)
             $('.cart-container').html(response.cart)
             $('.cart-container .cart-loader').remove();
@@ -281,6 +287,9 @@ $(document).on('click', '.add-to-cart-card-single', function () {
         '</div>'))
     $.ajax({
         url: window.origin + '/add-to-cart',
+        headers: {
+            'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+        },
         data: {
             article: btn.data('id'),
             quantity: btn.siblings('input').val()
@@ -318,4 +327,31 @@ $(document).on('click', '.add-to-cart-card-single', function () {
             btn.html(btn_html)
         }
     })
+})
+
+
+$(document).on('click','.order-show-btn',function (){
+    let btn  = $(this);
+    let order_number = btn.data('order');
+    btn.attr('disabled','')
+    $.ajax({
+        url:window.origin+'/orders/'+order_number,
+        headers: {
+            'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+        },
+        success: function (response){
+            $('.orders-list').addClass('d-none');
+            $('.order-show').removeClass('d-none')
+            $('.order-show').html(response)
+            btn.removeAttr('disabled')
+        },
+        error: function (xhr){
+            notyf.error(xhr.responseText)
+            btn.removeAttr('disabled')
+        }
+    })
+})
+$(document).on('click','.order-back',function (){
+    $('.orders-list').removeClass('d-none');
+    $('.order-show').addClass('d-none')
 })

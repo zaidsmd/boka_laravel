@@ -37,13 +37,11 @@ class CartController extends Controller
                 'cart_id' => $cart->id
             ]);
         }
-        return response(['total' => $cart->total, 'message' => 'تمت إضافة العنصر إلى سلة التسوق']);
+        return response(['total' => $cart->total,'count'=>$cart->cart_lignes()->count(), 'message' => 'تمت إضافة العنصر إلى سلة التسوق']);
     }
 
-    /**
-     * Show the form for creating a new resource.
-     */
-    public function cartOffCanvas(Request $request)
+
+    public function cartOffCanvas()
     {
         return view('partials.cart_canvas');
     }
@@ -58,7 +56,7 @@ class CartController extends Controller
             return response('لم يتم العثور على العنصر', 400);
         }
         $cartLine->delete();
-        return response(['total' => \cart()->total, 'message' => 'تم حذف العنصر بنجاح', 'cart' => view('partials.cart_canvas')->render()]);
+        return response(['total' => \cart()->total,'count'=>\cart()->cart_lignes()->count(), 'message' => 'تم حذف العنصر بنجاح', 'cart' => view('partials.cart_canvas')->render()]);
     }
 
     /**
@@ -80,7 +78,7 @@ class CartController extends Controller
         $cartLine->update([
             'quantity' => $request->input('quantity')
         ]);
-        return response(['total' => \cart()->total, 'cart' => view('partials.cart-table', ['cart' => \cart()])->render()]);
+        return response(['total' => \cart()->total, 'cart' => view('partials.cart-table', ['cart' => \cart()])->render(),'count'=>\cart()->cart_lignes()->count()]);
     }
 
     /**
@@ -93,7 +91,7 @@ class CartController extends Controller
             return response('لم يتم العثور على العنصر', 400);
         }
         $cartLine->delete();
-        return response(['total' => \cart()->total, 'cart' => view('partials.cart-table', ['cart' => \cart()])->render()]);
+        return response(['total' => \cart()->total,'count'=>\cart()->cart_lignes()->count(), 'cart' => view('partials.cart-table', ['cart' => \cart()])->render()]);
 
     }
 

@@ -18,6 +18,7 @@
         "daterangepicker": "^3.1.0",
         "filepond": "^4.31.2",
         "filepond-plugin-image-edit": "^1.6.3",
-        "filepond-plugin-image-preview": "^4.6.12"
+        "filepond-plugin-image-preview": "^4.6.12",
+        "rollup-plugin-obfuscator": "^1.1.0"
     }
 }

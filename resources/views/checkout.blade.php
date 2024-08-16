@@ -3,7 +3,7 @@
     <form action="{{route('complete-checkout')}}" method="post">
         <div class="row">
             @csrf
-            <div class="col-6">
+            <div class="col-md-6">
                 <h4>تفاصيل الفاتورة</h4>
                 <div class="row">
                     <div class="col-md-6 my-2">
@@ -89,7 +89,7 @@
                     </div>
                 </div>
             </div>
-            <div class="col-6  shipping-side">
+            <div class="col-md-6  shipping-side">
                 <h4><input type="checkbox" class="form-check-input mx-2 shipping-checkbox">عنوان الشحن مختلف</h4>
                 <div class="row">
                     <div class="col-md-6 my-2">

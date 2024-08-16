@@ -22,8 +22,10 @@ Route::group(['middleware' => 'auth:web'], function () {
     Route::post('my-account', [\App\Http\Controllers\ProfileController::class, 'updateAccountInfo'])->name('profile.update-account-info');
     Route::post('shipping-address', [\App\Http\Controllers\ProfileController::class, 'updateShippingAddress'])->name('profile.update-shipping-address');
     Route::post('invoicing-address', [\App\Http\Controllers\ProfileController::class, 'updateInvoicingAddress'])->name('profile.update-invoicing-address');
+    Route::get('orders/{number}',[\App\Http\Controllers\OrderController::class,'show'])->name('order.show');
 
     Route::post('logout', [\App\Http\Controllers\Auth\LoginController::class, 'logout'])->name('auth.logout');
+
 
 });
 
@@ -33,6 +35,10 @@ Route::get('/cart', [\App\Http\Controllers\ShopViewsController::class, 'cart'])-
 Route::get('my-account', [\App\Http\Controllers\ShopViewsController::class, 'myAccount'])->name('my-account');
 Route::get('checkout', [\App\Http\Controllers\ShopViewsController::class, 'checkout'])->name('checkout');
 Route::get('/shop',[\App\Http\Controllers\ShopViewsController::class,'shop'])->name('shop');
+Route::get('/shop/tags/{selected_tag}',[\App\Http\Controllers\ShopViewsController::class,'shop'])->name('shop.tags');
+Route::get('/shop/categories/{selected_category}',[\App\Http\Controllers\ShopViewsController::class,'shop'])->name('shop.categories');
+Route::get('/shop/sort/{sort}',[\App\Http\Controllers\ShopViewsController::class,'shop'])->name('shop.sort');
+Route::get('/shop/sale/{sale}',[\App\Http\Controllers\ShopViewsController::class,'shop'])->name('shop.sale');
 Route::get('/shop-ajax',[\App\Http\Controllers\ShopViewsController::class,'shopAjax'])->name('shop.ajax');
 Route::get('product/{slug}',[\App\Http\Controllers\ShopViewsController::class,'single'])->name('single');
 Route::get('categories/{slug}',[\App\Http\Controllers\ShopViewsController::class,'category'])->name('category');

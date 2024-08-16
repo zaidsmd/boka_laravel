@@ -42,7 +42,7 @@ class TagController extends Controller
     {
 
         $validator = Validator::make($request->all(), [
-            'name' => ['required','string','max:255','unique:categories,name'],
+            'name' => ['required','string','max:255','unique:tags,name'],
             'type' => ['required','string','max:255'],
         ], [
             'name.required' => 'اسم الوسم مطلوب.',
@@ -57,13 +57,13 @@ class TagController extends Controller
 
         if ($validator->fails()) {
             // Redirect back to the specified error page with validation errors and input data
-            return redirect()->route('categories.liste')->withErrors($validator)->withInput();
+            return redirect()->route('tags.liste')->withErrors($validator)->withInput();
         }
 //        $request->validate([
 //            'name' => ['required','string','max:255','unique:categories,name'],
 //            'slug' => ['slug','string','max:255'],
 //        ]);
-        $slug = Str::slug($request->get('name'));
+        $slug = arabic_slug($request->get('name'));
         $o_categorie = Tag::create([
             'name' => $request->get('name'),
             'type' => $request->get('type'),
@@ -115,7 +115,7 @@ class TagController extends Controller
             'type.max' => 'نوع الوسم لا يمكن أن يتجاوز 255 حرفاً.',
         ]);
 
-        $slug = Str::slug($request->get('name'));
+        $slug = arabic_slug($request->get('name'));
 
         // Update the tag
         $o_tag->update([

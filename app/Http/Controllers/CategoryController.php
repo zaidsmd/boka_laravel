@@ -83,7 +83,7 @@ class CategoryController extends Controller
 //            'name' => ['required','string','max:255','unique:categories,name'],
 //            'slug' => ['slug','string','max:255'],
 //        ]);
-        $slug = Str::slug($request->get('name'));
+        $slug =arabic_slug($request->get('name'));
         $o_categorie = Category::create([
             'name' => $request->get('name'),
             'slug' => $slug,
@@ -131,7 +131,7 @@ class CategoryController extends Controller
             'name.unique' => 'الاسم المدخل موجود بالفعل في الفئات.',
         ]);
 
-        $slug = Str::slug($request->get('name'));
+        $slug =arabic_slug($request->get('name'));
 
         // Update the category
         $categorie->update([

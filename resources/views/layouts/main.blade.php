@@ -18,6 +18,9 @@
 <div class="container py-4">
     @yield('page')
 </div>
+<a href="https://wa.me/+212665252245" class="whatsapp-button" target="_blank">
+    <img src="{{asset('images/WhatsApp_icon.png')}}" alt="WhatsApp" />
+</a>
 @include('layouts.footer')
 <script src="{{asset('js/bootstrap.bundle.min.js')}}"></script>
 <script src="{{asset('js/fontawesome.js')}}"></script>
