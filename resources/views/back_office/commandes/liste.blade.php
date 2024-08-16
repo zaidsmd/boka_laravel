@@ -1,4 +1,4 @@
-@extends('admin_layouts.main')
+@extends('back_office.admin_layouts.main')
 @section('document-title','Orders')
 @push('css')
     @include('layouts.partials.css.__datatable_css')

@@ -45,7 +45,7 @@ class ArticleController extends Controller
             $table->rawColumns(['actions', 'selectable_td']);
             return $table->make();
         }
-        return view('articles.liste');
+        return view('back_office.articles.liste');
 
     }
 
@@ -55,7 +55,7 @@ class ArticleController extends Controller
     public function ajouter()
     {
         $categories = Category::all();
-        return view('articles.ajouter', compact('categories'));
+        return view('back_office.articles.ajouter', compact('categories'));
     }
 
     /**
@@ -161,7 +161,7 @@ class ArticleController extends Controller
         $o_article = Article::with('categories')->find($id);
         $categories = Category::all();
 
-        return view('articles.afficher', compact('categories', 'o_article'));
+        return view('back_office.articles.afficher', compact('categories', 'o_article'));
 
     }
 
@@ -175,7 +175,7 @@ class ArticleController extends Controller
         $tags = Tag::all();
         $principalImage = $article->getFirstMedia('principal');
         $otherImages = $article->getMedia('images');
-        return view('articles.modifier', compact('categories', 'article','principalImage', 'otherImages', 'tags'));
+        return view('back_office.articles.modifier', compact('categories', 'article','principalImage', 'otherImages', 'tags'));
     }
 
     /**

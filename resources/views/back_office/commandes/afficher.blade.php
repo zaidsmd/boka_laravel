@@ -1,4 +1,4 @@
-@extends('admin_layouts.main')
+@extends('back_office.admin_layouts.main')
 @section('document-title','Orders')
 @push('css')
     @include('layouts.partials.css.__datatable_css')
@@ -398,6 +398,20 @@
     <script src="{{asset('libs/daterangepicker/js/daterangepicker.js')}}"></script>
 
     <script>
+        $(document).ready(function(){
+
+            var successMessage = '{{ session('success') }}';
+            if (successMessage) {
+                Swal.fire({
+                    title: '{{ __("lang.succes") }}',
+                    text: successMessage,
+                    icon: 'success',
+                    timer: 3000,
+                    showConfirmButton: false
+                });
+            }
+        });
+
         var conversion_modal_process = !1;
         $('#status-btn').on('click', function () {
             if (!conversion_modal_process) {

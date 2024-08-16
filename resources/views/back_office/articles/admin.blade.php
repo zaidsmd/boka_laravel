@@ -1,4 +1,4 @@
-@extends('admin_layouts.main')
+@extends('back_office.admin_layouts.main')
 @section('document-title','Articles')
 @push('styles')
     @include('layouts.partials.css.__datatable_css')
@@ -24,7 +24,7 @@
                             </h5>
                             <div class="pull-right">
                                 <a href="{{route('articles.ajouter')}}" class="btn btn-soft-success"><i
-                                        class="mdi mdi-plus"></i> Ajouter</a>
+                                            class="mdi mdi-plus"></i> Ajouter</a>
                                 <button class="filter-btn btn btn-soft-info"><i class="fa fa-filter"></i> Filtrer
                                 </button>
                             </div>
@@ -55,7 +55,8 @@
                                    name="sku">
                         </div>
                         <div class="col-12 d-flex justify-content-end">
-                            <button id="search-btn" class="btn btn-primary"><i class="mdi mdi-magnify"></i> Rechercher</button>
+                            <button id="search-btn" class="btn btn-primary"><i class="mdi mdi-magnify"></i> Rechercher
+                            </button>
                         </div>
                     </div>
                     <!-- #####--DataTable--##### -->
@@ -100,7 +101,7 @@
     <script src="{{asset('libs/daterangepicker/js/daterangepicker.js')}}"></script>
     <script>
 
-        const __dataTable_columns =  [
+        const __dataTable_columns = [
             {data: 'selectable_td', orderable: false, searchable: false, class: 'check_sell'},
             {data: 'reference', name: 'reference'},
             {data: 'designation', name: 'designation'},
@@ -117,7 +118,7 @@
             designation: '#title-input',
             reference: '#reference-input',
         }
-        const __dataTable_filter_trigger_button_id ='#search-btn';
+        const __dataTable_filter_trigger_button_id = '#search-btn';
 
     </script>
     <script src="{{asset('js/dataTable_init.js')}}"></script>

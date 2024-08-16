@@ -47,7 +47,7 @@ class OrderController extends Controller
             }
             $order = Order::create([
                 'payment_method' => $request->input('payment_method') === 'cash' ? "نقدا عند الاستلام" : "تحويل مصرفي",
-                'status' =>  $request->input('payment_method') === 'cash' ? "قيد المعالجة" : "في الانتظار",
+                'status' => "قيد المعالجة",
                 'billing_email' => $request->input('email'),
                 'user_id' => auth()?->id() ?? null,
                 'total' => $cart->total + $shipping_fee,

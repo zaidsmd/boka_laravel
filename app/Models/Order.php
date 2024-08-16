@@ -19,23 +19,19 @@ class Order extends Model
     ];
 
     // Status constants
-    const STATUS_PENDING = 'معلق';
     const STATUS_PROCESSING = 'قيد المعالجة';
     const STATUS_SHIPPED = 'مُرسل';
     const STATUS_DELIVERED = 'تم التوصيل';
     const STATUS_CANCELED = 'ملغى';
-    const STATUS_ONHOLD = 'في الانتظار';
 
     // Status array
     public static function getStatuses()
     {
     return [
-            self::STATUS_PENDING,
             self::STATUS_SHIPPED,
             self::STATUS_DELIVERED,
             self::STATUS_CANCELED,
             self::STATUS_PROCESSING,
-            self::STATUS_ONHOLD
         ];
     }
 

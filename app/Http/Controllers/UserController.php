@@ -46,12 +46,12 @@ class UserController extends Controller
             })->rawColumns(['selectable_td', 'actions']);
             return $table->make();
         }
-        return view('users.liste');
+        return view('back_office.users.liste');
     }
 
     public function ajouter()
     {
-        return view('users.ajouter',);
+        return view('back_office.users.ajouter',);
     }
     public function sauvegarder(Request $request)
     {
@@ -121,7 +121,7 @@ class UserController extends Controller
             return redirect()->route('utilisateurs.liste');
         }
 //        $roles = Role::whereNot('name', 'super_admin')->get();
-        return view('users.modifier', compact('o_utilisateur', ));
+        return view('back_office.users.modifier', compact('o_utilisateur', ));
     }
 
     public function mettre_a_jour(Request $request, $id)

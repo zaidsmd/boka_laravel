@@ -1,4 +1,4 @@
-@extends('admin_layouts.main')
+@extends('back_office.admin_layouts.main')
 @section('document-title','Articles')
 @push('css')
     <link rel="stylesheet" href="{{asset('libs/select2/css/select2.min.css')}}">

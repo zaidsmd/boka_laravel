@@ -1,5 +1,5 @@
-@extends('admin_layouts.main')
-@section('document-title','Articles')
+@extends('back_office.admin_layouts.main')
+@section('document-title','Users')
 @push('css')
     @include('layouts.partials.css.__datatable_css')
     <link rel="stylesheet" href="{{asset('libs/select2/css/select2.min.css')}}">
@@ -20,15 +20,15 @@
             <div class="card-body">
                 <div class="row">
                     <div class="col-md-6">
-                        <h2>قائمة المنتجات</h2>
+                        <h2>قائمة المستخدمين
+                        </h2>
                     </div>
                     <div class="col-md-6 d-flex align-items-center justify-content-end">
-                        <a href="{{ route('articles.ajouter') }}" class="btn btn-primary mr-3">
-                            <i class="mdi mdi-plus"></i> {{__('lang.product.add_product')}}
+                        <a href="{{ route('utilisateurs.ajouter') }}" class="btn btn-primary mr-3">
+                           <i class="mdi mdi-plus"></i>  إضافة مستخدم
                         </a>
 
                     </div>
-
                 </div>
                 <br>
                 @if ($errors->any())
@@ -45,10 +45,9 @@
                         <thead>
                         <tr>
                             <th > {{__('lang.product.id')}}</th>
-                            <th > {{__('lang.product.title')}}</th>
-                            <th > {{__('lang.product.sale_price')}}</th>
-                            <th > {{__('lang.articles.reduit_price')}}</th>
-                            <th > {{__('lang.product.quantity')}}</th>
+                            <th > الاسم الشخصي</th>
+                            <th > الاسم العائلي </th>
+                            <th > البريد الإلكتروني</th>
                             <th > {{__('lang.product.actions')}}</th>
 
                         </tr>
@@ -87,13 +86,12 @@
         const __dataTable_columns =  [
             // {data: 'selectable_td', orderable: false, searchable: false, class: 'check_sell'},
             { "data": "id" },
-            { "data": "title" },
-            { "data": "price" },
-            { "data": "sale_price" },
-            { "data": "quantite" },
+            { "data": "first_name" },
+            { "data": "last_name" },
+            { "data": "email" },
             {data: 'actions', name: 'actions', orderable: false,},
         ];
-        const __dataTable_ajax_link = "{{ route('articles.liste') }}";
+        const __dataTable_ajax_link = "{{ route('utilisateurs.liste') }}";
         const __dataTable_id = "#datatable";
         const __dataTable_filter_inputs_id = {
             famille_id: '#cat-select',

@@ -1,4 +1,4 @@
-@extends('admin_layouts.main')
+@extends('back_office.admin_layouts.main')
 @section('document-title','Users')
 @push('css')
     <link rel="stylesheet" href="{{asset('libs/select2/css/select2.min.css')}}">
@@ -16,17 +16,17 @@
         <div class="col-12">
             <div class="card">
                 <div class="card-body">
-                    <form id="articles-form" enctype="multipart/form-data" action="{{route('utilisateurs.mettre_jour', $o_utilisateur->id)}}"
+                    <form id="articles-form" enctype="multipart/form-data" action="{{route('utilisateurs.sauvegarder')}}"
                           method="post"   autocomplete="off">
                         @csrf
-                        @method('PUT')
                         <!-- #####--Card Title--##### -->
                         <div class="card-title">
                             <div id="__fixed" class="d-flex switch-filter justify-content-between align-items-center">
                                 <div>
                                     <a href="{{route('utilisateurs.liste')}}"><i class="fa fa-arrow-left"></i></a>
                                     <h5 class="m-0 float-end ms-3">
-                                        <i class="mdi me-2 text-success mdi-account-group"></i> تعديل مستخدم
+                                        <i class="mdi me-2 text-success mdi-account-group"></i>
+                                        إضافة مستخدم
                                     </h5>
                                 </div>
                                 <div class="pull-right">
@@ -40,7 +40,7 @@
                             <div class="col-4">
                                 <label for="first_name" class="form-label required">الاسم الشخصي</label>
                                 <input id="first_name" type="text" class="form-control @error('first_name')  is-invalid @enderror "
-                                       name="first_name" value="{{old('first_name', $o_utilisateur->first_name)}}">
+                                       name="first_name" value="{{old('first_name')}}">
                                 @error('first_name')
                                 <div class="invalid-feedback">
                                     {{ $message }}
@@ -50,7 +50,7 @@
                             <div class="col-4">
                                 <label for="last_name" class="form-label required">الاسم العائلي</label>
                                 <input id="last_name" type="text" class="form-control @error('last_name')  is-invalid @enderror "
-                                       name="last_name" value="{{old('last_name' ,$o_utilisateur->last_name)}}">
+                                       name="last_name" value="{{old('last_name')}}">
                                 @error('last_name')
                                 <div class="invalid-feedback">
                                     {{ $message }}
@@ -60,7 +60,7 @@
                             <div class="col-4">
                                 <label for="email-input" class="form-label required">البريد الإلكتروني</label>
                                 <input type="email" id="email" class="form-control @error('email') is-invalid @enderror "
-                                       name="email" value="{{old('email', $o_utilisateur->email)}}">
+                                       name="email" value="{{old('email')}}">
                                 @error('email')
                                 <div class="invalid-feedback">
                                     {{ $message }}
@@ -68,7 +68,7 @@
                                 @enderror
                             </div>
                             <div class="col-4">
-                                <label for="password " class="form-label ">كلمة المرور</label>
+                                <label for="password " class="form-label required">كلمة المرور</label>
                                 <div class="input-group">
                                     <input type="password" id="password"
                                            class="form-control @error('password') is-invalid @enderror "
@@ -83,7 +83,7 @@
                                 </div>
                             </div>
 
-                        </div>
+                            </div>
                     </form>
                 </div>
             </div>

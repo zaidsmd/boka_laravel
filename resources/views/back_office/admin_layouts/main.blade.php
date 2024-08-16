@@ -8,24 +8,19 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta content="Premium Multipurpose Admin & Dashboard Template" name="description" />
     <meta content="Themesbrand" name="author" />
-    <!-- App favicon -->
     <link rel="shortcut icon" href="{{asset('assets/images/favicon.ico')}}">
-
-    <!-- Bootstrap Css -->
-    <!-- Bootstrap Css -->
     <link href="{{ asset('assets/css/bootstrap-rtl.min.css') }}" id="bootstrap-style" rel="stylesheet" type="text/css" />
-    <!-- Icons Css -->
     <link href="{{ asset('assets/css/icons-rtl.min.css') }}" rel="stylesheet" type="text/css" />
-    <!-- App Css-->
     <link href="{{ asset('assets/css/app-rtl.min.css') }}" id="app-style" rel="stylesheet" type="text/css" />
     <link href="{{ asset('assets/libs/sweetalert2/sweetalert2.min.css') }}" rel="stylesheet" type="text/css" />
     <link href="{{ asset('assets/libs/metrojs/release/MetroJs.Full/MetroJs.min.css') }}" rel="stylesheet" type="text/css" />
     <link href="{{ asset('assets/libs/datatables.net-bs4/css/dataTables.bootstrap4.min.css') }}" rel="stylesheet" type="text/css" />
     <link href="{{ asset('assets/libs/datatables.net-buttons-bs4/css/buttons.bootstrap4.min.css') }}" rel="stylesheet" type="text/css" />
     <link href="{{ asset('assets/libs/datatables.net-responsive-bs4/css/responsive.bootstrap4.min.css') }}" rel="stylesheet" type="text/css" />
+    <link href="{{asset('libs/bootstrap-datepicker/css/bootstrap-datepicker.min.css')}}" rel="stylesheet">
+    <link href="{{asset('libs/daterangepicker/css/daterangepicker.min.css')}}" rel="stylesheet">
+
     <link rel="stylesheet" href="{{asset('assets/libs/dropzone/min/dropzone.min.css')}}"  type="text/css" />
-
-
     <link rel="shortcut icon" href="{{ asset('assets/images/favicon.ico') }}">
     <style>
         .required::after {
@@ -134,8 +129,12 @@
                 <ul class="metismenu list-unstyled" id="side-menu">
 
 
-{{--                    @if(Auth::user()->role === '1')--}}
                     <li>
+                        <a href="{{ route('tableau_de_bord.liste') }}" class="waves-effect">
+                            <i class="mdi mdi-monitor-dashboard"></i>
+                            <span>لوحة القيادة</span>
+                        </a>
+                    </li>                    <li>
                         <a href="{{ route('commandes.liste') }}" class="waves-effect">
                             <i class="mdi mdi-shopping"></i>
                             <span>الطلبات</span>
@@ -188,7 +187,9 @@
         <script src="{{ asset('libs/bootstrap/js/bootstrap.bundle.min.js') }}"></script>
         <script src="{{ asset('libs/metismenu/metisMenu.min.js') }}"></script>
         <script src="{{ asset('libs/node-waves/waves.min.js') }}"></script>
-
+        <script src="{{asset('libs/moment/min/moment-with-locales.min.js')}}"></script>
+        <script src="{{asset('libs/bootstrap-datepicker/js/bootstrap-datepicker.min.js')}}"></script>
+        <script src="{{asset('libs/bootstrap-datepicker/locales/bootstrap-datepicker.fr.min.js')}}"></script>
         <script src="{{ asset('libs/datatables.net/js/jquery.dataTables.min.js') }}"></script>
         <script src="{{ asset('libs/datatables.net-bs4/js/dataTables.bootstrap4.min.js') }}"></script>
         <script src="{{ asset('libs/datatables.net-buttons/js/dataTables.buttons.min.js') }}"></script>

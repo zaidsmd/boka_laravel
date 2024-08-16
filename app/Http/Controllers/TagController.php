@@ -27,7 +27,7 @@ class TagController extends Controller
 
             $table->addColumn('actions', function ($o_tag) {
                 $edit_modal = ['url' => route('tags.modifier', $o_tag->id), 'modal_id' => 'edit-tag-modal'];
-                return view('tags.partials.tags_actions', compact('o_tag', 'edit_modal'))->render();
+                return view('back_office.tags.partials.tags_actions', compact('o_tag', 'edit_modal'))->render();
             });
             $table->editColumn('type', function ($row){
                 return $row->type ?? '--';
@@ -36,7 +36,7 @@ class TagController extends Controller
             return $table->make();
 
         }
-        return view('tags.liste');
+        return view('back_office.tags.liste');
     }
     public function sauvegarder(Request $request)
     {
@@ -90,7 +90,7 @@ class TagController extends Controller
                 'id'=>'exists:categories,id'
             ]);
             $o_tag = Tag::find($id);
-            return view('tags.partials.modifier_modal',compact('o_tag'));
+            return view('back_office.tags.partials.modifier_modal',compact('o_tag'));
         }
         abort('404');
     }

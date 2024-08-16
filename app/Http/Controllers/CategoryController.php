@@ -31,12 +31,12 @@ class CategoryController extends Controller
 
             $table->addColumn('actions', function ($categorie) {
                 $edit_modal = ['url' => route('categories.modifier', $categorie->id), 'modal_id' => 'edit-categorie-modal'];
-                return view('categories.partials.categories_actions', compact('categorie', 'edit_modal'))->render();
+                return view('back_office.categories.partials.categories_actions', compact('categorie', 'edit_modal'))->render();
             });
                 $table->rawColumns(['selectable_td', 'actions']);
                     return $table->make();
                 }
-            return view('categories.liste');
+            return view('back_office.categories.liste');
 
         }
 
@@ -109,7 +109,7 @@ class CategoryController extends Controller
                 'id'=>'exists:categories,id'
             ]);
             $o_categorie = Category::find($id);
-            return view('categories.partials.modifier_modal',compact('o_categorie'));
+            return view('back_office.categories.partials.modifier_modal',compact('o_categorie'));
         }
         abort('404');
     }
@@ -123,11 +123,12 @@ class CategoryController extends Controller
 
         // Validate the request with custom Arabic messages
         $request->validate([
-            'name' => 'required|string|max:255',
+            'name' => 'required|string|max:255|unique:categories,name',
         ], [
             'name.required' => 'اسم الفئة مطلوب.',
             'name.string' => 'اسم الفئة يجب أن يكون نصاً.',
             'name.max' => 'اسم الفئة لا يمكن أن يتجاوز 255 حرفاً.',
+            'name.unique' => 'الاسم المدخل موجود بالفعل في الفئات.',
         ]);
 
         $slug = Str::slug($request->get('name'));

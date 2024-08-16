@@ -58,7 +58,7 @@ class CommandeController extends Controller
         ->rawColumns(['selectable_td', 'actions']);
             return $table->make();
         }
-        return view('commandes.liste', compact('statuses'));
+        return view('back_office.commandes.liste', compact('statuses'));
     }
 
     public function afficher(Request $request, $id)
@@ -68,7 +68,7 @@ class CommandeController extends Controller
         $totalPrice = $o_order->lines->sum(function ($line) {
             return $line->price * $line->quantity;
         });
-        return view('commandes.afficher', compact('o_order', 'totalPrice', ));
+        return view('back_office.commandes.afficher', compact('o_order', 'totalPrice', ));
 
     }
 
@@ -99,7 +99,7 @@ class CommandeController extends Controller
         }
         $statuses = Order::getStatuses();
 
-        return view('commandes.partials.status_modal', compact('o_order', 'statuses' ));
+        return view('back_office.commandes.partials.status_modal', compact('o_order', 'statuses' ));
     }
 
     public function modifier_status(Request $request, $id)
@@ -114,7 +114,7 @@ class CommandeController extends Controller
                 ->with('success', 'تم تحديث الحالة بنجاح');
 
         }else{
-            return redirect()->route('categories.liste', $o_order->id)
+            return redirect()->route('commandes.liste', $o_order->id)
                 ->with('error', __('فشل في تحديث الحالة. يرجى المحاولة مرة أخرى.'));
 
         }
@@ -125,6 +125,6 @@ class CommandeController extends Controller
     {
 
         $status = Order::getStatuses();
-        return view('commandes.ajouter', compact('status'));
+        return view('back_office.commandes.ajouter', compact('status'));
     }
 }
