@@ -61,7 +61,7 @@ class UserController extends Controller
             'last_name'=>'required|min:3|max:255|string',
             'email' => 'required|email|unique:users,email',
             'password'=>'required|min:8|max:255',
-//            'i_role'=>'required|exists:roles,name'
+            'role'=>'required|string'
         ];
         $messages = [
             'first_name.required' => 'الاسم الأول مطلوب.',
@@ -77,6 +77,7 @@ class UserController extends Controller
             'email.required' => 'البريد الإلكتروني مطلوب.',
             'email.email' => 'البريد الإلكتروني يجب أن يكون عنوان بريد إلكتروني صالح.',
             'email.unique' => 'هذه العنوان البريدي مستخدم بالفعل.',
+            'role.required' => 'الدور مطلوب.',
 
             'password.required' => 'كلمة المرور مطلوبة.',
             'password.min' => 'كلمة المرور يجب أن تتكون من 8 أحرف على الأقل.',
@@ -87,7 +88,7 @@ class UserController extends Controller
             'last_name'=>'الاسم العائلي',
             'email'=>'البريد الإلكتروني',
             'password'=>'كلمة المرور',
-//            'i_role'=>'Role'
+            'role'=>'الدور'
         ];
 
         $validation = Validator::make($request->all(),$rules,$messages, $attributes);
@@ -100,9 +101,9 @@ class UserController extends Controller
             $o_utilisateur->email = $request->get('email');
             $o_utilisateur->email_verified_at = Carbon::now();
             $o_utilisateur->password = Hash::make($request->get('password'));
+            $o_utilisateur->role = $request->get('role');
             $o_utilisateur->save();
 
-//            $o_utilisateur->syncRoles( $request->get('i_role'));
             DB::commit();
             session()->flash('success', 'تم إضافة المستخدم!');
             return redirect()->route('utilisateurs.liste');
@@ -141,13 +142,14 @@ class UserController extends Controller
                 Rule::unique('users', 'email')->ignore($o_utilisateur->id),
             ],
             'password' => 'nullable|min:8|max:255',
-//            'i_role'=>'required|exists:roles,name'
+            'role'=>'required|string'
         ];
         $messages = [
             'first_name.required' => 'الاسم الأول مطلوب.',
             'first_name.min' => 'الاسم الأول يجب أن يتكون من 3 أحرف على الأقل.',
             'first_name.max' => 'الاسم الأول لا يمكن أن يتجاوز 255 حرفًا.',
             'first_name.string' => 'الاسم الأول يجب أن يكون نصًا.',
+            'role.required' => 'الدور مطلوب.',
 
             'last_name.required' => 'اسم العائلة مطلوب.',
             'last_name.min' => 'اسم العائلة يجب أن يتكون من 3 أحرف على الأقل.',
@@ -166,7 +168,7 @@ class UserController extends Controller
             'last_name'=>'الاسم العائلي',
             'email'=>'البريد الإلكتروني',
             'password'=>'كلمة المرور',
-//            'i_role'=>'Role'
+            'role'=>'الدور'
         ];
         $validation = Validator::make($request->all(), $rules, $messages, $attributes);
         $validation->validate();
@@ -177,7 +179,7 @@ class UserController extends Controller
             $o_utilisateur->email = $request->get('email');
             $o_utilisateur->email_verified_at = Carbon::now();
             $o_utilisateur->password = trim($request->get('password')) ? Hash::make($request->get('i_password')) : $o_utilisateur->password;
-//            $o_utilisateur->role = $request->get('i_role');
+            $o_utilisateur->role = $request->get('role');
             $o_utilisateur->save();
 //            $o_utilisateur->magasins()->sync($request->get('i_magasins'));
 //            $o_utilisateur->syncRoles( $request->get('i_role'));

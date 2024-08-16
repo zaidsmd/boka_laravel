@@ -18,9 +18,11 @@ class User extends Authenticatable
      * @var array<int, string>
      */
     protected $fillable = [
-        'first_name', 'last_name', 'address', 'city', 'phone_number', 'email', 'email_verified_at', 'password', 'remember_token'
+        'first_name', 'last_name', 'address', 'city', 'phone_number', 'email', 'email_verified_at', 'password', 'remember_token', 'role'
     ];
 
+    const ROLE_ADMIN = 'admin';
+    const ROLE_USER = 'user';
     /**
      * The attributes that should be hidden for serialization.
      *
@@ -43,7 +45,10 @@ class User extends Authenticatable
             'password' => 'hashed',
         ];
     }
-
+    public function isAdmin()
+    {
+        return $this->role === 'admin';
+    }
 
     public function shipping_address(): HasOne
     {

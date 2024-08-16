@@ -47,6 +47,7 @@
                             <th > {{__('lang.product.id')}}</th>
                             <th > الاسم الشخصي</th>
                             <th > الاسم العائلي </th>
+                            <th > الدور </th>
                             <th > البريد الإلكتروني</th>
                             <th > {{__('lang.product.actions')}}</th>
 
@@ -88,6 +89,20 @@
             { "data": "id" },
             { "data": "first_name" },
             { "data": "last_name" },
+            {
+                data: 'role',
+                render: function (data, type, row) {
+                    // Translate 'admin' to 'المدير' and 'user' to 'المشترك'
+                    if (data === 'admin') {
+                        return 'مدير'; // Arabic for Admin
+                    } else if (data === 'user') {
+                        return ' مستخدم عادي'; // Arabic for User
+                    } else {
+                        return data; // Return the original data if no match
+                    }
+                },
+                title: 'الدور' // Set the column header to the Arabic translation
+            },
             { "data": "email" },
             {data: 'actions', name: 'actions', orderable: false,},
         ];

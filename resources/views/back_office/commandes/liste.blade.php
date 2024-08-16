@@ -67,6 +67,9 @@
                         <input type="text" class="form-control" id="city"
                                name="city">
                     </div>
+
+
+
                     <div class=" col-lg-3  col-12 ">
                         <label for="payment_method " class="form-label required"> طرق الدفع</label>
                         <div class="input-group">

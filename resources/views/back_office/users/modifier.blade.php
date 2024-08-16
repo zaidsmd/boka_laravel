@@ -83,6 +83,24 @@
                                 </div>
                             </div>
 
+                            <div class="col-4">
+                                <label for="role" class="form-label required">الدور</label>
+                                <div class="input-group">
+                                    <select id="role"
+                                            class="select2 form-control @error('role') is-invalid @enderror"
+                                            name="role">
+                                        <option value="admin" {{ old('role', $o_utilisateur->role) === 'admin' ? 'selected' : '' }}>مدير</option>
+                                        <option value="user" {{ old('role', $o_utilisateur->role) === 'user' ? 'selected' : '' }}>مستخدم عادي</option>
+                                    </select>
+                                    @error('role')
+                                    <div class="invalid-feedback">
+                                        {{ $message }}
+                                    </div>
+                                    @enderror
+                                </div>
+                            </div>
+
+
                         </div>
                     </form>
                 </div>
@@ -144,6 +162,9 @@
                 cache: false,
             },
             minimumInputLength: 1,
+        });
+        $("#role").select2({
+            minimumResultsForSearch: Infinity,
         });
     </script>
 

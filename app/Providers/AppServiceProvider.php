@@ -2,7 +2,9 @@
 
 namespace App\Providers;
 
+use App\Http\Middleware\CheckRole;
 use Carbon\Carbon;
+use Illuminate\Routing\Route;
 use Illuminate\Support\ServiceProvider;
 
 class AppServiceProvider extends ServiceProvider
@@ -21,5 +23,6 @@ class AppServiceProvider extends ServiceProvider
     public function boot(): void
     {
         Carbon::setLocale('ar');
+
     }
 }
