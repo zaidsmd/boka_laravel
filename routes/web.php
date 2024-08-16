@@ -49,7 +49,7 @@ Route::get('best-seller',[\App\Http\Controllers\ShopViewsController::class,'best
 Route::get('best-seller-ajax',[\App\Http\Controllers\ShopViewsController::class,'bestSellerAjax'])->name('best-seller.ajax');
 Route::get('sale',[\App\Http\Controllers\ShopViewsController::class,'sale'])->name('sale');
 
-Route::get('/import',[\App\Http\Controllers\ImportController::class,'import']);
+Route::get('/import/{file}',[\App\Http\Controllers\ImportController::class,'import']);
 
 //  Static
 Route::get('من-نحن',[\App\Http\Controllers\StaticPagesController::class,'aboutUs'])->name('static-pages.about-us');
