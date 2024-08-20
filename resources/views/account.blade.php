@@ -4,6 +4,7 @@
     @if($auth)
         <section>
             <ul class="nav nav-tabs" id="accoutn-tabs" role="tablist">
+                <li class="nav-item" role="presentation"></li>
                 <li class="nav-item" role="presentation">
                     <button class="nav-link active" id="info-tab" data-bs-toggle="tab" data-bs-target="#info-tab-pane"
                             type="button" role="tab" aria-controls="home-tab-pane" aria-selected="true"/>
@@ -39,6 +40,15 @@
                         <span class="d-md-inline d-none">تسجيل الخروج</span>
                     </button>
                 </li>
+                @if(auth()->user()->role == 'admin')
+                <li class="nav-item" role="presentation">
+                    <a class="nav-link" href="{{ route('tableau_de_bord.liste') }}">
+                        <span class="mx-1"><i
+                                class="fa fa-dashboard"></i></span>
+                        <span class="d-md-inline d-none">لوحة التحكم</span>
+                    </a>
+                </li>
+                @endif
             </ul>
             <div class="tab-content mt-4" id="myTabContent">
                 <div class="tab-pane fade show active" id="info-tab-pane" role="tabpanel" aria-labelledby="info-tab"

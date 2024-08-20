@@ -63,26 +63,7 @@
                 <div class="d-flex" >
                     <!-- User -->
                     <div class="dropdown d-inline-block" >
-                        <button  type="button" class="btn header-item waves-effect user-step" id="page-header-user-dropdown"
-                                 data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                            <img class="rounded-circle header-profile-user" src="{{asset('assets/images/users/user-1.jpg')}}"
-                                 alt="Header Avatar">
-                            <span class="d-none d-xl-inline-block ms-1">
-{{--                                {{Auth::user()->name}}--}}
-                            </span>
-                            <i class="mdi mdi-chevron-down d-none d-xl-inline-block"></i>
-                        </button>
-                        <div class="dropdown-menu dropdown-menu-start" style="background-color: #fff; border: 1px solid #ccc; border-radius: 5px; box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);">
 
-                            <!-- Divider -->
-
-                            <!-- Logout Form -->
-                            <form action="{{ route('auth.logout') }}" method="POST" style="padding: 10px;">
-                                @csrf
-                                <button type="submit" class="btn btn-danger">{{__('lang.logout')}}</button>
-                            </form>
-
-                        </div>
 
                     </div>
 
