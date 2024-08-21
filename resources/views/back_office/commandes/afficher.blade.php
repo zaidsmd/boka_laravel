@@ -22,7 +22,7 @@
                     <div class="card-title">
                         <div id="__fixed" class="d-flex justify-content-between align-items-center">
                             <div>
-                                <a href="{{route('commandes.liste')}}"><i class="fa fa-arrow-left"></i></a>
+                                <a href="{{route('commandes.liste')}}"><i class="fa fa-arrow-right"></i></a>
                                 <h5 class="m-0 float-end ms-3" style="margin-top: .1rem!important"><i
                                         class="mdi mdi-chart-bell-curve-cumulative me-2 text-success"></i>
                                      تفاصيل الطلب

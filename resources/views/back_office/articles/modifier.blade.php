@@ -1,5 +1,5 @@
 @extends('back_office.admin_layouts.main')
-@section('document-title',__('lang.articles.title'))
+@section('document-title','Articles'))
 @push('css')
     <link rel="stylesheet" href="{{asset('libs/select2/css/select2.min.css')}}">
     <link href="{{asset('libs/bootstrap-datepicker/css/bootstrap-datepicker.min.css')}}" rel="stylesheet">
@@ -87,7 +87,7 @@
                         <div class="card-title">
                             <div id="__fixed" class="d-flex justify-content-between align-items-center">
                                 <div>
-                                    <a href="{{route('articles.liste')}}"><i class="fa fa-arrow-left"></i></a>
+                                    <a href="{{route('articles.liste')}}"><i class="fa fa-arrow-right"></i></a>
                                     <h5 class="m-0 float-end ms-3"><i class="fa  fas fa-boxes me-2 text-success"></i>
                                         تعديل منتج</h5>
                                 </div>

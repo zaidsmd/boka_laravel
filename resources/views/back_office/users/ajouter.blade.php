@@ -23,7 +23,7 @@
                         <div class="card-title">
                             <div id="__fixed" class="d-flex switch-filter justify-content-between align-items-center">
                                 <div>
-                                    <a href="{{route('utilisateurs.liste')}}"><i class="fa fa-arrow-left"></i></a>
+                                    <a href="{{route('utilisateurs.liste')}}"><i class="fa fa-arrow-right"></i></a>
                                     <h5 class="m-0 float-end ms-3">
                                         <i class="mdi me-2 text-success mdi-account-group"></i>
                                         إضافة مستخدم
