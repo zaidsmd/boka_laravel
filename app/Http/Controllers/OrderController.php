@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Jobs\SendOrderSummaryEmail;
 use App\Models\CartLine;
 use App\Models\Order;
 use App\Models\OrderShippingAddress;
@@ -100,6 +101,8 @@ class OrderController extends Controller
             session()->flash('error','رقم الطلب غير صحيح');
             return redirect()->route('home');
         }
+        SendOrderSummaryEmail::dispatch($order);
+        session()->flash('success','لقد أرسلنا لك بريدًا إلكترونيًا للتأكيد');
         return  view('order-confirmation',compact('order'));
     }
 
@@ -143,4 +146,8 @@ class OrderController extends Controller
 
         return $orderNumber;
     }
+
+
+
+
 }

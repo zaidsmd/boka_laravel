@@ -11,16 +11,7 @@
                         <form method="POST" action="{{ route('password.reset.update') }}">
                             @csrf
                             <input type="hidden" name="token" value="{{ $token }}">
-                            <div class="form-group my-3">
-                                <label for="email" class="form-label">البريد الإلكتروني</label>
-                                <input type="email" id="email" name="email" value="{{ old('email') }}"
-                                       class="form-control @error('email') is-invalid @enderror">
-                                @error('email')
-                                <div class="invalid-feedback">
-                                    {{ $message }}
-                                </div>
-                                @enderror
-                            </div>
+
                             <div class="form-group my-3">
                                 <label for="password" class="form-label">كلمة المرور الجديدة</label>
                                 <input type="password" id="password" name="password"

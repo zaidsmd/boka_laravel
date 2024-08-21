@@ -1,16 +1,17 @@
 <?php
 
-namespace App\Http\Controllers;
+namespace App\Http\Controllers\Auth;
 
+use App\Http\Controllers\Controller;
+use App\Jobs\SendRegistrationEmail;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Hash;
-use Illuminate\Support\Facades\Redirect;
-use Illuminate\Support\Facades\Mail;
-use Illuminate\Support\Str;
 use Illuminate\Support\Facades\Password;
+use Illuminate\Support\Facades\Redirect;
+use Illuminate\Support\Str;
 
 class PasswordSetupController extends Controller
 {
@@ -18,12 +19,28 @@ class PasswordSetupController extends Controller
     public function register(Request $request)
     {
         $request->validate([
+            'first_name' => 'required|string|max:255',
+            'last_name' => 'required|string|max:255',
             'email_reg' => 'required|email|unique:users,email',
+        ], [
+            'first_name.required' => 'الاسم الأول مطلوب.',
+            'first_name.string' => 'يجب أن يكون الاسم الأول نصاً.',
+            'first_name.max' => 'الاسم الأول يجب ألا يزيد عن 255 حرفاً.',
+
+            'last_name.required' => 'اسم العائلة مطلوب.',
+            'last_name.string' => 'يجب أن يكون اسم العائلة نصاً.',
+            'last_name.max' => 'اسم العائلة يجب ألا يزيد عن 255 حرفاً.',
+
+            'email_reg.required' => 'البريد الإلكتروني مطلوب.',
+            'email_reg.email' => 'يجب أن يكون البريد الإلكتروني صالحاً.',
+            'email_reg.unique' => 'البريد الإلكتروني مسجل بالفعل.',
         ]);
 
+
+
         $user = User::create([
-            'first_name' => null,
-            'last_name' => null,
+            'first_name' => $request->get('first_name'),
+            'last_name' => $request->get('last_name'),
             'email' => $request->email_reg,
             'password' => Hash::make('dummy'), // Placeholder password
         ]);
@@ -36,42 +53,16 @@ class PasswordSetupController extends Controller
             'created_at' => now(),
         ]);
 
-        $setupUrl = url('/set-password/' . $token);
-
-        // Send the registration email
-        Mail::send('emails.registration', ['setupUrl' => $setupUrl], function ($message) use ($user) {
-            $message->to($user->email)
-                ->subject('Set Your Password');
-        });
+        // Dispatch the email sending job
+        $details = [
+            'email' => $user->email,
+            'token' => $token
+        ];
+        SendRegistrationEmail::dispatch($details);
 
         return redirect()->back()->with('status', 'تم التسجيل بنجاح! يرجى التحقق من بريدك الإلكتروني لتعيين كلمة المرور.');
     }
-    protected function create(array $data)
-    {
-        $user = User::create([
-            'name' => $data['name'],
-            'email' => $data['email'],
-            'password' => Hash::make('dummy'), // Placeholder password
-        ]);
 
-        // Generate a token for the password setup link
-        $token = Str::random(60);
-        DB::table('password_resets')->insert([
-            'email' => $user->email,
-            'token' => $token,
-            'created_at' => now(),
-        ]);
-
-        $setupUrl = url('/set-password/' . $token);
-
-        // Send the registration email
-        Mail::send('emails.registration', ['setupUrl' => $setupUrl], function ($message) use ($user) {
-            $message->to($user->email)
-                ->subject('Set Your Password');
-        });
-
-        return $user;
-    }
     public function showForm($token)
     {
         // Validate the token (ensure it matches a user and has not expired)
@@ -112,51 +103,12 @@ class PasswordSetupController extends Controller
 
             // Log the user in
             Auth::login($user);
-
+            session()->flash('success','تم تعيين كلمة المرور بنجاح!');
             return redirect('/my-account')->with('status', 'تم تعيين كلمة المرور بنجاح!');
         }
 
         return Redirect::route('password.set', ['token' => $request->token])
             ->withErrors(['token' => 'لم نتمكن من تعيين كلمة المرور.']);
-    }
-
-    public function showLinkRequestForm()
-    {
-        return view('auth.forgot_email');
-
-    }
-
-    public function sendResetLinkEmail(Request $request)
-    {
-        $this->validateEmail($request);
-
-        // Attempt to send the password reset link.
-        $response = $this->broker()->sendResetLink(
-            $request->only('email')
-        );
-
-        return $response === Password::RESET_LINK_SENT
-            ? back()->with('status', trans($response))
-            : back()->withErrors(
-                ['email' => trans($response)]
-            );
-    }
-
-    // Validate the email address.
-    protected function validateEmail(Request $request)
-    {
-
-        $request->validate([
-            'email' => 'required|email',
-        ] ) ;
-
-
-    }
-
-    // Get the password broker to be used during password resets.
-    protected function broker()
-    {
-        return Password::broker();
     }
 
 

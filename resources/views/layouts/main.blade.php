@@ -11,6 +11,7 @@
     <link rel="stylesheet" href="{{asset('libs/notyf/notyf.min.css')}}">
     @vite(['resources/css/app.scss'])
     @stack('styles')
+
     <script src="{{asset('js/jquery/jquery-3.7.1.min.js')}}"></script>
 </head>
 <body class="bg-body-tertiary min-vh-100 d-flex flex-column">

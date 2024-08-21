@@ -1,5 +1,6 @@
 @extends('layouts.main')
 @section('document-title','لوحة حسابي')
+
 @section('page')
     @if($auth)
         <section>
@@ -326,14 +327,42 @@
                             @endif
                             <form method="post" action="{{ route('register') }}">
                                 @csrf
-                                <label for="email-reg" class="form-label">البريد الإلكتروني</label>
-                                <input type="email" id="email-reg" name="email_reg"
-                                       class="form-control @error('email_reg') is-invalid @enderror">
-                                @error('email_reg')
-                                <div class="invalid-feedback">
-                                    {{ $message }}
+                                <div class="form-group my-3">
+                                    <label for="first_name " class="form-label required">الاسم الشخصي</label>
+                                    <input type="text" id="first_name" name="first_name"
+                                           class="form-control @error('first_name') is-invalid @enderror"
+                                           value="{{ old('first_name') }}"
+                                    >
+                                    @error('first_name')
+                                    <div class="invalid-feedback">
+                                        {{ $message }}
+                                    </div>
+                                    @enderror
                                 </div>
-                                @enderror
+                                <div class="form-group my-3">
+                                    <label for="last_name " class="form-label required">الاسم العائلي</label>
+                                    <input type="text" id="last_name" name="last_name"
+                                           class="form-control @error('last_name') is-invalid @enderror"
+                                           value="{{ old('last_name') }}"
+                                    >
+                                    @error('last_name')
+                                    <div class="invalid-feedback">
+                                        {{ $message }}
+                                    </div>
+                                    @enderror
+                                </div>
+                                <div class="form-group my-3">
+                                    <label for="email-reg " class="form-label required">البريد الإلكتروني</label>
+                                    <input type="email" id="email-reg" name="email_reg"
+                                           class="form-control @error('email_reg') is-invalid @enderror"
+                                           value="{{ old('email_reg') }}"
+                                    >
+                                    @error('email_reg')
+                                    <div class="invalid-feedback">
+                                        {{ $message }}
+                                    </div>
+                                    @enderror
+                                </div>
                                 <p class="mt-2">
                                     سيتم إرسال رابط لتعيين كلمة مرور جديدة إلى عنوان بريدك الإلكتروني.
                                     <br>
