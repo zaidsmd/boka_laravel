@@ -64,8 +64,8 @@
 
                         <button  type="button" class="btn header-item waves-effect user-step" id="page-header-user-dropdown"
                                  data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                            <img class="rounded-circle header-profile-user" src="{{asset('assets/images/users/user-1.jpg')}}"
-                                 alt="Header Avatar">
+{{--                            <img class="rounded-circle header-profile-user" src="{{asset('assets/images/users/user-1.jpg')}}"--}}
+{{--                                 alt="Header Avatar">--}}
                             <span class="d-none d-xl-inline-block ms-1">
                                 {{Auth::user()->first_name}}
                                 {{Auth::user()->last_name}}

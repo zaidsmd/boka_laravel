@@ -56,30 +56,40 @@ class OrderController extends Controller
                     // If the user exists, log them in
                     session()->flash('warning','لم نتمكن من إنشاء حساب جديد لأنه موجود بالفعل');
                 } else {
-                    // Create new user if they don't exist
-                    $user = User::create([
-                        'first_name' => $request->input('first_name'),
-                        'last_name' => $request->input('last_name'),
-                        'email' => $request->input('email'),
-                        'password' => bcrypt($request->input('dummy')), // Hash the password
-                        'role' => 'user', // Default role
-                    ]);
+                    $existingToken = DB::table('password_reset_tokens')->where('email', $request->input('email'))->first();
 
-                    // Log in the newly created user
-                    $token = Str::random(60);
-                    DB::table('password_reset_tokens')->insert([
-                        'email' => $user->email,
-                        'token' => $token,
-                        'created_at' => now(),
-                    ]);
-                    $details = [
-                        'email' => $user->email,
-                        'token' => $token
-                    ];
-                    SendRegistrationEmail::dispatch($details);
-                    session()->flash('success',' يرجى التحقق من بريدك الإلكتروني لتعيين كلمة المرور');
 
-                    auth()->login($user);
+                    if ($existingToken) {
+                        // If a token exists, show a message that email has already been sent
+                        session()->flash('success', 'تم إرسال بريد إلكتروني لتعيين كلمة المرور مسبقًا.');
+                    }else{
+                        $user = User::create([
+                            'first_name' => $request->input('first_name'),
+                            'last_name' => $request->input('last_name'),
+                            'email' => $request->input('email'),
+                            'password' => bcrypt($request->input('dummy')), // Hash the password
+                            'role' => 'user', // Default role
+                        ]);
+
+
+
+                        // Log in the newly created user
+                        $token = Str::random(60);
+                        DB::table('password_reset_tokens')->insert([
+                            'email' => $user->email,
+                            'token' => $token,
+                            'created_at' => now(),
+                        ]);
+                        $details = [
+                            'email' => $user->email,
+                            'token' => $token
+                        ];
+                        SendRegistrationEmail::dispatch($details);
+                        session()->flash('success',' يرجى التحقق من بريدك الإلكتروني لتعيين كلمة المرور');
+                        auth()->login($user);
+
+                    }
+
 
                 }
             }
