@@ -34,7 +34,14 @@ class TableauBordController extends Controller
                 $articles = Article::count();
                 $categories = Category::count();
                 $tags = Tag::count();
-                $utilisateurs = User::count();
+                $utilisateurs_admin = User::where('role', 'admin')->count();
+                $utilisateurs = User::where('role', 'user')->count();
+
+                $processing_sum = Order::where('status', 'قيد المعالجة')->whereBetween('created_at', [$date_picker_start, $date_picker_end])->sum('total');
+                $canceled_sum = Order::where('status', 'ملغى')->whereBetween('created_at', [$date_picker_start, $date_picker_end])->sum('total');
+                $delivered_sum = Order::where('status', 'تم التوصيل')->whereBetween('created_at', [$date_picker_start, $date_picker_end])->sum('total');
+                $shipped_sum = Order::where('status', 'مُرسل')->whereBetween('created_at', [$date_picker_start, $date_picker_end])->sum('total');
+
 
                 $canceled = Order::where('status', 'ملغى')->whereBetween('created_at', [$date_picker_start, $date_picker_end])->count();
                 $delivered = Order::where('status', 'تم التوصيل')->whereBetween('created_at', [$date_picker_start, $date_picker_end])->count();
@@ -48,7 +55,7 @@ class TableauBordController extends Controller
             return view('back_office.tableau_bord', compact(
                 'range', 'date_picker_end', 'date_picker_start',
                  'canceled', 'delivered', 'shipped', 'processing',
-                'articles', 'categories', 'tags', 'utilisateurs'
+                'articles', 'categories', 'tags', 'utilisateurs', 'processing_sum', 'canceled_sum', 'delivered_sum','shipped_sum','utilisateurs_admin'
             ));
         }
 
@@ -56,7 +63,13 @@ class TableauBordController extends Controller
         $articles = Article::count();
         $categories = Category::count();
         $tags = Tag::count();
-        $utilisateurs = User::count();
+        $utilisateurs_admin = User::where('role', 'admin')->count();
+        $utilisateurs = User::where('role', 'user')->count();
+
+        $processing_sum = Order::where('status', 'قيد المعالجة')->sum('total');
+        $canceled_sum = Order::where('status', 'ملغى')->sum('total');
+        $delivered_sum = Order::where('status', 'تم التوصيل')->sum('total');
+        $shipped_sum = Order::where('status', 'مُرسل')->sum('total');
 
         $canceled = Order::where('status', 'ملغى')->count();
         $delivered = Order::where('status', 'تم التوصيل')->count();
@@ -66,7 +79,7 @@ class TableauBordController extends Controller
         return view('back_office.tableau_bord', compact(
             'range', 'date_picker_end', 'date_picker_start',
             'canceled', 'delivered', 'shipped', 'processing',
-            'articles', 'categories', 'tags', 'utilisateurs'
+            'articles', 'categories', 'tags', 'utilisateurs' ,'processing_sum', 'canceled_sum', 'delivered_sum','shipped_sum','utilisateurs_admin'
         ));
     }
 

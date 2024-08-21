@@ -93,11 +93,22 @@
                 <div class="card-body bg-soft-success text-dark overflow-hidden rounded">
                     <div class="d-flex flex-nowrap align-items-center">
                         <i class="fa fa-spinner text-success fa-3x"></i>
-                        <div class="ms-4">
+                        <div class="position-absolute end-0 top-0 mt-3 me-3 ">
+                            <button class="border-0 h6 bg-white text-success p-1 rounded order order_trigger" ><i class=" fas fa-exchange-alt"></i></button>
+                            <button class="border-0 h6 bg-white text-success p-1 rounded order d-none order_trigger" ><i class=" fas fa-exchange-alt"></i></button>
+                        </div>
+                        <div class="ms-4 order">
                             <h4 class="text-dark dashboard-text">
                                 {{$processing}}
                             </h4>
                             <h6 class="m-0 text-dark">عدد الطلبات قيد المعالجة</h6>
+                        </div>
+
+                        <div class="ms-4 order d-none">
+                            <h4 class="text-dark dashboard-text">
+                                {{$processing_sum}} د.م
+                            </h4>
+                            <h6 class="m-0 text-dark">إجمالي الطلبات قيد المعالجة </h6>
                         </div>
                     </div>
                 </div>
@@ -110,11 +121,22 @@
                 <div class="card-body bg-soft-primary text-light overflow-hidden rounded">
                     <div class="d-flex flex-nowrap align-items-center">
                         <i class="fa fa-truck text-primary fa-3x"></i>
-                        <div class="ms-4">
+                        <div class="position-absolute end-0 top-0 mt-3 me-3 ">
+                            <button class="border-0 h6 bg-white text-primary p-1 rounded shipped shipped_trigger" ><i class=" fas fa-exchange-alt"></i></button>
+                            <button class="border-0 h6 bg-white text-primary p-1 rounded shipped d-none shipped_trigger" ><i class=" fas fa-exchange-alt"></i></button>
+                        </div>
+                        <div class="ms-4 shipped">
                             <h4 class="text-dark dashboard-text">
                                 {{$shipped}}
                             </h4>
                             <h6 class="m-0 text-dark">عدد الطلبات المُرسلة</h6>
+                        </div>
+
+                        <div class="ms-4 shipped d-none">
+                            <h4 class="text-dark dashboard-text">
+                                {{$shipped_sum}} د.م
+                            </h4>
+                            <h6 class="m-0 text-dark">إجمالي الطلبات المُرسلة</h6>
                         </div>
                     </div>
                 </div>
@@ -126,11 +148,21 @@
                 <div class="card-body bg-soft-warning text-light overflow-hidden rounded">
                     <div class="d-flex flex-nowrap align-items-center">
                         <i class="fa fa-check-circle text-warning fa-3x"></i>
-                        <div class="ms-4">
+                        <div class="position-absolute end-0 top-0 mt-3 me-3 ">
+                            <button class="border-0 h6 bg-white text-warning p-1 rounded delivered delivered_trigger" ><i class=" fas fa-exchange-alt"></i></button>
+                            <button class="border-0 h6 bg-white text-warning p-1 rounded delivered d-none delivered_trigger" ><i class=" fas fa-exchange-alt"></i></button>
+                        </div>
+                        <div class="ms-4 delivered" >
                             <h4 class="text-dark dashboard-text">
                                 {{$delivered}}
                             </h4>
                             <h6 class="m-0 text-dark">عدد الطلبات الموصلة</h6>
+                        </div>
+                        <div class="ms-4 delivered d-none">
+                            <h4 class="text-dark dashboard-text">
+                                {{$delivered_sum}} د.م
+                            </h4>
+                            <h6 class="m-0 text-dark">إجمالي الطلبات الموصلة</h6>
                         </div>
                     </div>
                 </div>
@@ -143,11 +175,21 @@
                 <div class="card-body bg-soft-danger text-light overflow-hidden rounded">
                     <div class="d-flex flex-nowrap align-items-center">
                         <i class="fa fa-ban text-danger fa-3x"></i>
-                        <div class="ms-4">
+                        <div class="position-absolute end-0 top-0 mt-3 me-3 ">
+                            <button class="border-0 h6 bg-white text-danger p-1 rounded canceled canceled_trigger" ><i class=" fas fa-exchange-alt"></i></button>
+                            <button class="border-0 h6 bg-white text-danger p-1 rounded canceled d-none canceled_trigger" ><i class=" fas fa-exchange-alt"></i></button>
+                        </div>
+                        <div class="ms-4 canceled">
                             <h4 class="text-dark dashboard-text">
                                 {{$canceled}}
                             </h4>
                             <h6 class="m-0 text-dark">عدد الطلبات الملغاة</h6>
+                        </div>
+                        <div class="ms-4 canceled d-none">
+                            <h4 class="text-dark dashboard-text">
+                                {{$canceled_sum}} د.م
+                            </h4>
+                            <h6 class="m-0 text-dark">إجمالي الطلبات الملغاة</h6>
                         </div>
                     </div>
                 </div>
@@ -216,17 +258,28 @@
             </div>
         </div>
 
+
         <!-- Number of Users -->
         <div class="col-xl-3 col-12 col-md-6 __dashboard_item __dashboard_sortable_item">
             <div class="card overflow-hidden">
                 <div class="card-body bg-soft-danger text-light overflow-hidden rounded">
                     <div class="d-flex flex-nowrap align-items-center">
                         <i class="fa fa-users text-danger fa-3x"></i>
-                        <div class="ms-4">
+                        <div class="position-absolute end-0 top-0 mt-3 me-3 ">
+                            <button class="border-0 h6 bg-white text-danger p-1 rounded users users_trigger" ><i class=" fas fa-exchange-alt"></i></button>
+                            <button class="border-0 h6 bg-white text-danger p-1 rounded users d-none users_trigger" ><i class=" fas fa-exchange-alt"></i></button>
+                        </div>
+                        <div class="ms-4 users">
+                            <h4 class="text-dark dashboard-text">
+                                {{$utilisateurs_admin}}
+                            </h4>
+                            <h6 class="m-0 text-dark">عدد المستخدمين الإداريين</h6>
+                        </div>
+                        <div class="ms-4 users d-none">
                             <h4 class="text-dark dashboard-text">
                                 {{$utilisateurs}}
                             </h4>
-                            <h6 class="m-0 text-dark">عدد المستخدمين</h6>
+                            <h6 class="m-0 text-dark">عدد المستخدمين العاديين</h6>
                         </div>
                     </div>
                 </div>
@@ -304,6 +357,21 @@
         $('#i_date').change(function () {
             $(this).closest('form').submit();
         });
+        $('.order_trigger').click(function (){
+            $('.order').toggleClass('d-none')
+        })
+        $('.shipped_trigger').click(function (){
+            $('.shipped').toggleClass('d-none')
+        })
+        $('.delivered_trigger').click(function (){
+            $('.delivered').toggleClass('d-none')
+        })
+        $('.canceled_trigger').click(function (){
+            $('.canceled').toggleClass('d-none')
+        })
+        $('.users_trigger').click(function (){
+            $('.users').toggleClass('d-none')
+        })
     </script>
 
 @endpush
