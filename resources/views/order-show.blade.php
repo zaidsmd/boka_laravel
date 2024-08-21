@@ -29,7 +29,7 @@
                     <div class="card-body">
                         <h6>المجموع</h6>
                         <div class="text-primary">
-                            {{number_format($order->total+$order->shipping_fee,2,',',' ')}} د.م
+                            {{number_format($order->total)}} د.م
                         </div>
                     </div>
                 </div>

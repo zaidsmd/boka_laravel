@@ -24,7 +24,7 @@ class SendRegistrationEmail implements ShouldQueue
         $setupUrl = url('/set-password/' . $this->details['token']);
         Mail::send('emails.registration', ['setupUrl' => $setupUrl], function ($message) {
             $message->to($this->details['email'])
-                ->subject('Set Your Password');
+                ->subject('قم بتعيين كلمة المرور الخاصة بك');
         });
     }
 }

@@ -39,8 +39,8 @@ class PasswordSetupController extends Controller
 
 
         $user = User::create([
-            'first_name' => $request->get('first_name'),
-            'last_name' => $request->get('last_name'),
+            'first_name' => $request->get('first_name') ?? null,
+            'last_name' => $request->get('last_name') ?? null,
             'email' => $request->email_reg,
             'password' => Hash::make('dummy'), // Placeholder password
         ]);

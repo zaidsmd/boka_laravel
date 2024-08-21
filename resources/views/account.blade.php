@@ -296,7 +296,7 @@
                             <div class="row py-2 bg-white my-2 border rounded">
                                 <div class="col-md-4 col-6">{{$order->number}}</div>
                                 <div class="col-md-3 col-4">{{$order->created_at->format('d/m/Y')}}</div>
-                                <div class="col-3 d-none d-md-block">{{number_format($order->total + $order->shipping_fee,2,',',' ')}}د.م
+                                <div class="col-3 d-none d-md-block">{{$order->total }}د.م
                                 </div>
                                 <div class="col-2">
                                     <button data-order="{{$order->number}}" class="btn order-show-btn btn-primary btn-sm btn-rounded text-white"><span

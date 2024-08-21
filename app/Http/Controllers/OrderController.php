@@ -3,10 +3,12 @@
 namespace App\Http\Controllers;
 
 use App\Jobs\SendOrderSummaryEmail;
+use App\Jobs\SendRegistrationEmail;
 use App\Models\CartLine;
 use App\Models\Order;
 use App\Models\OrderShippingAddress;
 use App\Models\OrderLine;
+use App\Models\User;
 use Carbon\Carbon;
 use DragonCode\Support\Facades\Helpers\Str;
 use Illuminate\Http\Request;
@@ -46,6 +48,42 @@ class OrderController extends Controller
             if ($request->has('shipping')){
                 $shipping_fee = $request->input('shipping.city') ==='tangier' ? 25 : 40;
             }
+            if ($request->has('create_account')) {
+                // Check if the user already exists
+                $existingUser = User::where('email', $request->input('email'))->first();
+
+                if ($existingUser) {
+                    // If the user exists, log them in
+                    session()->flash('warning','لم نتمكن من إنشاء حساب جديد لأنه موجود بالفعل');
+                } else {
+                    // Create new user if they don't exist
+                    $user = User::create([
+                        'first_name' => $request->input('first_name'),
+                        'last_name' => $request->input('last_name'),
+                        'email' => $request->input('email'),
+                        'password' => bcrypt($request->input('dummy')), // Hash the password
+                        'role' => 'user', // Default role
+                    ]);
+
+                    // Log in the newly created user
+                    $token = Str::random(60);
+                    DB::table('password_reset_tokens')->insert([
+                        'email' => $user->email,
+                        'token' => $token,
+                        'created_at' => now(),
+                    ]);
+                    $details = [
+                        'email' => $user->email,
+                        'token' => $token
+                    ];
+                    SendRegistrationEmail::dispatch($details);
+                    session()->flash('success',' يرجى التحقق من بريدك الإلكتروني لتعيين كلمة المرور');
+
+                    auth()->login($user);
+
+                }
+            }
+
             $order = Order::create([
                 'payment_method' => $request->input('payment_method') === 'cash' ? "نقدا عند الاستلام" : "تحويل مصرفي",
                 'status' => "قيد المعالجة",
@@ -79,8 +117,10 @@ class OrderController extends Controller
                     'order_id'=> $order->id,
                 ]);
             }
+            SendOrderSummaryEmail::dispatch($order);
             CartLine::where('cart_id',$cart->id)->delete();
             DB::commit();
+            session()->flash('success','لقد أرسلنا لك بريدًا إلكترونيًا للتأكيد');
             return redirect()->route('order.confirmations',$order->number);
         }catch (\Exception $exception){
             DB::rollBack();
@@ -101,8 +141,6 @@ class OrderController extends Controller
             session()->flash('error','رقم الطلب غير صحيح');
             return redirect()->route('home');
         }
-        SendOrderSummaryEmail::dispatch($order);
-        session()->flash('success','لقد أرسلنا لك بريدًا إلكترونيًا للتأكيد');
         return  view('order-confirmation',compact('order'));
     }
 

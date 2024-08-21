@@ -34,6 +34,9 @@
     @if(session()->has('danger'))
     notyf.error("{{session()->get('danger')}}")
     @endif
+    @if(session()->has('warning'))
+    notyf.error("{{session()->get('warning')}}")
+    @endif
 </script>
 @vite(['resources/js/app.js'])
 @stack('scripts')

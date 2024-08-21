@@ -148,6 +148,10 @@
                         </div>
                     </div>
                 </div>
+                @guest()
+                    <h4><input type="checkbox" class="form-check-input mx-2 create_account-checkbox" id="create_account" name="create_account"
+                        >    إنشاء حساب جديد</h4>
+                @endguest
             </div>
             <div class="col-12 mt-4">
                 <div class="bg-orange-400 rounded p-3">
