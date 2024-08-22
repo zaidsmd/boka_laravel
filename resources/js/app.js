@@ -6,6 +6,7 @@ $(document).on('click', '.add-to-cart-card,.add-to-cart-card-mobile', function (
     let btn = $(this);
     let product = btn.closest('.product-card')
     let btn_html = btn.html();
+    product.find('.errors').html('')
     btn.html('<div class="spinner-border m-0 spinner-border-sm" role="status">' +
         '  <span class="visually-hidden">Loading...</span>' +
         '</div>')
@@ -42,7 +43,11 @@ $(document).on('click', '.add-to-cart-card,.add-to-cart-card-mobile', function (
             }, 550)
         },
         error: function (xhr) {
-            notyf.error(xhr.responseText);
+            if (xhr.status === 422){
+                product.find('.errors').text(xhr.responseText)
+            }else {
+                notyf.error(xhr.responseText);
+            }
             btn.html(btn_html)
         }
     })
@@ -279,8 +284,9 @@ $(document).ready(function () {
 })
 
 $(document).on('click', '.add-to-cart-card-single', function () {
-    let cart = $('.cart')
+    let cart = $('.cart:visible')
     let btn = $(this);
+    $('.errors').html('')
     let btn_html = btn.html();
     btn.append($('<div class="spinner-border m-0 spinner-border-sm" role="status">' +
         '  <span class="visually-hidden">Loading...</span>' +
@@ -305,6 +311,7 @@ $(document).on('click', '.add-to-cart-card-single', function () {
             success.css('left', btn_boundaries['x'] + (btn_boundaries['width'] / 2) + window.scrollX + 'px')
             $('body').append(success)
             cart_total = response.total;
+            cart_count = response.count;
             notyf.success(response.message)
 
             setTimeout(() => {
@@ -323,7 +330,11 @@ $(document).on('click', '.add-to-cart-card-single', function () {
             }, 550)
         },
         error: function (xhr) {
-            notyf.error(xhr.responseText);
+            if (xhr.status === 422){
+                $('.errors').text(xhr.responseText)
+            }else {
+                notyf.error(xhr.responseText);
+            }
             btn.html(btn_html)
         }
     })

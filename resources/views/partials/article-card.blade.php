@@ -8,9 +8,12 @@
             </div>
         @endif
         <div class="card-img w-100 position-relative">
-            <div class="add-to-cart-card d-md-block d-none">
-                <i class="fa-solid fa-cart-shopping"></i>
-            </div>
+            @if($article->quantite)
+                <div class="add-to-cart-card d-md-block d-none">
+                    <i class="fa-solid fa-cart-shopping"></i>
+                </div>
+            @endif
+
             <a href="{{route('single',$article->slug)}}">
 
                 <img src="{{$article->getFirstMediaUrl('principal')}}" class="img-fluid w-100" alt="">
@@ -31,8 +34,13 @@
 
             </div>
         </a>
-        <div class="btn btn-primary d-md-none text-white mx-3 my-2 add-to-cart-card-mobile d-block">
-            <i class="fa-solid fa-cart-shopping"></i>
-        </div>
+        @if($article->quantite)
+            <div class="btn btn-primary d-md-none text-white mx-3 my-2 add-to-cart-card-mobile d-block">
+                <i class="fa-solid fa-cart-shopping"></i>
+            </div>
+            @else
+                <h6 class="text-danger d-inline mb-3 text-center" >هذا المنتج غير متوفر</h6>
+            @endif
+        <div class="errors text-danger text-center py-2"></div>
     </div>
 </div>

@@ -3,13 +3,15 @@ var current_page = '';
 var total = 0;
 var per_page_count = 12;
 var skeleton = '<div class="col-xl-3 col-lg-4 col-6 py-2 d-flex skeleton-wrapper"><div class="card border-0 shadow-sm overflow-hidden product-card w-100" data-id=""><div class="skeleton-sale-price"></div><div class="card-img w-100 position-relative"><div class="skeleton-img"></div></div><div class="card-body text-center"><p class="skeleton-title"></p><p class="skeleton-price"></p></div></div></div>';
-function skeletonPaster(count){
+
+function skeletonPaster(count) {
     let html = '';
-    for (let i = 0; i <count ; i++) {
-        html+=skeleton
+    for (let i = 0; i < count; i++) {
+        html += skeleton
     }
     return $(html)
 }
+
 function createProductCard(article) {
     let $wrapper = $('<div class="col-xl-3 col-lg-4 col-6 py-2 d-flex"></div>')
     var $card = $('<div>', {
@@ -26,12 +28,14 @@ function createProductCard(article) {
         $card.append($saleBadge);
     }
 
-    var $cardImg = $('<div>', { class: 'card-img w-100 position-relative' });
+    var $cardImg = $('<div>', {class: 'card-img w-100 position-relative'});
 
-    var $cartIcon = $('<div>', { class: 'add-to-cart-card d-sm-block d-none' }).append($('<i>', { class: 'fa-solid fa-cart-shopping' }));
-    $cardImg.append($cartIcon);
+    var $cartIcon = $('<div>', {class: 'add-to-cart-card d-sm-block d-none'}).append($('<i>', {class: 'fa-solid fa-cart-shopping'}));
+    if (article.quantity) {
+        $cardImg.append($cartIcon);
+    }
 
-    var $imageLink = $('<a>', { href: window.origin+`/product/${article.slug}` });
+    var $imageLink = $('<a>', {href: window.origin + `/product/${article.slug}`});
     var $image = $('<img>', {
         src: article.media_url,
         class: 'img-fluid w-100',
@@ -41,63 +45,73 @@ function createProductCard(article) {
     $cardImg.append($imageLink);
     $card.append($cardImg);
 
-    var $cardBody = $('<div>', { class: 'card-body text-center' });
-    var $title = $('<p>', { class: 'fw-medium text-muted text-truncate m-0', text: article.title });
+    var $cardBody = $('<div>', {class: 'card-body text-center'});
+    var $title = $('<p>', {class: 'fw-medium text-muted text-truncate m-0', text: article.title});
     $cardBody.append($title);
 
     if (article.sale_price) {
-        var $price = $('<p>', { class: 'fs-5 fw-bold text-primary' });
+        var $price = $('<p>', {class: 'fs-5 fw-bold text-primary'});
         var $originalPrice = $('<span>', {
             class: 'mx-2 text-decoration-line-through text-orange-400 fw-normal',
             style: 'font-size: 12px',
-            text: ` ${article.price.toLocaleString('ar-MA', { minimumFractionDigits: 2 })} `
+            text: ` ${article.price.toLocaleString('ar-MA', {minimumFractionDigits: 2})} `
         });
         $price.append($originalPrice);
-        $price.append(`د.م ${article.sale_price.toLocaleString('ar-MA', { minimumFractionDigits: 2 })}`);
+        $price.append(`د.م ${article.sale_price.toLocaleString('ar-MA', {minimumFractionDigits: 2})}`);
         $cardBody.append($price);
     } else {
         var $price = $('<p>', {
             class: 'fs-5 fw-bold text-primary text-decoration-none',
-            text: `د.م ${article.price.toLocaleString('ar-MA', { minimumFractionDigits: 2 })}`
+            text: `د.م ${article.price.toLocaleString('ar-MA', {minimumFractionDigits: 2})}`
         });
         $cardBody.append($price);
     }
-    $card.append($('<a>', { href: window.origin+`/product/${article.slug}`, class: 'text-decoration-none' }).append($cardBody));
-    $card.append($(' <div class="btn btn-primary add-to-cart-card-mobile d-md-none d-block text-white mt-auto mb-3 mx-3" ><i class="fa-solid fa-cart-shopping"></i></div>'))
+    $card.append($('<a>', {
+        href: window.origin + `/product/${article.slug}`,
+        class: 'text-decoration-none'
+    }).append($cardBody));
+    if (article.quantity) {
+        $card.append($(' <div class="btn btn-primary add-to-cart-card-mobile d-md-none d-block text-white mt-auto mb-3 mx-3" ><i class="fa-solid fa-cart-shopping"></i></div>'))
+    }else {
+        $card.append($(' <h6 class="text-danger d-inline mb-3 text-center" >هذا المنتج غير متوفر</h6>'))
+    }
+    $card.append($('        <div class="errors text-danger text-center py-2"></div>\n'))
     $wrapper.append($card)
     return $wrapper;
 }
-function populateProductCards(data){
+
+function populateProductCards(data) {
     let cards = $('.shop-cards-container').clone();
     cards.find('.skeleton-wrapper').remove();
-    if (data.length){
-        data.forEach(article=>{
+    if (data.length) {
+        data.forEach(article => {
             cards.append(createProductCard(article));
         })
-    }else {
+    } else {
         cards.append($('<div class="d-flex flex-column align-items-center justify-content-center" ><i class="fa fa-times text-primary fa-9x "></i><p>لم يتم العثور على أي منتجات تتوافق مع إختيارك.\n</p></div>'))
     }
     $('.shop-cards-container').replaceWith(cards)
 }
-function fetchProducts(count,url =window.origin + '/shop-ajax'){
+
+function fetchProducts(count, url = window.origin + '/shop-ajax') {
     $('.shop-cards-container').html('').append(skeletonPaster(count))
     let categories = [];
     let tags = [];
-    $('[name=categories]:checked').each(function (){
+    $('[name=categories]:checked').each(function () {
         categories.push($(this).val());
     })
-    $('[name=tags]:checked').each(function (){
+    $('[name=tags]:checked').each(function () {
         tags.push($(this).val());
     })
     $.ajax({
-        url: url ,
+        url: url,
         headers: {
             'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
         },
-        data:{
-            search:$('#search-input').val(),
-            min:$('#min').val(),
-            max:$('#max').val(),
+        data: {
+            search: $('#search-input').val(),
+            min: $('#min').val(),
+            max: $('#max').val(),
             categories: categories,
             sale: $('#sale:checked').val(),
             tags: tags,
@@ -105,14 +119,14 @@ function fetchProducts(count,url =window.origin + '/shop-ajax'){
         },
         success: function (response) {
             populateProductCards(response.data);
-            if (response.data.length){
+            if (response.data.length) {
                 $('.pagination-container').html('').append(generatePagination(response.meta.links))
 
-            }else {
+            } else {
                 $('.pagination-container').html('')
             }
             let img = $('.card-img');
-            img.css('height',img.width());
+            img.css('height', img.width());
             next = response.links.next
             fetchingScroll = false;
             current_page = response.meta.current_page;
@@ -122,11 +136,12 @@ function fetchProducts(count,url =window.origin + '/shop-ajax'){
         }
     })
 }
+
 function updateTagCounts(tagCounts) {
     const tagCountsMap = new Map(tagCounts.map(tag => [tag.slug, tag.article_count]));
 
 // Process all tags
-    $('input[name=tags]').each(function() {
+    $('input[name=tags]').each(function () {
         const $checkbox = $(this);
         const tagSlug = $checkbox.attr('id').replace('tag-', ''); // Extract tag slug from checkbox ID
 
@@ -141,6 +156,7 @@ function updateTagCounts(tagCounts) {
     });
 
 }
+
 function generatePagination(pages) {
     let pagination = $('<ul class="pagination justify-content-center"></ul>');
     const totalPages = pages.length;
@@ -188,10 +204,10 @@ function generatePagination(pages) {
 }
 
 
-$(document).on('click','.page-link',function (){
+$(document).on('click', '.page-link', function () {
     let btn = $(this);
     var fetchingScroll = false;
-    fetchProducts(per_page_count,btn.data('href'))
+    fetchProducts(per_page_count, btn.data('href'))
 })
 $(document).ready(function () {
     fetchProducts(per_page_count)
@@ -206,24 +222,24 @@ var fetchingScroll = false;
 // });
 
 
-$(document).on('change','.filter',function (){
-    $('.filter').attr('disabled','')
-    if (!fetchingScroll){
+$(document).on('change', '.filter', function () {
+    $('.filter').attr('disabled', '')
+    if (!fetchingScroll) {
         fetchingScroll = true;
         $('.shop-cards-container').html('').append(skeletonPaster(per_page_count))
         fetchProducts(per_page_count)
     }
 })
-$(document).on('click','.search',function (){
-    $('.filter,.search').attr('disabled','')
-    if (!fetchingScroll){
+$(document).on('click', '.search', function () {
+    $('.filter,.search').attr('disabled', '')
+    if (!fetchingScroll) {
         fetchingScroll = true;
         $('.shop-cards-container').html('').append(skeletonPaster(per_page_count))
         fetchProducts(per_page_count)
     }
 })
-$(document).on("show.bs.offcanvas","#filters-canvas",function (){
-    if (!$(this).find('.replaced').length){
+$(document).on("show.bs.offcanvas", "#filters-canvas", function () {
+    if (!$(this).find('.replaced').length) {
         $(this).find('#canvas-replace').html($('.filters-container').html());
         $(this).find('#canvas-replace').addClass('replaced')
         $('.filters-container').html('')

@@ -37,10 +37,10 @@
             </div>
             <div class="col-md-2 text-md-start text-center py-md-0 py-2">
                 <div class="input-group justify-content-md-end justify-content-center      ">
-                    <span class="input-group-text cart-item-quantity-plus">+</span>
-                    <input type="number" style="max-width: 50px !important;" value="{{$ligne->quantity}}"
+                    <span class="input-group-text @if($ligne->article->quantite > $ligne->quantity) cart-item-quantity-plus bg-primary text-white  @else disabled text-muted @endif">+</span>
+                    <input type="number" style="max-width: 50px !important;" min="1" max="{{$ligne->article->quantite}}" value="{{$ligne->quantity}}"
                            class="form-control ">
-                    <span class="input-group-text cart-item-quantity-minus">-</span>
+                    <span class="input-group-text cart-item-quantity-minus bg-primary text-white">-</span>
                 </div>
             </div>
             <div class="col-md-2 text-md-start">

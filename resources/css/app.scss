@@ -335,3 +335,37 @@ label.required {
     width: 50px;
     height: 50px;
 }
+#offcanvasNavbar {
+    width: 300px;
+    .navbar-nav {
+        padding-right: .5rem;
+    }
+    .nav-link{
+        padding: .5rem ;
+        &.active {
+            background-color: $white;
+            border-radius: .2rem;
+            color: $primary;
+        }
+        font-weight: bold;
+
+    }
+    .dropdown-menu {
+        background-color: transparent ;
+        box-shadow: none;
+        padding: 0;
+        .dropdown-item {
+            background-color: transparent ;
+            color : $white;
+            font-weight: bold;
+            padding: .5rem;
+            &.active {
+                background-color: $white ;
+                border-radius: .2rem;
+                color: $primary;
+            }
+        }
+
+    }
+
+}

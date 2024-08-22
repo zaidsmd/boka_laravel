@@ -19,6 +19,7 @@ class ArticleCollection extends ResourceCollection
                     'price' => $article->price,
                     'sale_price' => $article->sale_price,
                     'media_url' => $article->getFirstMediaUrl('principal'),
+                    'quantity'=> $article->quantite,
                     // Add any custom fields here
                     'formatted_price' => number_format($article->price, 2, ',', ' '),
                     'formatted_sale_price' => $article->sale_price ? number_format($article->sale_price, 2, ',', ' ') : null,
