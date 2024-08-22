@@ -223,9 +223,9 @@ $(document).on('click','.search',function (){
     }
 })
 $(document).on("show.bs.offcanvas","#filters-canvas",function (){
-    if (!$(this).find('#replaced').length){
-        console.log('dfs')
+    if (!$(this).find('.replaced').length){
         $(this).find('#canvas-replace').html($('.filters-container').html());
+        $(this).find('#canvas-replace').addClass('replaced')
         $('.filters-container').html('')
     }
 })
