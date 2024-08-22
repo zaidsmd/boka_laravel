@@ -29,8 +29,8 @@ class ShopViewsController extends Controller
      */
     public function home()
     {
-        $latest = Article::limit(4)->get();
-        $sales = Article::whereNotNull('sale_price')->inRandomOrder()->limit(8);
+        $latest = Article::where('status','published')->limit(4)->get();
+        $sales = Article::where('status','published')->whereNotNull('sale_price')->inRandomOrder()->limit(8);
         if ($sales->count() >= 8) {
             $sales = $sales->get();
         } else {
@@ -67,7 +67,7 @@ class ShopViewsController extends Controller
         $sale =\request()->route()->parameter('sale');
         $categories = Category::get();
         $ages = Tag::where('type','فئة-عمرية')->get();
-        $articles_sale_count = Article::whereNotNull('sale_price')->count();
+        $articles_sale_count = Article::where('status','published')->whereNotNull('sale_price')->count();
 
         return view('shop', compact('categories', 'articles_sale_count','ages','selected_category','selected_tag','sort','sale'));
     }
@@ -79,7 +79,7 @@ class ShopViewsController extends Controller
     public function shopAjax(Request $request)
     {
         if ($request->ajax()) {
-            $query = Article::query();
+            $query = Article::where('status','published');
             if ($request->input('search')) {
                 $search = '%' . $request->input('search') . '%';
                 $query->where('title', 'LIKE', $search);
@@ -148,7 +148,7 @@ class ShopViewsController extends Controller
      */
     public function single(string $slug)
     {
-        $article = Article::where('slug', $slug)->first();
+        $article = Article::where('status','published')->where('slug', $slug)->first();
         if (!$article) {
             abort(404);
         }
@@ -192,7 +192,7 @@ class ShopViewsController extends Controller
     {
         if ($request->ajax()) {
             $slug = $request->input('category');
-            $articles = Article::whereHas('categories', function (Builder $query) use ($slug) {
+            $articles = Article::where('status','published')->whereHas('categories', function (Builder $query) use ($slug) {
                 $query->whereIn('categories.slug', [$slug]);
             });
             return new ArticleCollection($articles->paginate(12));
@@ -208,7 +208,7 @@ class ShopViewsController extends Controller
     public function newAjax(Request $request)
     {
         if ($request->ajax()) {
-            $articles = Article::orderBy('created_at', 'desc');
+            $articles = Article::where('status','published')->orderBy('created_at', 'desc');
             return new ArticleCollection($articles->paginate(12));
         }
         abort(404);
@@ -222,7 +222,7 @@ class ShopViewsController extends Controller
     public function bestSellerAjax(Request $request)
     {
         if ($request->ajax() || 1) {
-            $articles =  Article::leftJoin('order_lines', 'articles.id', '=', 'order_lines.article_id')
+            $articles =  Article::where('status','published')->leftJoin('order_lines', 'articles.id', '=', 'order_lines.article_id')
                 ->select('articles.*', DB::raw('COALESCE(SUM(order_lines.quantity), 0) as total_sales'))
                 ->groupBy('articles.id')
                 ->orderBy('total_sales', 'desc');

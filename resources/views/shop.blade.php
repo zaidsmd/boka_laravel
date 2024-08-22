@@ -31,7 +31,7 @@
                         <input @checked($selected_tag === $tag->slug) type="checkbox" name="tags" value="{{$tag->id}}" id="tag-{{$tag->slug}}"
                                class="form-check-input filter">
                         <label for="tag-{{$tag->slug}}" class="form-check-label">{{$tag->name}} <span
-                                class="text-muted">({{$tag->articles()->count()}})</span></label>
+                                class="text-muted">({{$tag->articles()->where('status','published')->count()}})</span></label>
                     </div>
                 @endforeach
             </div>
@@ -42,7 +42,7 @@
                         <input @checked($selected_category === $category->slug) type="checkbox" name="categories" value="{{$category->id}}" id="cat-{{$category->id}}"
                                class="form-check-input filter">
                         <label for="cat-{{$category->id}}" class="form-check-label">{{$category->name}} <span
-                                class="text-muted">({{$category->articles()->count()}})</span></label>
+                                class="text-muted">({{$category->articles()->where('status','published')->count()}})</span></label>
                     </div>
                 @endforeach
             </div>

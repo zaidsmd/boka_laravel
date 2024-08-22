@@ -1,5 +1,5 @@
 @extends('back_office.admin_layouts.main')
-@section('document-title','Articles'))
+@section('document-title','Articles')
 @push('css')
     <link rel="stylesheet" href="{{asset('libs/select2/css/select2.min.css')}}">
     <link href="{{asset('libs/bootstrap-datepicker/css/bootstrap-datepicker.min.css')}}" rel="stylesheet">
@@ -182,7 +182,18 @@
                                     </div>
                                 </div>
 
-
+                                <div class="col-12 col-lg-6 mb-3 ">
+                                    <label class="form-label   required" for="status-select"> {{__('lang.articles.status')}}</label>
+                                    <select name="status" id="status-select" class="form-select">
+                                        <option @selected(old('status',$article->status) == 'draft' ) value="draft">@lang('lang.articles.draft')</option>
+                                        <option @selected(old('status',$article->status) == 'published' ) value="published">@lang('lang.articles.published')</option>
+                                    </select>
+                                    <div class="invalid-feedback">
+                                        @if($errors->has('status'))
+                                            {{ $errors->first('status') }}
+                                        @endif
+                                    </div>
+                                </div>
 
 
                                 <div class="col-12 col-lg-12 mb-3 ">

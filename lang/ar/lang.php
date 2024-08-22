@@ -14,6 +14,9 @@ return [
         'add_product' => 'إضافة منتج',
     ],
     'articles' => [
+        'status'=>'الحالة',
+        'draft'=>'مسودة',
+        'published'=>'نشر',
         'titre' => 'مقالات',
         'add' => 'إضافة مقال',
         'update' => 'تعديل مقال',

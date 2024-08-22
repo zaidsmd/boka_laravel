@@ -75,9 +75,10 @@ class ArticleController extends Controller
                 'categorie' => 'required|array',
                 'tag' => 'nullable|array',
                 'quantite' => 'required|numeric|min:0',
-                'related_articles' => 'required|array',
+                'related_articles' => 'nullable|array',
                 'i_image' => 'nullable|image|mimes:jpg,jpeg,png,bmp|max:2048',
-                'i_images.*' => 'nullable|image|mimes:jpg,jpeg,png,bmp|max:2048'
+                'i_images.*' => 'nullable|image|mimes:jpg,jpeg,png,bmp|max:2048',
+                'status'=>'required|in:draft,published',
             ], [
                 'titre.required' => 'العنوان مطلوب',
                 'titre.string' => 'العنوان يجب أن يكون نصاً',
@@ -119,6 +120,7 @@ class ArticleController extends Controller
                 'price' => $request->get('price') ?? null,
                 'slug' => $request->get('titre'),
                 'quantite' => $request->get('quantite'),
+                'status'=>$request->get('status'),
             ]);
 
             // Associate categories with the article
@@ -209,11 +211,12 @@ class ArticleController extends Controller
             'sale_price' => 'nullable|numeric|min:0',
             'price' => 'required|numeric|min:0',
             'categorie' => 'required|array',
-            'related_articles' => 'required|array',
+            'related_articles' => 'nullable|array',
             'tag' => 'nullable|array',
             'quantite' => 'required|numeric|min:0',
             'i_image' => 'nullable|image|mimes:jpg,jpeg,png,bmp|max:2048',
             'i_images.*' => 'nullable|image|mimes:jpg,jpeg,png,bmp|max:2048',
+            'status'=>'required|in:draft,published',
         ], [
             'related_articles.required' => 'حقل المنتجات ذات الصلة مطلوب',
             'titre.required' => 'العنوان مطلوب',
@@ -250,8 +253,9 @@ class ArticleController extends Controller
                 'description' => $request->input('description'),
                 'sale_price' => $request->input('sale_price'),
                 'price' => $request->input('price'),
-                'slug' =>arabic_slug($request->input('titre')), // Ensure slug is updated
+                'slug' => \arabic_slug($request->input('titre')), // Ensure slug is updated
                 'quantite' => $request->get('quantite'),
+                'status' => $request->get('status'),
             ]);
             $article->categories()->sync($request->input('categorie'));
             $article->tags()->sync($request->input('tag'));

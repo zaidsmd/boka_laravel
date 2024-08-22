@@ -103,6 +103,18 @@
                                         </div>
                                     </div>
                                 </div>
+                                <div class="col-12 col-lg-6 mb-3 ">
+                                    <label class="form-label   required" for="status-select"> {{__('lang.articles.status')}}</label>
+                                        <select name="status" id="status-select" class="form-select">
+                                            <option @selected(old('status') == 'draft' ) value="draft">@lang('lang.articles.draft')</option>
+                                            <option @selected(old('status') == 'published' ) value="published">@lang('lang.articles.published')</option>
+                                        </select>
+                                        <div class="invalid-feedback">
+                                            @if($errors->has('status'))
+                                                {{ $errors->first('status') }}
+                                            @endif
+                                        </div>
+                                </div>
 
                                 <div class="col-12 col-lg-12 mb-3 ">
                                     <label class="form-label required" for="description">  الوصف</label>

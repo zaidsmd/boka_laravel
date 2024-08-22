@@ -1,4 +1,4 @@
-<!doctype html>
+<!DOCTYPE html>
 <html lang="ar" dir="rtl">
 <meta name="csrf-token" content="{{ csrf_token() }}">
 
