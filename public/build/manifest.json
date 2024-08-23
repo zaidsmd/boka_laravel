@@ -1,0 +1,49 @@
+{
+  "resources/css/app.scss": {
+    "file": "assets/app-SwwjuWr5.css",
+    "src": "resources/css/app.scss",
+    "isEntry": true
+  },
+  "resources/js/admin.js": {
+    "file": "assets/admin-CXDKp8rk.js",
+    "name": "admin",
+    "src": "resources/js/admin.js",
+    "isEntry": true
+  },
+  "resources/js/app.js": {
+    "file": "assets/app-DThK6cBS.js",
+    "name": "app",
+    "src": "resources/js/app.js",
+    "isEntry": true
+  },
+  "resources/js/best-seller.js": {
+    "file": "assets/best-seller-CXina9gp.js",
+    "name": "best-seller",
+    "src": "resources/js/best-seller.js",
+    "isEntry": true
+  },
+  "resources/js/category.js": {
+    "file": "assets/category-mjKH-QVT.js",
+    "name": "category",
+    "src": "resources/js/category.js",
+    "isEntry": true
+  },
+  "resources/js/new.js": {
+    "file": "assets/new-B0_66Ebk.js",
+    "name": "new",
+    "src": "resources/js/new.js",
+    "isEntry": true
+  },
+  "resources/js/sale.js": {
+    "file": "assets/sale-C7yO3Hu8.js",
+    "name": "sale",
+    "src": "resources/js/sale.js",
+    "isEntry": true
+  },
+  "resources/js/shop.js": {
+    "file": "assets/shop-C9Z_qQeV.js",
+    "name": "shop",
+    "src": "resources/js/shop.js",
+    "isEntry": true
+  }
+}

@@ -60,6 +60,16 @@
                    الشروط و الأحكام
                 </h6>
             </a>
+            <a href="https://www.instagram.com/bokadobox/" target="_blank" class="text-decoration-none">
+                <h6 class="m-0 py-2 text-white text-decoration-none">
+                    صفحتنا على الانستغرام
+                </h6>
+            </a>
+            <a href="https://web.facebook.com/bokadobox?_rdc=1&_rdr" target="_blank" class="text-decoration-none">
+                <h6 class="m-0 py-2 text-white text-decoration-none">
+                    صفحتنا على الفيسبوك
+                </h6>
+            </a>
         </div>
     </div>
 </div>
