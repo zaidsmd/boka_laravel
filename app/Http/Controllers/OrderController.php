@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Jobs\SendOrderSummaryEmail;
 use App\Jobs\SendRegistrationEmail;
+use App\Models\Article;
 use App\Models\CartLine;
 use App\Models\Order;
 use App\Models\OrderShippingAddress;
@@ -119,12 +120,16 @@ class OrderController extends Controller
                 ]);
             }
             foreach ($cart->cart_lignes as $ligne){
-                OrderLine::create([
+                 OrderLine::create([
                     'article_id' => $ligne->article_id,
                     'article_title' => $ligne->article_title,
                     'price' => $ligne->article->sale_price ?? $ligne->article->price,
                     'quantity' => $ligne->quantity,
                     'order_id'=> $order->id,
+                ]);
+                $article = Article::find($ligne->article_id);
+                $article->update([
+                    'quantite' => $article->quantite - $ligne->quantity
                 ]);
             }
             SendOrderSummaryEmail::dispatch($order);
