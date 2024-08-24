@@ -138,7 +138,7 @@
                                 <div class=" col-12 col-lg-6 mb-3 ">
                                     <label class="form-label  required " for="price">  {{__('lang.articles.sale_price')}} </label>
                                     <div class="input-group">
-                                        <input type="number" step="1" min="0"
+                                        <input type="number" step="any"
                                                class="form-control {{$errors->has('price')? 'is-invalid' : ''}}"
                                                id="price"
                                                name="price" value="{{old('price')}}">
@@ -155,7 +155,7 @@
                                 <div class="col-12 col-lg-6 mb-3 ">
                                     <label class="form-label   " for="vente-input">  {{__('lang.articles.reduit_price')}}</label>
                                     <div class="input-group">
-                                        <input  type="number" step="1"
+                                        <input  type="number" step="any"
                                                class="form-control {{$errors->has('sale_price')? 'is-invalid' : ''}}"
                                                id="sale_price"
                                                name="sale_price" value="{{old('sale_price')}}">
@@ -169,7 +169,7 @@
                                 </div>
 
                                 <div class="col-12 col-lg-12 mb-3 ">
-                                    <label class="form-label  required  " for="related_articles"> منتجات ذات صلة</label>
+                                    <label class="form-label   " for="related_articles"> منتجات ذات صلة</label>
                                     <div class="input-group">
                                         <select
                                             class="select2 form-control mb-3 custom-select {{$errors->has('related_articles')? 'is-invalid' : ''}}"
