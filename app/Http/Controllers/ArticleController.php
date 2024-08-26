@@ -26,6 +26,7 @@ class ArticleController extends Controller
     public function liste(Request $request)
     {
         if ($request->ajax()) {
+
             $query = Article::with('categories');
             $table = DataTables::of($query);
             $table->addColumn(

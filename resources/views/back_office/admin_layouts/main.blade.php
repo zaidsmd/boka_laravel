@@ -20,7 +20,6 @@
     <link href="{{asset('libs/bootstrap-datepicker/css/bootstrap-datepicker.min.css')}}" rel="stylesheet">
     <link href="{{asset('libs/daterangepicker/css/daterangepicker.min.css')}}" rel="stylesheet">
 
-    <link rel="stylesheet" href="{{asset('assets/libs/dropzone/min/dropzone.min.css')}}"  type="text/css" />
     <link rel="shortcut icon" href="{{ asset('assets/images/favicon.ico') }}">
     <style>
         .required::after {
@@ -152,6 +151,12 @@
                         <a href="{{ route('tags.liste') }}" class="waves-effect">
                             <i class="mdi mdi-cloud-tags"></i>
                             <span>الوسوم</span>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="{{ route('sliders.liste') }}" class="waves-effect">
+                            <i class="mdi mdi-tune-variant"></i>
+                            <span> الشريط المتحرك </span>
                         </a>
                     </li>
                     <li>

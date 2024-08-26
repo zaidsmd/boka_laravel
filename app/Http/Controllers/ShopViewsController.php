@@ -7,10 +7,12 @@ use App\Models\Article;
 use App\Models\Cart;
 use App\Models\Category;
 use App\Models\OrderLine;
+use App\Models\Slider;
 use App\Models\Tag;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
+use Spatie\MediaLibrary\MediaCollections\Models\Media;
 
 class ShopViewsController extends Controller
 {
@@ -29,6 +31,18 @@ class ShopViewsController extends Controller
      */
     public function home()
     {
+        $slider = Slider::first();
+
+        $sliders = [];
+        if ($slider) {
+            $sliders = Media::select('media.*')
+                ->join('slider_order', 'media.id', '=', 'slider_order.image_id')
+                ->where('slider_order.slider_id', $slider->id)
+                ->orderBy('slider_order.order')
+                ->get();
+        }
+
+
         $latest = Article::where('status','published')->limit(4)->get();
         $sales = Article::where('status','published')->whereNotNull('sale_price')->inRandomOrder()->limit(8);
         if ($sales->count() >= 8) {
@@ -36,7 +50,7 @@ class ShopViewsController extends Controller
         } else {
             $sales = $sales->limit(4)->get();
         }
-        return view('home', compact('latest', 'sales'));
+        return view('home', compact('latest', 'sales', 'sliders'));
     }
 
     /**

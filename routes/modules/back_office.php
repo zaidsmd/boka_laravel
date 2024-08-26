@@ -1,4 +1,6 @@
 <?php
+
+use App\Http\Controllers\SliderController;
 use Illuminate\Support\Facades\Route;
 Route::middleware(['admin'])->group(function () {
 
@@ -65,6 +67,12 @@ Route::prefix('cpadmin')->group(function () {
         Route::get('/afficher/{id}','afficher')->name('commandes.afficher');
         Route::get('/status/{id}','status_modal')->name('commandes.status_modal');
         Route::post('/status/{id}','modifier_status')->name('commandes.modifier_status');
+    });
+
+    Route::group(['prefix' => 'sliders','controller' => SliderController::class], function (){
+        Route::get('/','liste')->name('sliders.liste');
+        Route::post('sauvegarder','sauvegarder')->name('sliders.sauvegarder');
+
     });
 
 
