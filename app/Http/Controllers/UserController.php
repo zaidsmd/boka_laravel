@@ -178,11 +178,10 @@ class UserController extends Controller
             $o_utilisateur->last_name= $request->get('last_name');
             $o_utilisateur->email = $request->get('email');
             $o_utilisateur->email_verified_at = Carbon::now();
-            $o_utilisateur->password = trim($request->get('password')) ? Hash::make($request->get('i_password')) : $o_utilisateur->password;
+            $o_utilisateur->password = trim($request->get('password')) ? Hash::make($request->get('password')) : $o_utilisateur->password;
             $o_utilisateur->role = $request->get('role');
             $o_utilisateur->save();
-//            $o_utilisateur->magasins()->sync($request->get('i_magasins'));
-//            $o_utilisateur->syncRoles( $request->get('i_role'));
+
             DB::commit();
             session()->flash('success', 'تم تعديل المستخدم!');
             return redirect()->route('utilisateurs.liste');

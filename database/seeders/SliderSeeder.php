@@ -17,8 +17,8 @@ class SliderSeeder extends Seeder
     {
         // Create a new slider entry
         $slider = Slider::create([
-            'transition_time' => 500,
-            'autoplay' => true,
+            'transition_time' => 4000,
+            'autoplay' => false,
             'autoplay_interval' => 3000,
         ]);
 
