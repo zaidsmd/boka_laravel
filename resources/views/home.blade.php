@@ -1,7 +1,15 @@
 @extends('layouts.main')
 @section('document-title','الصفحة الرئيسية')
+
+@push('styles')
+    <style>
+        .carousel{
+            direction: ltr;
+        }
+    </style>
+@endpush
 @section('page')
-    <div id="carouselExampleIndicators" class="carousel slide" data-bs-ride="carousel">
+    <div id="carouselExampleIndicators" class="carousel slide direction-right" data-bs-ride="carousel" >
         <div class="carousel-indicators">
             @foreach($sliders as $index => $slider)
                 <button type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide-to="{{ $index }}"
@@ -12,11 +20,14 @@
 
         <div class="carousel-inner">
             @foreach($sliders as $index => $slider)
-                <div class="carousel-item {{ $index === 0 ? 'active' : '' }}">
-                    <img src="{{ $slider->getUrl() }}" class="d-block w-100" alt="Slide {{ $index + 1 }}">
+                <div class="carousel-item {{ $index === 0 ? 'active' : '' }} ">
+                    <a href="{{ $slider->url }}">
+                        <img src="{{ $slider->getUrl() }}" class="d-block w-100" alt="Slide {{ $index + 1 }}">
+                    </a>
                 </div>
             @endforeach
         </div>
+
 
         <button class="carousel-control-prev" type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide="prev">
             <span class="carousel-control-prev-icon" aria-hidden="true"></span>
@@ -58,3 +69,23 @@
         </div>
     </section>
 @endsection
+
+@push('scripts')
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            var carouselElement = document.querySelector('#carouselExampleIndicators');
+            var transitionTime = ({{$o_slider->transition_time}} || 5000); // Default to 5000ms if null
+            var autoplay = {{$o_slider->autoplay}}; // Get autoplay value
+
+            var carouselOptions = {
+                interval: transitionTime,
+                ride: autoplay === 0 ? 'carousel' : false
+            };
+
+            var carousel = new bootstrap.Carousel(carouselElement, carouselOptions);
+        });
+    </script>
+
+@endpush
+
+

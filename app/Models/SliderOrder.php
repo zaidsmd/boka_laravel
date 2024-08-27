@@ -12,7 +12,7 @@ class SliderOrder extends Model
     use HasFactory;
 
     protected $table = 'slider_order';
-    protected $fillable = [ 'slider_id', 'image_id', 'order'];
+    protected $fillable = [ 'slider_id', 'image_id', 'order', 'url'];
 
     public function slider()
     {

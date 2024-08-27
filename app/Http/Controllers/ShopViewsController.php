@@ -31,13 +31,13 @@ class ShopViewsController extends Controller
      */
     public function home()
     {
-        $slider = Slider::first();
+        $o_slider = Slider::first();
 
         $sliders = [];
-        if ($slider) {
-            $sliders = Media::select('media.*')
+        if ($o_slider) {
+            $sliders = Media::select('media.*', 'slider_order.order', 'slider_order.url')
                 ->join('slider_order', 'media.id', '=', 'slider_order.image_id')
-                ->where('slider_order.slider_id', $slider->id)
+                ->where('slider_order.slider_id', $o_slider->id)
                 ->orderBy('slider_order.order')
                 ->get();
         }
@@ -50,7 +50,7 @@ class ShopViewsController extends Controller
         } else {
             $sales = $sales->limit(4)->get();
         }
-        return view('home', compact('latest', 'sales', 'sliders'));
+        return view('home', compact('latest', 'sales', 'sliders' ,'o_slider'));
     }
 
     /**

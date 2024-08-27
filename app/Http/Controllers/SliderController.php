@@ -18,14 +18,14 @@ class SliderController extends Controller
         $slider = Slider::first();
 
         if ($slider) {
-            // Get the media items ordered by the 'order' field in the 'slider_order' table
-            $mediaItems = Media::select('media.*')
+
+            $mediaItems = Media::select('media.*', 'slider_order.order', 'slider_order.url')
                 ->join('slider_order', 'media.id', '=', 'slider_order.image_id')
                 ->where('slider_order.slider_id', $slider->id)
                 ->orderBy('slider_order.order')
                 ->get();
-        } else {
-            $mediaItems = collect(); // Return an empty collection if no slider found
+;        } else {
+            $mediaItems = collect();
         }        return view('back_office.sliders.liste',compact('slider', 'mediaItems'));
     }
 
@@ -33,6 +33,8 @@ class SliderController extends Controller
     {
         $request->validate([
             'image_data' => 'required|json',
+            'transition_time' => 'required|integer|min:0',
+            'autoplay' => 'required|boolean',
         ]);
 
         $imageData = json_decode($request->input('image_data'), true);
@@ -41,15 +43,21 @@ class SliderController extends Controller
         DB::beginTransaction();
 
         try {
+
+            $slider->transition_time = $request->input('transition_time');
+            $slider->autoplay = $request->input('autoplay');
+
+            // Save the changes
+            $slider->save();
             // Remove existing orders for the slider
             SliderOrder::where('slider_id', $slider->id)->delete();
 
             foreach ($imageData as $image) {
                 $order = $image['order'];
-                $base64String = $image['url'];
+                $base64String = $image['real_url'];
                 $imageId = $image['id'];
                 $fileName = $image['name'];
-
+                $additional_url = $image['additional_url'];
                 if (!$imageId) {
                     // New image: handle base64 encoding
                     $base64String = preg_replace('/^data:image\/\w+;base64,/', '', $base64String);
@@ -65,16 +73,19 @@ class SliderController extends Controller
                     SliderOrder::create([
                         'slider_id' => $slider->id,
                         'image_id' => $media->id,
+                        'url' => $additional_url,
                         'order' => $order
                     ]);
+
                 } else {
                     // Existing image: update order
                     $media = $slider->getMedia('sliders')->firstWhere('id', $imageId);
                     if ($media) {
                         SliderOrder::updateOrCreate(
                             ['slider_id' => $slider->id, 'image_id' => $imageId],
-                            ['order' => $order]
+                            ['order' => $order, 'url' => $additional_url] // Ensure URL is part of the update
                         );
+
                     }
                 }
             }
