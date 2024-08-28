@@ -72,7 +72,11 @@ Route::prefix('cpadmin')->group(function () {
     Route::group(['prefix' => 'sliders','controller' => SliderController::class], function (){
         Route::get('/','liste')->name('sliders.liste');
         Route::post('sauvegarder','sauvegarder')->name('sliders.sauvegarder');
+    });
 
+    Route::group(['prefix' => 'settings','controller' => \App\Http\Controllers\SettingsController::class], function (){
+        Route::get('/','liste')->name('settings.liste');
+        Route::put('mettre_a_jour','mettre_a_jour')->name('settings.mettre_a_jour');
     });
 
 

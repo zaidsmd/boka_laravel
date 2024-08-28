@@ -14,17 +14,17 @@ class DatabaseSeeder extends Seeder
      */
     public function run(): void
     {
-        // User::factory(10)->create();
+        User::firstOrCreate(
+            ['email' => 'admin@tarmiz.ma'], // Condition de recherche
+            [
+                'first_name' => 'Admin',
+                'last_name' => 'Root',
+                'password' => Hash::make('password'),
+                'role' => 'admin',
+            ]
+        );
+        $this->call(GlobalSettingsSeeder::class);
+        $this->call(SliderSeeder::class);
 
-
-
-
-        User::factory()->create([
-            'first_name' => 'Admin',
-            'last_name' => 'Root',
-            'email' => 'admin@tarmiz.ma',
-            'password'=> Hash::make('password'),
-            'role' => 'admin'
-        ]);
     }
 }

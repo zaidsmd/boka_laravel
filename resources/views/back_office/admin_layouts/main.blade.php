@@ -166,6 +166,13 @@
                         </a>
                     </li>
 
+                    <li>
+                        <a href="{{ route('settings.liste') }}" class="waves-effect">
+                            <i class="mdi mdi-cog"></i>
+                            <span>الإعدادت</span>
+                        </a>
+                    </li>
+
 
 
                 </ul>
