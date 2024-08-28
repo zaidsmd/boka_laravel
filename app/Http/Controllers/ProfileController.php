@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\InvoicingAddress;
 use App\Models\ShippingAddress;
+use App\Models\Ville;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
 
@@ -42,16 +43,17 @@ class ProfileController extends Controller
             $request->validate([
                 'first_name' => 'required|string|max:255',
                 'last_name' => 'required|string|max:255',
-                'city' => 'required|in:tangier,other',
+                'city' => 'required|string',
                 'address' => 'required|string|max:255'
             ]);
             $user = $request->user();
+            $city =Ville::where('id', $request->input('city'))->value('nom')? : 'other';
             $shipping_address = $user->shipping_address;
             if (!$shipping_address) {
                 ShippingAddress::create([
                     'first_name' => $request->input('first_name'),
                     'last_name' => $request->input('last_name'),
-                    'city' => $request->input('city'),
+                    'city' => $city,
                     'address' => $request->input('address'),
                     'user_id' => $user->id
                 ]);
@@ -59,10 +61,13 @@ class ProfileController extends Controller
                 $shipping_address->update([
                     'first_name' => $request->input('first_name'),
                     'last_name' => $request->input('last_name'),
-                    'city' => $request->input('city'),
+                    'city' => $city ,
                     'address' => $request->input('address'),
                 ]);
             }
+            $cart = cart();
+            $cart->city = $city;
+            $cart->save();
             return response('لقد تم تحديث عنوان الشحن الخاص بك بنجاح.');
         }
         abort(404);

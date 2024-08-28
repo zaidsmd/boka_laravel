@@ -87,7 +87,7 @@
                         <div class="col-md-6">
                             <div class="d-flex gap-2">
                                 <p class="">المدينة:</p>
-                                <p class="text-muted fw-bold">@lang('city.'.$order->city)</p>
+                                <p class="text-muted fw-bold">{{$order->city}}</p>
                             </div>
                         </div>
                         <div class="col-md-6">
@@ -135,7 +135,7 @@
                         <div class="col-md-6">
                             <div class="d-flex gap-2">
                                 <p class="">المدينة:</p>
-                                <p class="text-muted fw-bold">@lang('city.'.($order->shipping_address?->city ?? $order->city))</p>
+                                <p class="text-muted fw-bold">{{$order->shipping_address?->city ?? $order->city}}</p>
                             </div>
                         </div>
                         <div class="col-12">

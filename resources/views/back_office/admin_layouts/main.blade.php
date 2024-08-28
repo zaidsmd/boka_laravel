@@ -154,6 +154,12 @@
                         </a>
                     </li>
                     <li>
+                        <a href="{{ route('villes.liste') }}" class="waves-effect">
+                            <i class="mdi mdi-city"></i>
+                            <span>المدن</span>
+                        </a>
+                    </li>
+                    <li>
                         <a href="{{ route('sliders.liste') }}" class="waves-effect">
                             <i class="mdi mdi-tune-variant"></i>
                             <span> الشريط المتحرك </span>

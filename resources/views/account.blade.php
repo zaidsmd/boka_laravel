@@ -169,16 +169,12 @@
                             </div>
                             <div class="col-md-6 my-2">
                                 <div class="form-group">
-                                    <label for="city-shipping" class="form-label required">المدينة</label>
-                                    <select name="city" class="form-select" id="city-shipping">
-                                        <option
-                                            @selected(old('city', $auth->shipping_address?->city) == 'tangier') value="tangier">
-                                            طنجة
-                                        </option>
-                                        <option
-                                            @selected(old('city', $auth->shipping_address?->city) == 'other' ) value="other">
-                                            مدينة مغربية أخرى
-                                        </option>
+                                    <label for="city-invoicing" class="form-label required">المدينة</label>
+                                    <select name="city" id="city-invoicing" class="form-select">
+                                        @foreach($cities as $city)
+                                            <option value="{{ $city->id }}" @selected(old('city') == $city->id || $auth->shipping_address?->city == $city->nom)>{{ $city->nom }}</option>
+                                        @endforeach
+                                        <option value="other" @selected(old('city') === 'other' || $auth->shipping_address?->city === 'other')>@lang('city.other')</option>
                                     </select>
                                     @error('city')
                                     <div class="invalid-feedback">

@@ -11,6 +11,7 @@ use App\Models\Order;
 use App\Models\OrderShippingAddress;
 use App\Models\OrderLine;
 use App\Models\User;
+use App\Models\Ville;
 use Carbon\Carbon;
 use DragonCode\Support\Facades\Helpers\Str;
 use Illuminate\Http\Request;
@@ -19,18 +20,25 @@ use Illuminate\Support\Facades\Log;
 
 class OrderController extends Controller
 {
+
     /**
      * Display a listing of the resource.
      */
     public function completeOrder(Request $request)
     {
         $stockOperationsEnabled = GlobalSetting::where('nom', 'stock_operations')->value('valeur') == 1;
+
         $request->validate([
             'first_name'=>'required|string',
             'last_name'=>'required|string',
             'phone_number'=>'required|phone:INTERNATIONAL,MA',
             'email'=>'required|email',
-            'city'=>'required|in:tangier,other',
+            'city' => 'required|string',
+            'other_city' => [
+                'nullable',
+                'required_if:city,other',
+                'string',
+            ],
             'address'=>'required|string',
             'payment_method'=>'required|in:transfert,cash',
             'policy'=>'required|string',
@@ -38,8 +46,10 @@ class OrderController extends Controller
             'shipping.first_name'=>'nullable|required_with:shipping|string',
             'shipping.last_name'=>'nullable|required_with:shipping|string',
             'shipping.address'=>'nullable|required_with:shipping|string',
-            'shipping.city'=>'nullable|required_with:shipping|in:tangier,other',
+            'shipping.city'=>'nullable|required_with:shipping',
+            'other_shipping_city' => 'nullable|required_if:shipping.city,other|string',
         ]);
+
         $cart = cart();
         if (!$cart->cart_lignes()->count()){
             session()->flash('danger','سلة المشتريات فارغة');
@@ -47,9 +57,12 @@ class OrderController extends Controller
         }
         DB::beginTransaction();
         try {
-            $shipping_fee = $request->input('city') ==='tangier' ? 25 : 40;
+            $shipping_fee = $request->input('city') === 'other'
+                ? 40
+                : Ville::where('id', $request->input('city'))->value('price');
             if ($request->has('shipping')){
-                $shipping_fee = $request->input('shipping.city') ==='tangier' ? 25 : 40;
+                $shipping_fee = $request->input('shipping.city') ==='other' ? 40 :
+                    Ville::where('id',$request->get('other_shipping_city'))->value('price');
             }
             if ($request->has('create_account')) {
                 // Check if the user already exists
@@ -106,7 +119,7 @@ class OrderController extends Controller
                 'first_name' => $request->input('first_name'),
                 'last_name' => $request->input('last_name'),
                 'phone_number' => $request->input('phone_number'),
-                'city' => $request->input('city'),
+                'city' => $request->input('city') ==='other' ? $request->get('other_city') : Ville::where('id',$request->get('city'))->value('nom') ,
                 'address' => $request->input('address'),
                 'number'=> $this->generateOrderNumber(),
                 'type' => $request->has('shipping') ? '1' : '0',
@@ -116,7 +129,8 @@ class OrderController extends Controller
                 $shipping_address = OrderShippingAddress::create([
                     'first_name' => $request->input('shipping.first_name'),
                     'last_name' => $request->input('shipping.last_name'),
-                    'city' => $request->input('shipping.city'),
+//                    'city' => $request->input('shipping.city'),
+                    'city' => $request->input('shipping.city') ==='other' ? $request->get('other_shipping_city') : Ville::where('id',$request->get('shipping.city')),
                     'address' => $request->input('shipping.address'),
                     'order_id' => $order->id
                 ]);

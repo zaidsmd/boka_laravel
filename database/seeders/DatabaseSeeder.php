@@ -25,6 +25,7 @@ class DatabaseSeeder extends Seeder
         );
         $this->call(GlobalSettingsSeeder::class);
         $this->call(SliderSeeder::class);
+        $this->call(VilleSeeder::class);
 
     }
 }

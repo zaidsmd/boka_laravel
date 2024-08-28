@@ -62,10 +62,10 @@
                         <div class="form-group">
                             <label for="city-invoicing" class="form-label required">المدينة</label>
                             <select name="city" id="city-invoicing" class="form-select">
-                                <option
-                                    @selected(cart()->city === 'tangier') value="tangier">@lang('city.tangier')</option>
-                                <option
-                                    @selected(cart()->city === 'other') value="other">@lang('city.other')</option>
+                                @foreach($cities as $city)
+                                    <option value="{{ $city->id }}" @selected(old('city') == $city->id || (!old('city') && $cart->city === $city->nom))>{{ $city->nom }}</option>
+                                @endforeach
+                                <option value="other" @selected(old('city',$cart->city) == 'other')>@lang('city.other')</option>
                             </select>
                             @error('city')
                             <div class="invalid-feedback">
@@ -74,6 +74,21 @@
                             @enderror
                         </div>
                     </div>
+
+                    <div class="col-12 my-2" id="other-city-container">
+                        <div class="form-group">
+                            <label for="other-city" class="form-label required">يرجى تحديد المدينة الأخرى</label>
+                            <input type="text" id="other-city" name="other_city"
+                                   value="{{ old('other_city') }}"
+                                   class="form-control @error('other_city') is-invalid @enderror">
+                            @error('other_city')
+                            <div class="invalid-feedback">
+                                {{ $message }}
+                            </div>
+                            @enderror
+                        </div>
+                    </div>
+
                     <div class="col-12 my-2">
                         <div class="form-group">
                             <label for="address-invoicing" class="form-label required">العنوان</label>
@@ -119,13 +134,14 @@
                         </div>
                     </div>
                     <div class="col-12 my-2">
-                        <div class="form-group">
+                        <div class="form-group" id="shipping-city-container">
                             <label for="city-shipping" class="form-label required">المدينة</label>
                             <select name="shipping[city]" id="city-shipping" class="form-select" disabled>
-                                <option
-                                    @selected(old('shipping.city',cart()->city)=== 'tangier') value="tangier">@lang('city.tangier')</option>
-                                <option
-                                    @selected(old('shipping.city',cart()->city)=== 'other') value="other">@lang('city.other')</option>
+
+                                @foreach($cities as $city)
+                                    <option value="{{ $city->id }}" @selected(old('shipping.city') == $city->id)>{{ $city->nom }}</option>
+                                @endforeach
+                                <option value="other" @selected(old('shipping.city') == 'other')>@lang('city.other')</option>
                             </select>
                             @error('shipping.city')
                             <div class="invalid-feedback">
@@ -134,6 +150,23 @@
                             @enderror
                         </div>
                     </div>
+
+                    <div class="col-12 my-2" id="other-shipping-city-container" >
+                        <div class="form-group">
+                            <label for="other_shipping_city" class="form-label required">يرجى تحديد المدينة الأخرى</label>
+                            <input type="text" id="other_shipping_city" name="other_shipping_city"
+                                   value="{{ old('other_shipping_city') }}"
+                                   class="form-control @error('other_shipping_city') is-invalid @enderror" disabled>
+                            @error('other_shipping_city')
+                            <div class="invalid-feedback">
+                                {{ $message }}
+                            </div>
+                            @enderror
+                        </div>
+                    </div>
+
+
+
                     <div class="col-12 my-2">
                         <div class="form-group">
                             <label for="address-invoicing" class="form-label required">العنوان</label>
@@ -194,3 +227,44 @@
         </div>
     </form>
 @endsection
+
+@push('scripts')
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            const citySelect = document.getElementById('city-invoicing');
+            const otherCityContainer = document.getElementById('other-city-container');
+            const otherCityInput = document.getElementById('other-city');
+
+            // Show or hide the other city input based on the selected city
+            function updateOtherCityVisibility() {
+                if (citySelect.value === 'other') {
+                    otherCityContainer.style.display = 'block';
+                } else {
+                    otherCityContainer.style.display = 'none';
+                }
+            }
+
+            // Initial visibility check based on old input value
+            updateOtherCityVisibility();
+
+            citySelect.addEventListener('change', updateOtherCityVisibility);
+        });
+    </script>
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            const citySelectShipping = document.getElementById('city-shipping');
+            const otherCityContainerShipping = document.getElementById('other-shipping-city-container');
+            // Show or hide the other city input based on the selected city
+            function updateOtherCityVisibility() {
+                if (citySelectShipping.value === 'other') {
+                    otherCityContainerShipping.style.display = 'block';
+                } else {
+                    otherCityContainerShipping.style.display = 'none';
+                }
+            }
+            // Initial visibility check based on old input value
+            updateOtherCityVisibility();
+            citySelectShipping.addEventListener('change', updateOtherCityVisibility);
+        });
+    </script>
+@endpush

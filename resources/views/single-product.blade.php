@@ -27,15 +27,16 @@
             </div>
         </div>
         <div class=" w-100 p-3 px-5">
-            <div class="d-flex align-items-center justify-content-between mb-4">
-                <h1 class="text-primary m-0">{{$article->title}}</h1>
+            <div class="d-flex flex-column flex-md-row align-items-start align-items-md-center justify-content-between mb-4">
+                <h1 class="text-primary m-0 mb-2 mb-md-0">{{$article->title}}</h1>
                 @if($article->revision_url)
-                    <a href="{{$article->revision_url}}" target="_blank" class="btn btn-outline-primary d-flex align-items-center me-2">
-                        <i class="fa fa-pencil-alt ms-2"></i> {{ __('lang.articles.revision_url') }}
+                    <a href="{{$article->revision_url}}" target="_blank" class="btn btn-outline-primary d-flex align-items-center">
+                        <i class="fa fa-arrow-up-right-from-square ms-2"></i> {{ __('lang.articles.revision_url') }}
                     </a>
                 @endif
+            </div>
 
-            </div>            <div class="row align-items-center justify-content-between gap-2">
+            <div class="row align-items-center justify-content-between gap-2">
                 <div class="price w-auto gap-3 text-nowrap d-inline-flex" dir="ltr">
                     @if($article->sale_price)
                         <h5 class="text-primary m-0">{{number_format($article->sale_price ,2,',',' ')}} د.م</h5>

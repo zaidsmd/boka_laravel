@@ -9,6 +9,7 @@ use App\Models\Category;
 use App\Models\OrderLine;
 use App\Models\Slider;
 use App\Models\Tag;
+use App\Models\Ville;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
@@ -22,8 +23,9 @@ class ShopViewsController extends Controller
      */
     public function myAccount(Request $request)
     {
+        $cities = Ville::all();
         $auth = $request->user();
-        return view('account', compact('auth'));
+        return view('account', compact('auth','cities' ));
     }
 
     /**
@@ -58,8 +60,10 @@ class ShopViewsController extends Controller
      */
     public function cart()
     {
+        $cities = Ville::all();
         $cart = cart();
-        return view('cart', compact('cart'));
+        $selected_city_price =Ville::where('nom',$cart->city)->value('price');
+        return view('cart', compact('cart', 'cities','selected_city_price'));
     }
 
     /**
@@ -67,7 +71,9 @@ class ShopViewsController extends Controller
      */
     public function checkout()
     {
-        return view('checkout');
+        $cart = \cart();
+        $cities = Ville::all();
+        return view('checkout',compact('cities','cart'));
     }
 
     /**

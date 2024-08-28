@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Article;
 use App\Models\Cart;
 use App\Models\CartLine;
+use App\Models\Ville;
 use Illuminate\Http\Request;
 
 class CartController extends Controller
@@ -108,8 +109,11 @@ class CartController extends Controller
     public function updateCartCity(Request $request)
     {
         $cart = \cart();
+        $cities = Ville::all();
+        $selected_city_price =Ville::where('nom',$request->input('city')
+        )->value('price');
         $cart->update(['city'=>$request->input('city')]);
-        return response(view('partials.cart-table',compact('cart')));
+        return response(view('partials.cart-table',compact('cart','cities','selected_city_price')));
     }
 
     /**

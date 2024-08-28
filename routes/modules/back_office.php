@@ -79,5 +79,16 @@ Route::prefix('cpadmin')->group(function () {
         Route::put('mettre_a_jour','mettre_a_jour')->name('settings.mettre_a_jour');
     });
 
+    Route::group(['prefix' => 'villes','controller' => \App\Http\Controllers\VilleController::class], function (){
+        Route::get('/', 'liste')->name('villes.liste');
+        Route::get('/{id}/afficher', 'afficher')->name('villes.afficher');
+        Route::get('/ajouter', 'ajouter')->name('villes.ajouter');
+        Route::post('/', 'sauvegarder')->name('villes.sauvegarder');
+        Route::get('/{id}/modifier','modifier')->name('villes.modifier');
+        Route::put('/{id}', 'mettre_a_jour')->name('villes.mettre_a_jour');
+        Route::delete('supprimer/{id}','supprimer')->name('villes.supprimer');
+        Route::get('/villes-select', 'villes_select')->name('villes.select');
+    });
+
 
 });});
