@@ -19,7 +19,8 @@ class Article extends Model implements HasMedia
         'short_description',
         'description',
         'quantite',
-        'status'
+        'status',
+        'revision_url'
     ];
 
     function categories(){

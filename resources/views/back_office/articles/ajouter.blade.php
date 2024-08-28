@@ -116,6 +116,20 @@
                                         </div>
                                 </div>
 
+                                <div class="col-12 col-lg-6 mb-3 ">
+                                    <label class="form-label " for="revision_url"> {{__('lang.articles.revision_url')}}</label>
+                                    <input  type="text"
+                                            class="form-control {{$errors->has('revision_url')? 'is-invalid' : ''}}"
+                                            id="revision_url"
+                                            name="revision_url" value="{{old('revision_url')}}">
+                                    <div class="invalid-feedback">
+                                        @if($errors->has('revision_url'))
+                                            {{ $errors->first('revision_url') }}
+                                        @endif
+                                    </div>
+                                </div>
+
+
                                 <div class="col-12 col-lg-12 mb-3 ">
                                     <label class="form-label required" for="description">  الوصف</label>
                                     <textarea  class="form-control {{$errors->has('description')? 'is-invalid' : ''}}"

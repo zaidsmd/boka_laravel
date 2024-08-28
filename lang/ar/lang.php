@@ -14,6 +14,7 @@ return [
         'add_product' => 'إضافة منتج',
     ],
     'articles' => [
+        'revision_url'=> 'رابط المراجعة',
         'status'=>'الحالة',
         'draft'=>'مسودة',
         'published'=>'نشر',

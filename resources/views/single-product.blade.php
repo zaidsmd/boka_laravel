@@ -4,6 +4,8 @@
     <link rel="stylesheet" href="{{asset('assets/libs/magnific-popup/magnific-popup.css')}}">
 @endpush
 @section('page')
+
+
     <div class="d-flex flex-column align-items-md-start flex-md-row mt-4">
         <div id="carousel-single" class="carousel slide">
             <div class="carousel-inner zoom-gallery bg-body rounded  p-2 ">
@@ -25,8 +27,15 @@
             </div>
         </div>
         <div class=" w-100 p-3 px-5">
-            <h1 class="text-primary mb-4">{{$article->title}}</h1>
-            <div class="row align-items-center justify-content-between gap-2">
+            <div class="d-flex align-items-center justify-content-between mb-4">
+                <h1 class="text-primary m-0">{{$article->title}}</h1>
+                @if($article->revision_url)
+                    <a href="{{$article->revision_url}}" target="_blank" class="btn btn-outline-primary d-flex align-items-center me-2">
+                        <i class="fa fa-pencil-alt ms-2"></i> {{ __('lang.articles.revision_url') }}
+                    </a>
+                @endif
+
+            </div>            <div class="row align-items-center justify-content-between gap-2">
                 <div class="price w-auto gap-3 text-nowrap d-inline-flex" dir="ltr">
                     @if($article->sale_price)
                         <h5 class="text-primary m-0">{{number_format($article->sale_price ,2,',',' ')}} د.م</h5>

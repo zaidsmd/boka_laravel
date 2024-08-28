@@ -80,13 +80,15 @@ class ArticleController extends Controller
                 'i_image' => 'nullable|image|mimes:jpg,jpeg,png,bmp|max:2048',
                 'i_images.*' => 'nullable|image|mimes:jpg,jpeg,png,bmp|max:2048',
                 'status'=>'required|in:draft,published',
+                'revision_url' => 'nullable|string'
             ], [
                 'titre.required' => 'العنوان مطلوب',
                 'titre.string' => 'العنوان يجب أن يكون نصاً',
                 'titre.max' => 'العنوان يجب أن لا يتجاوز 255 حرفاً',
                 'titre.unique' => 'العنوان موجود بالفعل',
                 'description.required' => 'الوصف مطلوب',
-                'description.string' => 'الوصف يجب أن يكون نصاً',
+                'description.string' => 'رابط المراجعة يجب أن يكون نصاً',
+                'revision_url.string' => 'الوصف يجب أن يكون نصاً',
                 'sale_price.numeric' => 'سعر الخصم يجب أن يكون رقماً',
                 'price.required' => 'السعر مطلوب',
                 'price.numeric' => 'السعر يجب أن يكون رقماً',
@@ -122,7 +124,8 @@ class ArticleController extends Controller
                 'slug' => $request->get('titre'),
                 'quantite' => $request->get('quantite'),
                 'status'=>$request->get('status'),
-            ]);
+                'revision_url' => $request->get('revision_url') ?? null,
+                ]);
 
             // Associate categories with the article
             $article->categories()->sync($request->get('categorie'));
@@ -214,11 +217,14 @@ class ArticleController extends Controller
             'categorie' => 'required|array',
             'related_articles' => 'nullable|array',
             'tag' => 'nullable|array',
+            'revision_url.string' => 'nullable|string',
+
             'quantite' => 'required|numeric|min:0',
             'i_image' => 'nullable|image|mimes:jpg,jpeg,png,bmp|max:2048',
             'i_images.*' => 'nullable|image|mimes:jpg,jpeg,png,bmp|max:2048',
             'status'=>'required|in:draft,published',
         ], [
+            'revision_url.string' => 'الوصف يجب أن يكون نصاً',
             'related_articles.required' => 'حقل المنتجات ذات الصلة مطلوب',
             'titre.required' => 'العنوان مطلوب',
             'titre.string' => 'العنوان يجب أن يكون نصاً',
@@ -254,9 +260,10 @@ class ArticleController extends Controller
                 'description' => $request->input('description'),
                 'sale_price' => $request->input('sale_price'),
                 'price' => $request->input('price'),
-                'slug' => \arabic_slug($request->input('titre')), // Ensure slug is updated
+                'slug' => \arabic_slug($request->input('titre')),
                 'quantite' => $request->get('quantite'),
                 'status' => $request->get('status'),
+                'revision_url' => $request->get('revision_url'),
             ]);
             $article->categories()->sync($request->input('categorie'));
             $article->tags()->sync($request->input('tag'));
@@ -271,8 +278,6 @@ class ArticleController extends Controller
             if ($request->get('i_supprimer_image')==1) {
                 $article->clearMediaCollection('principal');
             }
-
-
 
 
             //other images
