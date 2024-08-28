@@ -16,7 +16,7 @@ class GlobalSettingsSeeder extends Seeder
 
         GlobalSetting::firstOrCreate([
             'nom' => 'stock_operations',
-            'label' => 'المخزون',
+            'label' => 'تفعيل المخزون',
             'valeur' => true,
         ]);
     }
