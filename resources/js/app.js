@@ -366,3 +366,27 @@ $(document).on('click','.order-back',function (){
     $('.orders-list').removeClass('d-none');
     $('.order-show').addClass('d-none')
 })
+
+$(document).on('click','.search-nav-mobile',function (){
+    let btn = $(this);
+    let input = btn.siblings('input');
+    if (input.val()){
+        window.location = window.origin+'/shop/search/'+input.val()
+    }
+})
+$('.nav-link.dropdown-toggle').click(function (){
+    $(this).siblings('.dropdown-menu').toggleClass('d-block')
+})
+$('.search-close').click(function (){
+    $(this).parent().fadeOut()
+})
+$('.search-open').click(function (){
+    $('.search-container').fadeIn()
+})
+$(document).on('submit','#global-search-form',function (e){
+    e.preventDefault();
+    let input = $(this).find('input');
+    if (input.val()){
+        window.location = window.origin+'/shop/search/'+input.val()
+    }
+})

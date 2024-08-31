@@ -85,11 +85,12 @@ class ShopViewsController extends Controller
         $selected_category =\request()->route()->parameter('selected_category');
         $sort =\request()->route()->parameter('sort');
         $sale =\request()->route()->parameter('sale');
+        $search = \request()->route()->parameter('search');
         $categories = Category::get();
         $ages = Tag::where('type','فئة-عمرية')->get();
         $articles_sale_count = Article::where('status','published')->whereNotNull('sale_price')->count();
 
-        return view('shop', compact('categories', 'articles_sale_count','ages','selected_category','selected_tag','sort','sale'));
+        return view('shop', compact('categories', 'articles_sale_count','ages','selected_category','selected_tag','sort','sale','search'));
     }
 
     /**

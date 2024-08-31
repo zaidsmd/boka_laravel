@@ -5,7 +5,7 @@
         <div class="col-md-3 d-md-block d-none pt-3 filters-container">
             <div class="input-group">
                 <button class="input-append btn btn-primary text-white search"><i class="fa fa-search"></i></button>
-                <input type="text" id="search-input" class="form-control" placeholder="بحث...">
+                <input type="text" id="search-input" class="form-control" placeholder="بحث..." value="{{$search ?? null}}">
             </div>
             <div class="form-group py-3">
                 <label for="max" class="form-label text-orange-400">السعر</label>

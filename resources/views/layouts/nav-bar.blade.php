@@ -2,6 +2,8 @@
     <i class="fa fa-solid fa-star"></i>
     أضخم متجر الكتروني لكتب الأطفال والناشئة بالمغرب
     <i class="fa fa-solid fa-star"></i>
+    <br>
+    قراء صغار..واعون كبار
 </div>
 <nav class="navbar navbar-expand-lg shadow-sm position-sticky z-3 top-0">
     <div class="container">
@@ -19,7 +21,8 @@
   </span>
                 <span class="d-md-inline d-none">د.م</span>
             </div>
-            <button class="navbar-toggler" type="button" data-bs-toggle="offcanvas" data-bs-target="#offcanvasNavbar" aria-controls="offcanvasNavbar">
+            <button class="navbar-toggler" type="button" data-bs-toggle="offcanvas" data-bs-target="#offcanvasNavbar"
+                    aria-controls="offcanvasNavbar">
                 <span class="navbar-toggler-icon"></span>
             </button>
         </div>
@@ -31,41 +34,32 @@
                             الصفحة الرئيسية</span></a>
                 </li>
                 <li class="nav-item dropdown">
-                    <a class="nav-link dropdown-toggle @if(\Illuminate\Support\Facades\Request::url() == route('shop')) active @endif"
-                       aria-current="page" href="{{route('shop')}}"><span>
-                            المتجر</span></a>
+                    <a class="nav-link dropdown-toggle @if(\Illuminate\Support\Facades\Request::segment(2) == 'tags') active @endif"
+                       aria-current="page"><span>
+                            الفئة العمرية</span></a>
                     <ul class="dropdown-menu">
-                        <a class=" dropdown-item text-end @if(\Illuminate\Support\Facades\Request::url() === route('shop.categories','ألعاب-تعليمية')) active @endif"
-                           aria-current="page" href="{{route('shop.categories','ألعاب-تعليمية')}}"><span>
-                            ألعاب تعليمية</span></a>
-                        <a class=" dropdown-item text-end @if(\Illuminate\Support\Facades\Request::url() === route('shop.categories','هدايا-بوكادوبوكس')) active @endif"
-                           aria-current="page" href="{{route('shop.categories','هدايا-بوكادوبوكس')}}"><span>
-                            هدايا بوكادوبوكس</span></a>
-                        <a class=" dropdown-item text-end @if(\Illuminate\Support\Facades\Request::url() === route('shop.categories','قصص-و-كتب')) active @endif"
-                           aria-current="page" href="{{route('shop.categories','قصص-و-كتب')}}"><span>
-                            قصص و كتب</span></a>
+                        @foreach(\App\Models\Tag::where('type','فئة-عمرية')->get() as $age)
+                            <a class=" dropdown-item text-end @if(\Illuminate\Support\Facades\Request::url() === route('shop.tags',$age->slug)) active @endif"
+                               aria-current="page" href="{{route('shop.tags',$age->slug)}}"><span>
+                            {{$age->name}}</span></a>
+                        @endforeach
                     </ul>
                 </li>
-                <li class="nav-item ">
-                    <a class="nav-link @if(\Illuminate\Support\Facades\Request::url() == route('shop.sort','date-desc')) active @endif"
-                       aria-current="page" href="{{route('shop.sort','date-desc')}}"><span>
-                            جديدنا</span></a>
+                <li class="nav-item dropdown">
+                    <a class="nav-link  @if(\Illuminate\Support\Facades\Request::url() == route('shop')) active @endif"
+                       aria-current="page" href="{{route('shop')}}"><span>
+                            كل الكتب</span></a>
                 </li>
                 <li class="nav-item ">
-                    <a class="nav-link @if(\Illuminate\Support\Facades\Request::segment(1) == 'best-seller') active @endif"
-                       aria-current="page" href="{{route('best-seller')}}"><span>
-                            الأكثر مبيعا</span></a>
+                    <a class="nav-link @if(\Illuminate\Support\Facades\Request::url() == route('shop.categories',arabic_slug('ألعاب تعليمية'))) active @endif"
+                       aria-current="page" href="{{route('shop.categories',arabic_slug('ألعاب تعليمية'))}}"><span>
+                           ألعاب تربوية تعليمية</span></a>
                 </li>
-                <li class="nav-item ">
-                    <a class="nav-link @if(\Illuminate\Support\Facades\Request::url() == route('shop.sale',1)) active @endif"
-                       aria-current="page" href="{{route('shop.sale',1)}}"><span>
-                            التخفيضات</span></a>
-                </li>
-                <li class="nav-item ">
-                    <a class="nav-link @if(\Illuminate\Support\Facades\Request::url() == route('shop.categories','كتب-رمضان-والعيد')) active @endif"
-                       aria-current="page" href="{{route('shop.categories','كتب-رمضان-والعيد')}}"><span>
-                           كتب رمضان والعيد</span></a>
-                </li>
+                {{--                <li class="nav-item ">--}}
+                {{--                    <a class="nav-link @if(\Illuminate\Support\Facades\Request::url() == route('shop.categories',arabic_slug('هدايا بوكادوبوكس'))) active @endif"--}}
+                {{--                       aria-current="page" href="{{route('shop.categories',arabic_slug('هدايا بوكادوبوكس'))}}"><span>--}}
+                {{--                           هدايا بوكادوبوكس</span></a>--}}
+                {{--                </li>--}}
                 <li class="nav-item">
                     <a class="nav-link @if(\Illuminate\Support\Facades\Request::segment(1) === 'my-account') active @endif"
                        href="{{route('my-account')}}">لوحة حسابي</a>
@@ -73,6 +67,9 @@
             </ul>
         </div>
         <div class="div  gap-2 d-md-flex d-none">
+            <div class="d-flex p-2 align-items-center justify-content-center cursor-pointer search-open">
+                <i class="fa fa-search text-primary"></i>
+            </div>
             <div class="cart  text-primary border shadow-sm btn bg-white  p-2 rounded" data-bs-toggle="offcanvas"
                  data-bs-target="#cart-canvas" aria-controls="cart-canvas">
                 <i class=" fa-solid fa-cart-shopping mx-1"></i>
@@ -98,59 +95,55 @@
 
     </div>
 </div>
-    <div class="container-fluid">
-        <div class="offcanvas offcanvas-end bg-orange-400" tabindex="-1" id="offcanvasNavbar" aria-labelledby="offcanvasNavbarLabel">
-            <div class="offcanvas-header">
-                <button type="button" class="btn-close" data-bs-dismiss="offcanvas" aria-label="Close"></button>
-            </div>
-            <div class="offcanvas-body">
-                <ul class="navbar-nav">
-                    <li class="nav-item text-white">
-                        <a class="nav-link @if(\Illuminate\Support\Facades\Request::segment(1) == '') active @endif"
-                           aria-current="page" href="{{url('/')}}"><span>
+<div class="container-fluid">
+    <div class="offcanvas offcanvas-end bg-orange-400" tabindex="-1" id="offcanvasNavbar"
+         aria-labelledby="offcanvasNavbarLabel">
+        <div class="offcanvas-header">
+            <button type="button" class="btn-close" data-bs-dismiss="offcanvas" aria-label="Close"></button>
+        </div>
+        <div class="offcanvas-body">
+            <ul class="navbar-nav">
+                <li class="nav-item mb-3">
+                    <div class="input-group">
+                        <button class="input-group-text btn btn-secondary d-inline search-nav-mobile">
+                            <i class="fa fa-search text-white"></i>
+                        </button>
+                        <input type="text" class="form-control" placeholder="ابحث عن منتج...">
+                    </div>
+                </li>
+                <li class="nav-item text-white">
+                    <a class="nav-link @if(\Illuminate\Support\Facades\Request::segment(1) == '') active @endif"
+                       aria-current="page" href="{{url('/')}}"><span>
                             الصفحة الرئيسية</span></a>
-                    </li>
-                    <li class="nav-item dropdown text-white" >
-                        <a class="nav-link  @if(\Illuminate\Support\Facades\Request::url() == route('shop')) active @endif"
-                           aria-current="page" href="{{route('shop')}}"><span>
-                            المتجر</span></a>
-                        <ul class="dropdown-menu d-block">
-                            <a class=" dropdown-item text-end @if(\Illuminate\Support\Facades\Request::url() === route('shop.categories','ألعاب-تعليمية')) active @endif"
-                               aria-current="page" href="{{route('shop.categories','ألعاب-تعليمية')}}"><span>
-                            ألعاب تعليمية</span></a>
-                            <a class=" dropdown-item text-end @if(\Illuminate\Support\Facades\Request::url() === route('shop.categories','هدايا-بوكادوبوكس')) active @endif"
-                               aria-current="page" href="{{route('shop.categories','هدايا-بوكادوبوكس')}}"><span>
-                            هدايا بوكادوبوكس</span></a>
-                            <a class=" dropdown-item text-end @if(\Illuminate\Support\Facades\Request::url() === route('shop.categories','قصص-و-كتب')) active @endif"
-                               aria-current="page" href="{{route('shop.categories','قصص-و-كتب')}}"><span>
-                            قصص و كتب</span></a>
-                        </ul>
-                    </li>
-                    <li class="nav-item text-white">
-                        <a class="nav-link @if(\Illuminate\Support\Facades\Request::url() == route('shop.sort','date-desc')) active @endif"
-                           aria-current="page" href="{{route('shop.sort','date-desc')}}"><span>
-                            جديدنا</span></a>
-                    </li>
-                    <li class="nav-item text-white">
-                        <a class="nav-link @if(\Illuminate\Support\Facades\Request::segment(1) == 'best-seller') active @endif"
-                           aria-current="page" href="{{route('best-seller')}}"><span>
-                            الأكثر مبيعا</span></a>
-                    </li>
-                    <li class="nav-item text-white">
-                        <a class="nav-link @if(\Illuminate\Support\Facades\Request::url() == route('shop.sale',1)) active @endif"
-                           aria-current="page" href="{{route('shop.sale',1)}}"><span>
-                            التخفيضات</span></a>
-                    </li>
-                    <li class="nav-item text-white">
-                        <a class="nav-link @if(\Illuminate\Support\Facades\Request::url() == route('shop.categories','كتب-رمضان-والعيد')) active @endif"
-                           aria-current="page" href="{{route('shop.categories','كتب-رمضان-والعيد')}}"><span>
-                           كتب رمضان والعيد</span></a>
-                    </li>
-                    <li class="nav-item text-white">
-                        <a class="nav-link @if(\Illuminate\Support\Facades\Request::segment(1) === 'my-account') active @endif"
-                           href="{{route('my-account')}}">لوحة حسابي</a>
-                    </li>
-                </ul>
-            </div>
+                </li>
+                <li class="nav-item text-white dropdown">
+                    <a class="nav-link  @if(\Illuminate\Support\Facades\Request::url() == route('shop')) active @endif"
+                       aria-current="page" href="{{route('shop')}}"><span>
+                            كل الكتب</span></a>
+                </li>
+                <li class="nav-item text-white">
+                    <a class="nav-link @if(\Illuminate\Support\Facades\Request::url() == route('shop.categories',arabic_slug('ألعاب تعليمية'))) active @endif"
+                       aria-current="page" href="{{route('shop.categories',arabic_slug('ألعاب تعليمية'))}}"><span>
+                           ألعاب تربوية تعليمية</span></a>
+                </li>
+                <li class="nav-item dropdown">
+                    <a class="nav-link text-white dropdown-toggle @if(\Illuminate\Support\Facades\Request::segment(2) == 'tags') active @endif"
+                       aria-current="page"><span>
+                            الفئة العمرية</span></a>
+                    <ul class="dropdown-menu">
+                        @foreach(\App\Models\Tag::where('type','فئة-عمرية')->get() as $age)
+                            <a class=" dropdown-item text-end @if(\Illuminate\Support\Facades\Request::url() === route('shop.tags',$age->slug)) active @endif"
+                               aria-current="page" href="{{route('shop.tags',$age->slug)}}"><span>
+                            {{$age->name}}</span></a>
+                        @endforeach
+                    </ul>
+                </li>
+                <li class="nav-item text-white">
+                    <a class="nav-link @if(\Illuminate\Support\Facades\Request::segment(1) === 'my-account') active @endif"
+                       href="{{route('my-account')}}">لوحة حسابي</a>
+                </li>
+            </ul>
         </div>
     </div>
+</div>
+

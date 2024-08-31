@@ -23,6 +23,7 @@ Route::get('checkout', [\App\Http\Controllers\ShopViewsController::class, 'check
 Route::get('/shop',[\App\Http\Controllers\ShopViewsController::class,'shop'])->name('shop');
 Route::get('/shop/tags/{selected_tag}',[\App\Http\Controllers\ShopViewsController::class,'shop'])->name('shop.tags');
 Route::get('/shop/categories/{selected_category}',[\App\Http\Controllers\ShopViewsController::class,'shop'])->name('shop.categories');
+Route::get('/shop/search/{search}',[\App\Http\Controllers\ShopViewsController::class,'shop'])->name('shop.search');
 Route::get('/shop/sort/{sort}',[\App\Http\Controllers\ShopViewsController::class,'shop'])->name('shop.sort');
 Route::get('/shop/sale/{sale}',[\App\Http\Controllers\ShopViewsController::class,'shop'])->name('shop.sale');
 Route::get('/shop-ajax',[\App\Http\Controllers\ShopViewsController::class,'shopAjax'])->name('shop.ajax');

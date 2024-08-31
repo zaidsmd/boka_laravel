@@ -22,6 +22,14 @@
 <a href="https://wa.me/+212665252245" class="whatsapp-button" target="_blank">
     <img src="{{asset('images/WhatsApp_icon.png')}}" alt="WhatsApp" />
 </a>
+<div class="bg-white position-fixed top-0 bottom-0 start-0 end-0 w-100 h-100 search-container " style="z-index: 999;display: none">
+    <div class=" position-absolute top-50 start-0 fa-3x text-primary cursor-pointer search-close z-3" style="margin-left: 1rem; transform: translateY(-50%)"><i class="fa fa-times"></i></div>
+    <div class="d-flex align-items-center justify-content-center h-100" style=" transform: translateY(-1rem)">
+        <form action="" id="global-search-form" >
+            <input  placeholder="ابحث عن المنتجات ..." class="border-0 " style="font-size: 3rem;outline: none" type="search" value="">
+        </form>
+    </div>
+</div>
 @include('layouts.footer')
 <script src="{{asset('js/bootstrap.bundle.min.js')}}"></script>
 <script src="{{asset('js/fontawesome.js')}}"></script>
