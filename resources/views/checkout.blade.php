@@ -1,4 +1,14 @@
 @extends('layouts.main')
+@push('styles')
+    .payment-option input[disabled] {
+    cursor: not-allowed;
+    opacity: 0.6; /* Adjust the opacity to indicate the option is disabled */
+    }
+
+    .payment-option input[disabled] + label {
+    color: #6c757d; /* Adjust the color to indicate the disabled state */
+    }
+@endpush
 @section('page')
     <form action="{{route('complete-checkout')}}" method="post">
         <div class="row">
@@ -188,37 +198,51 @@
             </div>
             <div class="col-12 mt-4">
                 <div class="bg-orange-400 rounded p-3">
-                    <h5 class="text-white"> طرق الدفع</h5>
+                    <h5 class="text-white">طرق الدفع</h5>
+
+                    <!-- Payment Option 1: Bank Transfer -->
                     <div class="payment-option active p-3 rounded my-3 mt-5">
                         <div class="d-flex align-items-center justify-content-between">
-                            <label for="payement_transfert" class="form-check-label w-100">تحويل مصرفي مباشر </label>
-                            <input id="payement_transfert" type="radio" checked name="payment_method"
+                            <label for="payment_transfert" class="form-check-label w-100">تحويل مصرفي مباشر</label>
+                            <input id="payment_transfert" type="radio" checked name="payment_method"
                                    class="form-check-input" value="transfert">
                         </div>
-                        <p class="text-muted " style="font-size: 13px">
+                        <p class="text-muted" style="font-size: 13px">
                             قم بإجراء الدفع مباشرة في حسابنا المصرفي. يرجى استخدام رقم الطلب الخاص بك كمرجع للدفع. لن
-                            يتم شحن طلبك حتى يتم تحويل الأموال إلى الحساب التالي
-                            MME IELMAKI IKRAM : 007640001077530040024157
+                            يتم شحن طلبك حتى يتم تحويل الأموال إلى الحساب التالي: 007640001077530040024157
                         </p>
                     </div>
-                    <div class="payment-option p-3 rounded my-3 ">
+
+                    <!-- Payment Option 2: Cash on Delivery -->
+                    <div class="payment-option p-3 rounded my-3">
                         <div class="d-flex align-items-center justify-content-between">
-                            <label for="cash" class="form-check-label w-100">الدفع نقدًا عند الاستلام </label>
+                            <label for="cash" class="form-check-label w-100">الدفع نقدًا عند الاستلام</label>
                             <input id="cash" type="radio" name="payment_method" class="form-check-input" value="cash">
                         </div>
                     </div>
+
+                    <!-- Payment Option 3: Credit Card (Disabled) -->
+                    <div class="payment-option p-3 rounded my-3">
+                        <div class="d-flex align-items-center justify-content-between">
+                            <label for="credit_card" class="form-check-label w-100">الدفع عبر بطاقة بنكية</label>
+                            <input id="credit_card" type="radio" name="payment_method" class="form-check-input" value="credit_card" disabled>
+                        </div>
+                    </div>
+
                     <hr class="border-white">
                     <p class="text-muted">
                         سيتم استخدام بياناتك الشخصية لمعالجة طلبك، ودعم تجربتك في هذا الموقع، ولأغراض أخرى تم توضيحها في
                         سياسة الخصوصية لدينا.
                     </p>
-                    <div class="d-flex align-items-center ">
+
+                    <div class="d-flex align-items-center">
                         <div class="bg-white p-1 px-2 ms-2 rounded">
                             <input id="policy" type="checkbox" name="policy" class="form-check-input" value="transfert">
                         </div>
                         <label for="policy" class="form-check-label w-100 required text-muted">لقد قرأتُ الشروط والأحكام
                             وأوافق عليها لهذا الموقع</label>
                     </div>
+
                     <div class="col-12 text-start my-2">
                         <button class="btn bg-white text-primary">أتمم الطلب</button>
                     </div>

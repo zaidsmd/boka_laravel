@@ -43,6 +43,7 @@ Route::get('من-نحن',[\App\Http\Controllers\StaticPagesController::class,'ab
 Route::get('الشروط-الأحكام',[\App\Http\Controllers\StaticPagesController::class,'termsAndConditions'])->name('static-pages.terms-and-conditions');
 
 Route::get('/add-to-cart', [\App\Http\Controllers\CartController::class, 'addLine'])->name('cart.add-line');
+Route::get('/add-to-members-order', [\App\Http\Controllers\CartController::class, 'addMemberOrder'])->name('cart.add-member-order');
 Route::get('/add-to-cart-single', [\App\Http\Controllers\CartController::class, 'addLineFromSingle'])->name('cart.add-line');
 Route::get('/cart-canvas', [\App\Http\Controllers\CartController::class, 'cartOffCanvas'])->name('cart.cart-off-canvas');
 Route::delete('/cart-ligne', [\App\Http\Controllers\CartController::class, 'deleteCartLigne'])->name('cart.delete-cart-ligne');

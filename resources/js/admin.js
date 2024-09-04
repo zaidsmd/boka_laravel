@@ -27,6 +27,96 @@ $(document).on('click', '.__datatable-edit-modal', function () {
     }
 
 })
+$(document).on('click', '.traiter', function () {
+    Swal.fire({
+        title: "معالجة الطلب\n",
+        text: "هل ترغب في معالجة هذه الطلبية؟",
+        showCancelButton: true,
+        confirmButtonText: "نعم، تابع",
+        cancelButtonText: "إلغاء",
+        buttonsStyling: false,
+        customClass: {
+            confirmButton: 'btn btn-primary mx-2', // Use neutral or primary button styling
+            cancelButton: 'btn btn-secondary mx-2',
+        },
+        didOpen: () => {
+            $('.btn').blur();
+        },
+        preConfirm: async () => {
+            Swal.showLoading();
+            try {
+                const [response] = await Promise.all([new Promise((resolve, reject) => {
+                    $.ajax({
+                        url: $(this).data('url'),
+                        method: 'POST',
+                        headers: {
+                            'X-CSRF-TOKEN': __csrf_token
+                        },
+                        success: resolve,
+                        error: (_, jqXHR) => reject(_)
+                    });
+                })]);
+
+                return response;
+            } catch (jqXHR) {
+                let errorMessage = "حدث خطأ أثناء الطلب.";
+                if (jqXHR.status !== undefined) {
+                    if (jqXHR.status === 400) {
+                        errorMessage = jqXHR.responseText; // Displaying the message returned by the controller
+                    } else if (jqXHR.status === 404) {
+                        errorMessage = "لم يتم العثور على المورد.";
+                    } else if (jqXHR.status === 403) {
+                        errorMessage = "ليس لديك الإذن اللازم لتنفيذ هذا الإجراء.";
+                    }
+                }
+                Swal.fire({
+                    title: 'خطأ',
+                    text: errorMessage,
+                    icon: 'error',
+                    buttonsStyling: false,
+                    confirmButtonText: 'حسناً',
+                    customClass: {
+                        confirmButton: 'btn btn-primary mx-2',
+                    },
+                });
+
+                throw jqXHR;
+            }
+        }
+    }).then((result) => {
+        if (result.isConfirmed) {
+            if (result.value) {
+                Swal.fire({
+                    title: 'نجاح!',
+                    text: result.value,
+                    icon: 'success',
+                    buttonsStyling: false,
+                    confirmButtonText: 'حسناً',
+                    customClass: {
+                        confirmButton: 'btn btn-primary mx-2',
+                    },
+                }).then(result => {
+                    if (typeof table != 'undefined') {
+                        table.ajax.reload();
+                    } else {
+                        location.reload();
+                    }
+                });
+            } else {
+                Swal.fire({
+                    title: 'خطأ',
+                    text: result.value,
+                    icon: 'error',
+                    buttonsStyling: false,
+                    confirmButtonText: 'حسناً',
+                    customClass: {
+                        confirmButton: 'btn btn-primary mx-2',
+                    },
+                });
+            }
+        }
+    });
+});
 
 $(document).on('click', '.sa-warning', function () {
     Swal.fire({

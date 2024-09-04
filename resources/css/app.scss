@@ -25,10 +25,76 @@
     &:hover {
         box-shadow: $box-shadow !important;
 
+        .out-of-stock-card{
+            right: 1rem;
+        }
         .add-to-cart-card {
             right: 1rem;
         }
     }
+    .out-of-stock-card {
+        z-index: 51;
+        position: absolute;
+        top: 50%;
+        right: -10rem;
+        width: 120px;
+        height: 50px;
+        padding: 0.5rem;
+        background: $white; /* Use a color that indicates out of stock, like white */
+        border-radius: 5px; /* Rounded corners */
+        transform: translateY(-50%);
+        transition: all ease .3s;
+        cursor: pointer;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+
+        &:hover {
+            background: $green; /* Green background on hover */
+            scale: 1;
+        .out-of-stock-btn{
+            background-color: $green; /* Same background as `.out-of-stock-card` */
+
+        }
+            * {
+                fill: $white;
+                color: $white;
+            }
+        }
+
+        * {
+            fill: $green; /* Green color for the icon */
+            color: $green;
+        }
+    }
+
+    .out-of-stock-card-mobile{
+        font-size : smaller;
+    }
+    .out-of-stock-btn {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        width: 100%;
+        height: 100%;
+        border: none;
+        background-color: $white; /* Same background as `.out-of-stock-card` */
+        border-radius: 50%;
+        transition: all ease .3s;
+        cursor: pointer;
+        font-size: 0.9rem;
+        color: $green; /* Green text color */
+
+        &:hover {
+            background: $green; /* Green background on hover */
+            //color: $white; /* White text color on hover */
+        }
+
+        i {
+            margin-right: 0.5rem;
+        }
+    }
+
 
     .add-to-cart-card {
         z-index: 51;

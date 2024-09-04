@@ -46,6 +46,15 @@
         <i class="fa fa-trash-alt"></i>
     </button>
 @endif
+
+@if (isset($traiter))
+    <button data-url="{{ route($crudRoutePart . '.' . $traiter, [$id, ...$attrs]) }}"
+            class="btn btn-sm btn-soft-info  traiter" data-bs-custom-class="danger-tooltip"
+            data-bs-template='<div class="tooltip mb-1 rounded " role="tooltip"><div class="tooltip-inner bg-info font-size-10"></div></div>'
+            data-bs-toggle="tooltip" data-bs-placement="top" data-bs-original-title="Traiter">
+        <i class="fa fa-check-double"></i>
+    </button>
+@endif
 @if (isset($paiement))
     <a data-url="{{ route('paiements.' . $paiement, [$id, ...$attrs]) }}" class="btn btn-sm btn-soft-info">
         <i class="fas fa-coins"></i>

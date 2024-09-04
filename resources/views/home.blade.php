@@ -9,6 +9,8 @@
     </style>
 @endpush
 @section('page')
+    <div class="message-area"></div>
+
     <div id="carouselExampleIndicators" class="carousel slide direction-right" data-bs-ride="carousel" >
         <div class="carousel-indicators">
             @foreach($sliders as $index => $slider)

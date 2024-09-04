@@ -69,6 +69,19 @@ Route::prefix('cpadmin')->group(function () {
         Route::post('/status/{id}','modifier_status')->name('commandes.modifier_status');
     });
 
+    Route::group(['prefix' => 'member_orders','controller' => \App\Http\Controllers\MemberOrderController::class], function (){
+        Route::get('/','liste')->name('member_orders.liste');
+        Route::get('ajouter','ajouter')->name('member_orders.ajouter');
+        Route::post('sauvegarder','sauvegarder')->name('member_orders.sauvegarder');
+        Route::put('mettre_a_jour/{id}','mettre_a_jour')->name('member_orders.mettre_jour');
+        Route::get('modifier/{id}','modifier')->name('member_orders.modifier');
+        Route::delete('supprimer/{id}','supprimer')->name('member_orders.supprimer');
+        Route::post('traiter/{id}','traiter')->name('member_orders.traiter');
+        Route::get('/afficher/{id}','afficher')->name('member_orders.afficher');
+        Route::get('/status/{id}','status_modal')->name('member_orders.status_modal');
+        Route::post('/status/{id}','modifier_status')->name('member_orders.modifier_status');
+    });
+
     Route::group(['prefix' => 'sliders','controller' => SliderController::class], function (){
         Route::get('/','liste')->name('sliders.liste');
         Route::post('sauvegarder','sauvegarder')->name('sliders.sauvegarder');

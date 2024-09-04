@@ -326,6 +326,12 @@ class ArticleController extends Controller
             }
         }
     }
+
+
+    /**
+     * @param Request $request
+     * @return \Illuminate\Http\JsonResponse
+     */
     public function upload(Request $request)
     {
         $request->validate([

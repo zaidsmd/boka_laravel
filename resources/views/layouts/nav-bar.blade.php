@@ -60,7 +60,7 @@
                 {{--                       aria-current="page" href="{{route('shop.categories',arabic_slug('هدايا بوكادوبوكس'))}}"><span>--}}
                 {{--                           هدايا بوكادوبوكس</span></a>--}}
                 {{--                </li>--}}
-                <li class="nav-item">
+                <li class="nav-item  member-order">
                     <a class="nav-link @if(\Illuminate\Support\Facades\Request::segment(1) === 'my-account') active @endif"
                        href="{{route('my-account')}}">لوحة حسابي</a>
                 </li>

@@ -52,6 +52,66 @@ $(document).on('click', '.add-to-cart-card,.add-to-cart-card-mobile', function (
         }
     })
 })
+
+$(document).on('click', '.out-of-stock-card, .out-of-stock-card-mobile', function () {
+    let accountPanel = $('.member-order:visible');
+    let btn = $(this);
+    let product = btn.closest('.product-card');
+    let btn_html = btn.html();
+    product.find('.errors').html('');
+
+    btn.html('<div class="spinner-border m-0 spinner-border-sm" role="status">' +
+        '  <span class="visually-hidden">Loading...</span>' +
+        '</div>');
+
+    $.ajax({
+        url: window.origin + '/add-to-members-order',
+        data: {
+            'article': product.data('id')
+        },
+        success: function (response) {
+            btn.html('<span class="success-cart position-absolute"><i class="fa fa-check"></i></span>');
+            let success = $('<div class="btn-success btn rounded-circle position-absolute translate-middle d-flex align-items-center justify-content-center" style="height: 30px;width: 30px;z-index: 50;filter: blur(1px)"><span class="text-white"><i class="fa fa-check"></i></span></div>');
+            let accountPanel_boundaries = accountPanel[0] ? accountPanel[0].getBoundingClientRect() : null;
+            let btn_boundaries = btn[0] ? btn[0].getBoundingClientRect() : null;
+
+                success.css('transition', "all ease-in-out .5s");
+                success.css('top', btn_boundaries.top + (btn_boundaries.height / 2) + window.scrollY + 'px');
+                success.css('left', btn_boundaries.left + (btn_boundaries.width / 2) + window.scrollX + 'px');
+                $('body').append(success);
+
+                product.find('.errors').html('<h6 class="text-success d-inline mb-3 text-center">' + response.message + '</h6>');
+
+                setTimeout(() => {
+                    success.css('top', accountPanel_boundaries.top + (accountPanel_boundaries.height / 2) + window.scrollY + 'px');
+                    success.css('left', accountPanel_boundaries.left + (accountPanel_boundaries.width / 2) + window.scrollX + 'px');
+                }, 100);
+
+                setTimeout(() => {
+                    btn.html(btn_html);
+                }, 200);
+
+                setTimeout(() => {
+                    success.css('opacity', 0);
+                }, 250);
+
+                setTimeout(() => {
+                    success.remove();
+                }, 550);
+                btn.html(btn_html);
+
+        },
+        error: function (xhr) {
+            if (xhr.status === 401) {
+                product.find('.errors').html('<h6 class="text-danger d-inline mb-3 text-center">' + xhr.responseJSON.message + '</h6>');
+            } else {
+                notyf.error(xhr.responseText);
+            }
+            btn.html(btn_html);
+        }
+    });
+});
+
 $(document).on('cart-change', function () {
     $('.cart .total').html(Number(cart_total).toLocaleString('fr', {minimumFractionDigits: 2,}))
     $('.cart .badge').html(cart_count)

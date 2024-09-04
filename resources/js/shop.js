@@ -31,8 +31,16 @@ function createProductCard(article) {
     var $cardImg = $('<div>', {class: 'card-img w-100 position-relative'});
 
     var $cartIcon = $('<div>', {class: 'add-to-cart-card d-sm-block d-none'}).append($('<i>', {class: 'fa-solid fa-cart-shopping'}));
-    if (article.quantity) {
+    if (article.quantity > 0) {
         $cardImg.append($cartIcon);
+    }else if(article.quantity < 0){
+        $cardImg.append($(' ' +
+            ' <div class="out-of-stock-card d-md-block d-none">\n' +
+            '                    <button class="btn btn-warning out-of-stock-btn">\n' +
+            '                        <i class="fa-solid fa-bell"></i> الطلب عند الوصول\n' +
+            '                    </button>\n' +
+            '                </div>' ))
+        // '<div class="btn btn-primary add-to-cart-card-mobile d-md-none d-block text-white mt-auto mb-3 mx-3" ><i class="fa-solid fa-cart-shopping"></i></div>'))
     }
 
     var $imageLink = $('<a>', {href: window.origin + `/product/${article.slug}`});
@@ -70,12 +78,17 @@ function createProductCard(article) {
         href: window.origin + `/product/${article.slug}`,
         class: 'text-decoration-none'
     }).append($cardBody));
-    if (article.quantity) {
+    $card.append($('<div class="errors text-danger text-center py-2"></div>\n'))
+    if (article.quantity > 0) {
         $card.append($(' <div class="btn btn-primary add-to-cart-card-mobile d-md-none d-block text-white mt-auto mb-3 mx-3" ><i class="fa-solid fa-cart-shopping"></i></div>'))
+    }else if (article.quantity < 0){
+        $card.append($('   <h6 class="text-danger d-inline mb-3 text-center">هذا المنتج غير متوفر</h6>\n' +
+            '            <div class="btn btn-success d-md-none text-white mx-3 my-2 out-of-stock-card-mobile d-block " >\n' +
+            '                <i class="fa-solid fa-bell ms-2"></i>الطلب عند الوصول\n' +
+            '            </div>' ))
     }else {
         $card.append($(' <h6 class="text-danger d-inline mb-3 text-center" >هذا المنتج غير متوفر</h6>'))
     }
-    $card.append($('        <div class="errors text-danger text-center py-2"></div>\n'))
     $wrapper.append($card)
     return $wrapper;
 }

@@ -44,7 +44,7 @@
                     <h5 class="@if($article->sale_price) text-orange-300 text-decoration-line-through  @else text-primary @endif text-nowrap  m-0">{{number_format($article->price ,2,',',' ')}}
                         د.م</h5>
                 </div>
-                @if($article->quantite)
+                @if($article->quantite > 0)
                     <div class="quantity w-auto d-inline-flex align-items-center gap-3  justify-content-end">
                         <input type="number" class="form-control" min="1" max="{{$article->quantite}}" value="1" style="max-width: 70px">
                         <button class="btn btn-primary text-white text-nowrap add-to-cart-card-single"

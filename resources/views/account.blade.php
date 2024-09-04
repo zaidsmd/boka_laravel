@@ -35,6 +35,13 @@
                     </button>
                 </li>
                 <li class="nav-item" role="presentation">
+                    <button class="nav-link" id="member-order-tab" data-bs-toggle="tab" data-bs-target="#member-order-tab-pane"
+                            type="button" role="tab" aria-controls="member-order-tab-pane" aria-selected="false"><span
+                            class="mx-1"><i class="fa fa-satellite"></i></span>
+                        <span class="d-md-inline d-none"> الطلبات   عند الوصول</span>
+                    </button>
+                </li>
+                <li class="nav-item" role="presentation">
                     <button class="nav-link"
                             type="button" role="tab" id="logout"><span class="mx-1"><i
                                 class="fa fa-right-from-bracket"></i></span>
@@ -305,6 +312,41 @@
 
                     </div>
                 </div>
+                <div class="tab-pane fade pt-4" id="member-order-tab-pane" role="tabpanel" aria-labelledby="member-order-tab"
+                     tabindex="0">
+                    <div class="orders-list">
+                        <div class="row d-flex flex-wrap">
+                            <div class="col-md-3 col-3"><h6 class="mb-0">الطلب</h6></div>
+                            <div class="col-md-3 col-3"><h6 class="mb-0">التاريخ</h6></div>
+                            <div class="col-md-3 col-3"><h6 class="mb-0">المنتج</h6></div>
+                            <div class="col-md-3 col-3"><h6 class="mb-0">الحالة</h6></div>
+                        </div>
+
+                        @foreach($auth->member_orders as $index => $order)
+                            <div class="row d-flex flex-wrap py-2 bg-white my-2 border rounded">
+                                <div class="col-md-3 col-3"><span>{{$index + 1}}</span></div>
+                                <div class="col-md-3 col-3"><span>{{$order->created_at->format('d/m/Y')}}</span></div>
+                                <div class="col-md-3 col-3"><span>{{$order->product->title}}</span></div>
+                                <div class="col-md-3 col-3">
+                                    @switch($order->status)
+                                        @case('pending')
+                                            {{ 'في الإنتظار' }}
+                                            @break
+                                        @case('approved')
+                                            {{ 'تم الوصول' }}
+                                            @break
+                                        @default
+                                            {{ $order->status }}  {{-- Fallback if status is not recognized --}}
+                                    @endswitch
+                                </div>
+                            </div>
+                        @endforeach
+
+                        <div class="order-show d-none">
+
+                    </div>
+                </div>
+
             </div>
         </section>
     @else

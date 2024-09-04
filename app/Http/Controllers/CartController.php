@@ -5,11 +5,47 @@ namespace App\Http\Controllers;
 use App\Models\Article;
 use App\Models\Cart;
 use App\Models\CartLine;
+use App\Models\MemberOrder;
 use App\Models\Ville;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 
 class CartController extends Controller
 {
+
+
+    public function addMemberOrder(Request $request)
+    {
+        if (Auth::check()) {
+            $article = Article::find($request->input('article'));
+
+            if (!$article) {
+                return response(['message' => 'الكمية متوفرة'], 401);
+            }
+
+
+            $user = Auth::user();
+            $existingOrder = MemberOrder::where('user_id', $user->id)
+                ->where('product_id', $article->id)
+                ->first();
+            if(!$existingOrder){
+                $member_order = new MemberOrder();
+                $member_order->user_id = $user->id;
+                $member_order->status = 'pending';
+                $member_order->product_id = $article->id;
+                $member_order->save();
+            }
+            // Create a new order for the authenticated user
+            return response([
+                'message' => 'تمت إضافة العنصر إلى الطلبات عند الوصول'
+            ]);
+        } else {
+            // User is not authenticated
+            return response([
+                'message' => 'يرجى تسجيل الدخول لاستخدام هذه الميزة'
+            ], 401); // You can use a 401 Unauthorized status code
+        }
+    }
     /**
      * Display a listing of the resource.
      */
@@ -79,14 +115,18 @@ class CartController extends Controller
         if (!is_numeric($request->input('quantity'))) {
             return response('المرجو ادخال كمية صحيحة');
         }
+        $cities = Ville::all();
+        $cart = cart();
+        $selected_city_price =Ville::where('nom',$cart->city)->value('price');
+
         if ($request->input('quantity') == 0) {
             $cartLine->delete();
-            return response(['total' => \cart()->total, 'cart' => view('partials.cart-table', ['cart' => \cart()])->render()]);
+            return response(['total' => \cart()->total, 'cart' => view('partials.cart-table', ['cart' => \cart(), 'cities' => $cities, 'selected_city_price' => $selected_city_price])->render()]);
         }
         $cartLine->update([
             'quantity' => $request->input('quantity')
         ]);
-        return response(['total' => \cart()->total, 'cart' => view('partials.cart-table', ['cart' => \cart()])->render(),'count'=>\cart()->cart_lignes()->sum('quantity')]);
+        return response(['total' => \cart()->total, 'cart' => view('partials.cart-table', ['cart' => \cart(), 'cities' => $cities, 'selected_city_price' => $selected_city_price])->render(),'count'=>\cart()->cart_lignes()->sum('quantity')]);
     }
 
     /**
