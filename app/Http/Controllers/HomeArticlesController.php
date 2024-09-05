@@ -32,7 +32,7 @@ class HomeArticlesController extends Controller
     public function sauvegarder(Request $request)
     {
 
-        $productOrderData = json_decode($request->input('product_order_data'), true);
+        $productOrderData = json_decode($request->input('latest_order_data'), true);
         $saleOrderData = json_decode($request->input('sale_order_data'), true);
         DB::table('home_articles')->delete();
         $insertData = [];

@@ -4,30 +4,30 @@
 
 @push('css')
     <style>
-        .product-table, .sale-table {
+        .latest-table, .sale-table {
             width: 100%;
             border-collapse: collapse;
         }
-        .product-table th, .sale-table th,
-        .product-table td, .sale-table td {
+        .latest-table th, .sale-table th,
+        .latest-table td, .sale-table td {
             border: 1px solid #ddd;
             padding: 8px;
         }
-        .product-table th, .sale-table th {
+        .latest-table th, .sale-table th {
             background-color: #f4f4f4;
             text-align: right;
         }
-        .product-table img, .sale-table img {
+        .latest-table img, .sale-table img {
             max-width: 100px;
             max-height: 100px;
             object-fit: cover;
         }
-        .product-table .move-up, .sale-table .move-up,
-        .product-table .move-down, .sale-table .move-down {
+        .latest-table .move-up, .sale-table .move-up,
+        .latest-table .move-down, .sale-table .move-down {
             cursor: pointer;
         }
-        .product-table .move-up.disabled, .sale-table .move-up.disabled,
-        .product-table .move-down.disabled, .sale-table .move-down.disabled {
+        .latest-table .move-up.disabled, .sale-table .move-up.disabled,
+        .latest-table .move-down.disabled, .sale-table .move-down.disabled {
             color: #ccc;
             cursor: not-allowed;
         }
@@ -57,7 +57,7 @@
                             <hr class="border">
                         </div>
                         @csrf
-                        <input type="hidden" name="product_order_data" id="product-order-data">
+                        <input type="hidden" name="latest_order_data" id="latest-order-data">
                         <input type="hidden" name="sale_order_data" id="sale-order-data">
 
                         <div class="row">
@@ -92,7 +92,7 @@
                                 <!-- Table to display selected products -->
                                 <div class="col-12 mt-4">
                                     <h5 class="text-muted">المنتجات المختارة (أحدث الإصدارات)</h5>
-                                    <table class="product-table">
+                                    <table class="latest-table">
                                         <thead>
                                         <tr>
                                             <th>الترتيب</th>
@@ -102,7 +102,7 @@
                                             <th style="width: 20%">العمليات</th>
                                         </tr>
                                         </thead>
-                                        <tbody id="product-table-body">
+                                        <tbody id="latest-table-body">
 
                                         </tbody>
                                     </table>
@@ -216,242 +216,129 @@
     </script>
     <script>
         $(document).ready(function () {
-            // Preload latest products from the database into the table
             const latestProducts = @json($latestProducts);
             const saleProducts = @json($saleProducts);
 
             latestProducts.forEach(function (product) {
-                addProductToTable(product.article.id, product.article.title );
+                addProductToTable('latest', product.article.id, product.article.title);
             });
+
             saleProducts.forEach(function (product) {
-                addProductToSaleTable(product.article.id, product.article.title);
+                addProductToTable('sale', product.article.id, product.article.title);
             });
 
-            function addProductToSaleTable(id, name) {
-                const saleTableBody = $("#sale-table-body");
+            function addProductToTable(type, id, name) {
+                const tableBody = $(`#${type}-table-body`);
+                const rowId = `${type}-row-${id}`;
 
                 // Check if product is already in the table
-                if ($(`#sale-row-${id}`).length > 0) {
+                if ($(`#${rowId}`).length > 0) {
                     return; // Prevent duplicates
                 }
 
-                const rowCount = saleTableBody.children().length + 1;
-
+                const rowCount = tableBody.children().length + 1;
                 const rowHtml = `
-                <tr id="sale-row-${id}" data-id="${id}">
-                    <td>${rowCount}</td>
-                    <td>${id}</td>
-                    <td>${name}</td>
-                    <td>
-                        <button type="button" class="btn btn-soft-warning btn-sm sale-move-up "><i class="fas fa-chevron-up"></i></button>
-                        <button type="button" class="btn btn-soft-info btn-sm sale-move-down "><i class="fas fa-chevron-down"></i></button>
-                        <button type="button" class="btn btn-soft-danger btn-sm sale-remove-product"><i class="fas fa-trash-alt"></i></button>
-                    </td>
-                </tr>
-            `;
+            <tr id="${rowId}" data-id="${id}">
+                <td>${rowCount}</td>
+                <td>${id}</td>
+                <td>${name}</td>
+                <td>
+                    <button type="button" class="btn btn-soft-warning btn-sm ${type}-move-up"><i class="fas fa-chevron-up"></i></button>
+                    <button type="button" class="btn btn-soft-info btn-sm ${type}-move-down"><i class="fas fa-chevron-down"></i></button>
+                    <button type="button" class="btn btn-soft-danger btn-sm ${type}-remove-product"><i class="fas fa-trash-alt"></i></button>
+                </td>
+            </tr>
+        `;
 
-                saleTableBody.append(rowHtml);
-                updatesaleRowOrder(); // Update row numbers
-                initializesaleRowActions();
+                tableBody.append(rowHtml);
+                updateRowOrder(type);
+                initializeRowActions(type);
             }
 
-            // Same JavaScript logic to add products to the table dynamically
-            function addProductToTable(id, name) {
-                const productTableBody = $("#product-table-body");
-
-                // Check if product is already in the table
-                if ($(`#product-row-${id}`).length > 0) {
-                    return; // Prevent duplicates
-                }
-
-                const rowCount = productTableBody.children().length + 1;
-
-                const rowHtml = `
-                <tr id="product-row-${id}" data-id="${id}">
-                    <td>${rowCount}</td>
-                    <td>${id}</td>
-                    <td>${name}</td>
-                    <td>
-                        <button type="button" class="btn btn-soft-warning btn-sm move-up "><i class="fas fa-chevron-up"></i></button>
-                        <button type="button" class="btn btn-soft-info btn-sm move-down "><i class="fas fa-chevron-down"></i></button>
-                        <button type="button" class="btn btn-soft-danger btn-sm remove-product"><i class="fas fa-trash-alt"></i></button>
-                    </td>
-                </tr>
-            `;
-
-                productTableBody.append(rowHtml);
-                updateRowOrder(); // Update row numbers
-                initializeRowActions();
-
-
-            }
-
-            function initializeRowActions() {
-                $('.move-up').off('click').on('click', function () {
+            function initializeRowActions(type) {
+                $(`.${type}-move-up`).off('click').on('click', function () {
                     const row = $(this).closest('tr');
                     const prevRow = row.prev();
 
                     if (prevRow.length) {
                         row.insertBefore(prevRow);
-                        updateRowOrder();
+                        updateRowOrder(type);
                     }
                 });
 
-                $('.move-down').off('click').on('click', function () {
+                $(`.${type}-move-down`).off('click').on('click', function () {
                     const row = $(this).closest('tr');
                     const nextRow = row.next();
 
                     if (nextRow.length) {
                         row.insertAfter(nextRow);
-                        updateRowOrder();
+                        updateRowOrder(type);
                     }
                 });
 
-                $('.remove-product').off('click').on('click', function () {
+                $(`.${type}-remove-product`).off('click').on('click', function () {
                     const row = $(this).closest('tr');
                     const id = row.data('id');
-                    removeProductFromSelect(id); // Remove from select2
-                    $(this).closest('tr').remove();
-                    updateRowOrder();
+                    removeProductFromSelect(type, id);
+                    row.remove();
+                    updateRowOrder(type);
                 });
             }
 
-            function initializesaleRowActions() {
-                $('.sale-move-up').off('click').on('click', function () {
-                    const row = $(this).closest('tr');
-                    const prevRow = row.prev();
-
-                    if (prevRow.length) {
-                        row.insertBefore(prevRow);
-                        updatesaleRowOrder();
-                    }
-                });
-
-                $('.sale-move-down').off('click').on('click', function () {
-                    const row = $(this).closest('tr');
-                    const nextRow = row.next();
-
-                    if (nextRow.length) {
-                        row.insertAfter(nextRow);
-                        updatesaleRowOrder();
-                    }
-                });
-
-                $('.sale-remove-product').off('click').on('click', function () {
-                    const row = $(this).closest('tr');
-                    const id = row.data('id');
-                    removeProductFromSaleSelect(id); // Remove from select2
-                    $(this).closest('tr').remove();
-                    updatesaleRowOrder();
-                });
-            }
-
-            function updateRowOrder() {
-                const rows = $('#product-table-body tr');
-                rows.each(function(index, row) {
+            function updateRowOrder(type) {
+                const rows = $(`#${type}-table-body tr`);
+                rows.each(function (index, row) {
                     const $row = $(row);
-                    $row.find('td:first').text(index + 1); // Update order number
-
+                    $row.find('td:first').text(index + 1);
                     // Enable/Disable buttons
-                    $row.find('.move-up').prop('disabled', index === 0);
-                    $row.find('.move-down').prop('disabled', index === rows.length - 1);
+                    $row.find(`.${type}-move-up`).prop('disabled', index === 0);
+                    $row.find(`.${type}-move-down`).prop('disabled', index === rows.length - 1);
                 });
             }
 
-            function updatesaleRowOrder() {
-                const rows = $('#sale-table-body tr');
-                rows.each(function(index, row) {
-                    const $row = $(row);
-                    $row.find('td:first').text(index + 1); // Update order number
-                    // Enable/Disable buttons
-                    $row.find('.move-up').prop('disabled', index === 0);
-                    $row.find('.move-down').prop('disabled', index === rows.length - 1);
-                });
-            }
-
-            // Handle product selection from select2 (same as before)
             $('#latest').on('select2:select', function (e) {
                 const selectedProduct = e.params.data;
-                addProductToTable(selectedProduct.id, selectedProduct.text);
-            });
-            $('#latest').on('select2:unselect', function (e) {
-                const deselectedProduct = e.params.data;
-                removeProductFromTable(deselectedProduct.id);
+                addProductToTable('latest', selectedProduct.id, selectedProduct.text);
             });
 
             $('#sale').on('select2:select', function (e) {
                 const selectedProduct = e.params.data;
-                addProductToSaleTable(selectedProduct.id, selectedProduct.text);
+                addProductToTable('sale', selectedProduct.id, selectedProduct.text);
             });
-            $('#sale').on('select2:unselect', function (e) {
-                const deselectedProduct = e.params.data;
-                removeProductFromSaleTable(deselectedProduct.id);
-            });
-            function removeProductFromTable(id) {
-                $(`#product-row-${id}`).remove();
-                updateRowOrder();
+
+            function removeProductFromSelect(type, id) {
+                const select2 = $(`#${type}`).data('select2');
+                if (select2) {
+                    const option = select2.$dropdown.find(`option[value="${id}"]`);
+                    if (option.length) {
+                        option.remove();
+                    }
+                    $(`#${type}`).find(`option[value="${id}"]`).remove();
+                    $(`#${type}`).val($(`#${type}`).val().filter(value => value !== id)).trigger('change');
+                }
             }
 
-            function removeProductFromSaleTable(id) {
-                $(`#sale-row-${id}`).remove();
-                updatesaleRowOrder();
-            }
             function updateHiddenField() {
+                const tableData = getDataFromTable('latest');
+                const saleData = getDataFromTable('sale');
+                $('#latest-order-data').val(JSON.stringify(tableData));
+                $('#sale-order-data').val(JSON.stringify(saleData));
+            }
+
+            function getDataFromTable(type) {
                 const tableData = [];
-                const saleData = [];
-                $('#product-table-body tr').each(function () {
+                $(`#${type}-table-body tr`).each(function () {
                     const row = $(this);
                     const id = row.data('id');
                     const displayOrder = row.find('td').first().text();
                     tableData.push({ id, displayOrder });
                 });
-                $('#product-order-data').val(JSON.stringify(tableData));
-                $('#sale-table-body tr').each(function () {
-                    const row = $(this);
-                    const id = row.data('id');
-                    const displayOrder = row.find('td').first().text();
-                    saleData.push({ id, displayOrder });
-                });
-                $('#sale-order-data').val(JSON.stringify(saleData));
+                return tableData;
             }
+
             $('#articles-form').on('submit', function (e) {
                 updateHiddenField();
             });
-
-            function removeProductFromSelect(id) {
-                // Remove the option from the select2 dropdown
-                const select2 = $('#latest').data('select2');
-                if (select2) {
-                    // Remove the option from the dropdown list
-                    const option = select2.$dropdown.find(`option[value="${id}"]`);
-                    if (option.length) {
-                        option.remove();
-                    }
-                    // Remove the option from the select element
-                    $('#latest').find(`option[value="${id}"]`).remove();
-                    // Update the select2 component to reflect changes
-                    $('#latest').val($('#latest').val().filter(value => value !== id)).trigger('change');
-                }
-            }
-
-            function removeProductFromSaleSelect(id) {
-                // Remove the option from the select2 dropdown
-                const select2 = $('#sale').data('select2');
-                if (select2) {
-                    // Remove the option from the dropdown list
-                    const option = select2.$dropdown.find(`option[value="${id}"]`);
-                    if (option.length) {
-                        option.remove();
-                    }
-                    // Remove the option from the select element
-                    $('#sale').find(`option[value="${id}"]`).remove();
-                    // Update the select2 component to reflect changes
-                    $('#sale').val($('#sale').val().filter(value => value !== id)).trigger('change');
-                }
-            }
-
-
-
         });
     </script>
 
