@@ -101,6 +101,37 @@ class ShopViewsController extends Controller
      */
     public function shop($selected_tag = null,$selected_category=null,$sort=null,$sale = null)
     {
+        $defaultOrder = [
+            '0-3 سنوات' => '0-3-سنوات',
+            '3-6 سنوات' => '3-6-سنوات',
+            '6-9 سنوات' => '6-9-سنوات',
+            '9-12 سنوات' => '9-12-سنوات',
+            '12-15 سنوات' => '12-15-سنوات',
+            '16+ سنوات' => '16-سنوات',
+            'الوالدية' => 'الوالدية',
+        ];
+
+        // Fetch all tags from the database
+        $allTags = \App\Models\Tag::where('type', 'فئة-عمرية')->get();
+
+        // Convert the fetched tags to an associative array keyed by slug
+        $tagsBySlug = $allTags->keyBy('slug');
+
+        // Separate tags into ordered and new tags
+        $orderedTags = [];
+        $newTags = [];
+
+        foreach ($defaultOrder as $name => $slug) {
+            if (isset($tagsBySlug[$slug])) {
+                $orderedTags[] = $tagsBySlug[$slug];
+            }
+        }
+
+        foreach ($tagsBySlug as $slug => $tag) {
+            if (!in_array($slug, array_values($defaultOrder))) {
+                $newTags[] = $tag;
+            }
+        }
         $selected_tag =\request()->route()->parameter('selected_tag');
         $selected_category =\request()->route()->parameter('selected_category');
         $sort =\request()->route()->parameter('sort');
@@ -110,7 +141,7 @@ class ShopViewsController extends Controller
         $ages = Tag::where('type','فئة-عمرية')->get();
         $articles_sale_count = Article::where('status','published')->whereNotNull('sale_price')->count();
 
-        return view('shop', compact('categories', 'articles_sale_count','ages','selected_category','selected_tag','sort','sale','search'));
+        return view('shop', compact('categories', 'articles_sale_count','ages','selected_category','selected_tag','sort','sale','search' ,'orderedTags', 'newTags'));
     }
 
     /**

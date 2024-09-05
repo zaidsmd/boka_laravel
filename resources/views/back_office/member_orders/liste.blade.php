@@ -20,7 +20,7 @@
             <div class="card-body">
                 <div class="row">
                     <div class="col-md-6">
-                        <h2>  قائمة طلبات الأعضاء
+                        <h2>  قائمة الطلبات المسبقة
                         </h2>
                     </div>
                     <div class="col-md-6 d-flex align-items-center justify-content-end">

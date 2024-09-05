@@ -140,7 +140,7 @@
                     <li>
                         <a href="{{ route('member_orders.liste') }}" class="waves-effect">
                             <i class="mdi mdi-satellite"></i>
-                            <span>طلبات الأعضاء</span>
+                            <span>طلبات مسبقة</span>
                         </a>
                     </li>
                         <li>

@@ -306,6 +306,24 @@
                 addProductToTable('sale', selectedProduct.id, selectedProduct.text);
             });
 
+            $('#latest').on('select2:unselect', function (e) {
+                const deselectedProduct = e.params.data;
+                removeProductFromTable(deselectedProduct.id);
+            });
+            $('#sale').on('select2:unselect', function (e) {
+                const deselectedProduct = e.params.data;
+                removeProductFromSaleTable(deselectedProduct.id);
+            });
+            function removeProductFromTable(id) {
+                $(`#latest-row-${id}`).remove();
+                updateRowOrder('latest');
+            }
+
+            function removeProductFromSaleTable(id) {
+                $(`#sale-row-${id}`).remove();
+                updateRowOrder('sale');
+            }
+
             function removeProductFromSelect(type, id) {
                 const select2 = $(`#${type}`).data('select2');
                 if (select2) {

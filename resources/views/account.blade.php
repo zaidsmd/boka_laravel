@@ -333,7 +333,7 @@
                                             {{ 'في الإنتظار' }}
                                             @break
                                         @case('approved')
-                                            {{ 'تم الوصول' }}
+                                            {{ 'تم المعالجة' }}
                                             @break
                                         @default
                                             {{ $order->status }}  {{-- Fallback if status is not recognized --}}

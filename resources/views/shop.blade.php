@@ -26,12 +26,21 @@
             </div>
             <div class=" py-3">
                 <p class="form-label text-orange-400">الفئة العمرية</p>
-                @foreach($ages as $tag)
+                @foreach($orderedTags as $tag)
                     <div class="form-check-inline w-100 py-1">
-                        <input @checked($selected_tag === $tag->slug) type="checkbox" name="tags" value="{{$tag->id}}" id="tag-{{$tag->slug}}"
-                               class="form-check-input filter">
-                        <label for="tag-{{$tag->slug}}" class="form-check-label">{{$tag->name}} <span
-                                class="text-muted">({{$tag->articles()->where('status','published')->count()}})</span></label>
+                        <input @checked($selected_tag === $tag->slug) type="checkbox" name="tags" value="{{ $tag->id }}" id="tag-{{ $tag->slug }}" class="form-check-input filter">
+                        <label for="tag-{{ $tag->slug }}" class="form-check-label">{{ $tag->name }}
+                            <span class="text-muted">({{ $tag->articles()->where('status', 'published')->count() }})</span>
+                        </label>
+                    </div>
+                @endforeach
+
+                @foreach($newTags as $tag)
+                    <div class="form-check-inline w-100 py-1">
+                        <input @checked($selected_tag === $tag->slug) type="checkbox" name="tags" value="{{ $tag->id }}" id="tag-{{ $tag->slug }}" class="form-check-input filter">
+                        <label for="tag-{{ $tag->slug }}" class="form-check-label">{{ $tag->name }}
+                            <span class="text-muted">({{ $tag->articles()->where('status', 'published')->count() }})</span>
+                        </label>
                     </div>
                 @endforeach
             </div>
