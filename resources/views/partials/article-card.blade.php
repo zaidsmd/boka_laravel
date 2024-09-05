@@ -49,7 +49,7 @@
                 <i class="fa-solid fa-cart-shopping"></i>
             </div>
             @elseif($article->quantite < 0)
-            <h6 class="text-danger d-inline mb-3 text-center">هذا المنتج غير متوفر</h6>
+            <h6 class="text-danger d-inline mb-3 text-center">سيتوفر قريبا</h6>
             <div class="btn btn-success d-md-none text-white mx-3 my-2 out-of-stock-card-mobile d-block " style="font-size: small">
                 <i class="fa-solid fa-bell ms-2"></i>الطلب عند الوصول
             </div>

@@ -82,7 +82,7 @@ function createProductCard(article) {
     if (article.quantity > 0) {
         $card.append($(' <div class="btn btn-primary add-to-cart-card-mobile d-md-none d-block text-white mt-auto mb-3 mx-3" ><i class="fa-solid fa-cart-shopping"></i></div>'))
     }else if (article.quantity < 0){
-        $card.append($('   <h6 class="text-danger d-inline mb-3 text-center">هذا المنتج غير متوفر</h6>\n' +
+        $card.append($('   <h6 class="text-danger d-inline mb-3 text-center">سيتوفر قريبا</h6>\n' +
             '            <div class="btn btn-success d-md-none text-white mx-3 my-2 out-of-stock-card-mobile d-block " >\n' +
             '                <i class="fa-solid fa-bell ms-2"></i>الطلب عند الوصول\n' +
             '            </div>' ))

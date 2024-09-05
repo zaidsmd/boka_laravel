@@ -44,4 +44,9 @@ class Article extends Model implements HasMedia
         return $this->belongsToMany(Article::class, 'article_related', 'article_id', 'related_article_id');
     }
 
+    public function homeArticles()
+    {
+        return $this->hasMany(HomeArticle::class);
+    }
+
 }

@@ -1,14 +1,4 @@
 @extends('layouts.main')
-@push('styles')
-    .payment-option input[disabled] {
-    cursor: not-allowed;
-    opacity: 0.6; /* Adjust the opacity to indicate the option is disabled */
-    }
-
-    .payment-option input[disabled] + label {
-    color: #6c757d; /* Adjust the color to indicate the disabled state */
-    }
-@endpush
 @section('page')
     <form action="{{route('complete-checkout')}}" method="post">
         <div class="row">

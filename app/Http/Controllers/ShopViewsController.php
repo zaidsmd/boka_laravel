@@ -6,6 +6,7 @@ use App\Http\Resources\ArticleCollection;
 use App\Models\Article;
 use App\Models\Cart;
 use App\Models\Category;
+use App\Models\HomeArticle;
 use App\Models\OrderLine;
 use App\Models\Slider;
 use App\Models\Tag;
@@ -45,13 +46,32 @@ class ShopViewsController extends Controller
         }
 
 
-        $latest = Article::where('status','published')->limit(4)->get();
-        $sales = Article::where('status','published')->whereNotNull('sale_price')->inRandomOrder()->limit(8);
-        if ($sales->count() >= 8) {
-            $sales = $sales->get();
-        } else {
-            $sales = $sales->limit(4)->get();
-        }
+        $homeArticles = HomeArticle::where('type', 'latest')
+            ->orderBy('display_order')
+            ->get(['article_id', 'display_order']);
+
+        // Step 2: Get articles by IDs
+        $articleIds = $homeArticles->pluck('article_id');
+        $articles = Article::whereIn('id', $articleIds)->get();
+
+        // Step 3: Map articles to their display order
+        $latest = $homeArticles->mapWithKeys(function ($homeArticle) use ($articles) {
+            $article = $articles->where('id', $homeArticle->article_id)->first();
+            return [$homeArticle->display_order => $article];
+        })->sortKeys()->values();
+
+
+
+        $homeSaleArticles = HomeArticle::where('type', 'sale')
+            ->orderBy('display_order')
+            ->get(['article_id', 'display_order']);
+        $sale_articleIds = $homeSaleArticles->pluck('article_id');
+        $sale_articles = Article::whereIn('id', $sale_articleIds)->get();
+        $sales = $homeSaleArticles->mapWithKeys(function ($homeArticle) use ($sale_articles) {
+            $article = $sale_articles->where('id', $homeArticle->article_id)->first();
+            return [$homeArticle->display_order => $article];
+        })->sortKeys()->values();
+
         return view('home', compact('latest', 'sales', 'sliders' ,'o_slider'));
     }
 

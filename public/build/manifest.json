@@ -5,43 +5,43 @@
     "isEntry": true
   },
   "resources/js/admin.js": {
-    "file": "assets/admin-BgGucb5N.js",
+    "file": "assets/admin-C9q34mGW.js",
     "name": "admin",
     "src": "resources/js/admin.js",
     "isEntry": true
   },
   "resources/js/app.js": {
-    "file": "assets/app-BJbpAEwj.js",
+    "file": "assets/app-CZQVzQdp.js",
     "name": "app",
     "src": "resources/js/app.js",
     "isEntry": true
   },
   "resources/js/best-seller.js": {
-    "file": "assets/best-seller-066z8J2X.js",
+    "file": "assets/best-seller-D0ZrSTXi.js",
     "name": "best-seller",
     "src": "resources/js/best-seller.js",
     "isEntry": true
   },
   "resources/js/category.js": {
-    "file": "assets/category-DVEtysdY.js",
+    "file": "assets/category-6j223h88.js",
     "name": "category",
     "src": "resources/js/category.js",
     "isEntry": true
   },
   "resources/js/new.js": {
-    "file": "assets/new-CvE_u9Ju.js",
+    "file": "assets/new-crWG2bNR.js",
     "name": "new",
     "src": "resources/js/new.js",
     "isEntry": true
   },
   "resources/js/sale.js": {
-    "file": "assets/sale-DVWZU7Oi.js",
+    "file": "assets/sale-cLt2Ypj_.js",
     "name": "sale",
     "src": "resources/js/sale.js",
     "isEntry": true
   },
   "resources/js/shop.js": {
-    "file": "assets/shop-Bur9rab1.js",
+    "file": "assets/shop-BBuKs3_U.js",
     "name": "shop",
     "src": "resources/js/shop.js",
     "isEntry": true

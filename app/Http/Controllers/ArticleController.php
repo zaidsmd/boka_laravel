@@ -379,4 +379,27 @@ class ArticleController extends Controller
         }
         abort(404);
     }
+    public function articles_select_sale(Request $request)
+    {
+        if ($request->ajax()) {
+            $search = '%' . $request->get('term') . '%';
+            $data = Article::where('status', 'published')
+                ->whereNotNull('sale_price')
+                ->where('title', 'LIKE', $search)
+                ->get(['id', 'title as text']);
+            return response()->json($data, 200);
+        }
+        abort(404);
+    }
+    public function articles_select_latest(Request $request)
+    {
+        if ($request->ajax()) {
+            $search = '%' . $request->get('term') . '%';
+            $data = Article::whereNull('sale_price')
+                ->where('status', 'published')
+                ->where('title', 'LIKE', $search)->get(['id', 'title as text']);
+            return response()->json($data, 200);
+        }
+        abort(404);
+    }
 }

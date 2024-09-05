@@ -19,6 +19,8 @@ Route::prefix('cpadmin')->group(function () {
         Route::get('load/{media}', 'load')->name('articles.load');
         Route::get('/upload}', 'upload')->name('articles.upload');
         Route::get('/articles-select', 'articles_select')->name('articles.select');
+        Route::get('/articles-select_latest', 'articles_select_latest')->name('articles.select_latest');
+        Route::get('/articles-select_sale', 'articles_select_sale')->name('articles.select_sale');
 
 
 
@@ -87,6 +89,10 @@ Route::prefix('cpadmin')->group(function () {
         Route::post('sauvegarder','sauvegarder')->name('sliders.sauvegarder');
     });
 
+    Route::group(['prefix' => 'home_articles','controller' => \App\Http\Controllers\HomeArticlesController::class], function (){
+        Route::get('/','liste')->name('home_articles.liste');
+        Route::post('sauvegarder','sauvegarder')->name('home_articles.sauvegarder');
+    });
     Route::group(['prefix' => 'settings','controller' => \App\Http\Controllers\SettingsController::class], function (){
         Route::get('/','liste')->name('settings.liste');
         Route::put('mettre_a_jour','mettre_a_jour')->name('settings.mettre_a_jour');

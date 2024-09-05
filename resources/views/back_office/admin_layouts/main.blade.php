@@ -19,6 +19,7 @@
     <link href="{{ asset('assets/libs/datatables.net-responsive-bs4/css/responsive.bootstrap4.min.css') }}" rel="stylesheet" type="text/css" />
     <link href="{{asset('libs/bootstrap-datepicker/css/bootstrap-datepicker.min.css')}}" rel="stylesheet">
     <link href="{{asset('libs/daterangepicker/css/daterangepicker.min.css')}}" rel="stylesheet">
+    <link rel="stylesheet" href="{{asset('libs/select2/css/select2.min.css')}}">
 
     <link rel="shortcut icon" href="{{ asset('assets/images/favicon.ico') }}">
     <style>
@@ -135,6 +136,13 @@
                             <span>الطلبات</span>
                         </a>
                     </li>
+                    </li>
+                    <li>
+                        <a href="{{ route('member_orders.liste') }}" class="waves-effect">
+                            <i class="mdi mdi-satellite"></i>
+                            <span>طلبات الأعضاء</span>
+                        </a>
+                    </li>
                         <li>
                             <a href="{{ route('articles.liste') }}" class="waves-effect">
                                 <i class="mdi mdi-barcode"></i>
@@ -165,6 +173,15 @@
                             <span> الشريط المتحرك </span>
                         </a>
                     </li>
+
+                    <li>
+                        <a href="{{ route('home_articles.liste') }}" class="waves-effect">
+                            <i class="mdi mdi-warehouse"></i>
+                            <span> منتجات الصفحة الرئيسية </span>
+                        </a>
+                    </li>
+
+
                     <li>
                         <a href="{{ route('utilisateurs.liste') }}" class="waves-effect">
                             <i class="mdi mdi-account-group"></i>
@@ -216,6 +233,7 @@
         <script src="{{ asset('libs/datatables.net-buttons/js/buttons.colVis.min.js') }}"></script>
         <script src="{{ asset('libs/datatables.net-responsive/js/dataTables.responsive.min.js') }}"></script>
         <script src="{{ asset('libs/datatables.net-responsive-bs4/js/responsive.bootstrap4.min.js') }}"></script>
+        <script src="{{asset('assets/libs/select2/js/select2.min.js')}}"></script>
 
 {{--        <script src="{{ asset('assets/js/pages/datatables.init.js') }}"></script>--}}
 
