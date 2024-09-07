@@ -213,7 +213,7 @@ class ArticleController extends Controller
             ],
             'description' => 'required|string',
             'sale_price' => 'nullable|numeric|min:0',
-            'price' => 'required|numeric|min:0',
+            'price' => 'required|numeric',
             'categorie' => 'required|array',
             'related_articles' => 'nullable|array',
             'tag' => 'nullable|array',
