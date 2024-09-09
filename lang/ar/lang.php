@@ -1,6 +1,7 @@
 <?php
 
 return [
+    'search'=>'ابحث',
     'product' => [
         'id' => 'المعرف',
         'title' => 'العنوان',

@@ -6,6 +6,7 @@ use App\Models\Article;
 use App\Models\Category;
 use App\Models\Tag;
 use App\Services\LogService;
+use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Http\Request;
 use Illuminate\Routing\ResponseFactory;
 use Illuminate\Support\Facades\Storage;
@@ -27,7 +28,27 @@ class ArticleController extends Controller
     {
         if ($request->ajax()) {
 
-            $query = Article::with('categories');
+            $query = Article::query();
+            if ($request->get('title')){
+                $search = '%'.$request->get('title').'%';
+                $query->where('title','LIKE',$search);
+            }
+            if ($request->get('price') != ''){
+                $search = $request->get('price');
+                $query->where('price',$search);
+            }
+            if ($request->get('tags')){
+                $tags = $request->get('tags');
+                $query->whereHas('tags',function (Builder $builder) use($tags){
+                    $builder->whereIn('tags.id',$tags);
+                });
+            }
+            if ($request->get('categories')){
+                $tags = $request->get('categories');
+                $query->whereHas('categories',function (Builder $builder) use($tags){
+                    $builder->whereIn('categories.id',$tags);
+                });
+            }
             $table = DataTables::of($query);
             $table->addColumn(
                 'selectable_td',
@@ -46,7 +67,9 @@ class ArticleController extends Controller
             $table->rawColumns(['actions', 'selectable_td']);
             return $table->make();
         }
-        return view('back_office.articles.liste');
+        $categories = Category::get(['name as text','id']);
+        $tags = Tag::get(['name as text','id']);
+        return view('back_office.articles.liste',compact('tags','categories'));
 
     }
 

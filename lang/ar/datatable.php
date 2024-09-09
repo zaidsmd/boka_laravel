@@ -1,6 +1,7 @@
 <?php
 
 return [
+    'filter'=> 'ترشيح',
     'empty_table' => 'لا توجد بيانات متاحة في الجدول',
     'loading_records' => 'جار التحميل...',
     'processing' => 'جارٍ المعالجة...',
