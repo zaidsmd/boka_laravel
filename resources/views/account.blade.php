@@ -3,6 +3,11 @@
 
 @section('page')
     @if($auth)
+        @if(session()->hasAny('success'))
+                <div class="alert alert-success">
+                   {{ session()->get('success')}}
+                </div>
+        @endif
         <section>
             <ul class="nav nav-tabs" id="accoutn-tabs" role="tablist">
                 <li class="nav-item" role="presentation"></li>
@@ -420,9 +425,13 @@
                             <hr class="border">
                             <form action="{{ route('auth.login') }}" method="post">
                                 @csrf
+                                @if(old('__action',$action))
+                                    <input type="hidden" name="__action" value="{{old('__action',$action)}}">
+                                    <input type="hidden" name="__value" value="{{old('__value',$value)}}">
+                                @endif
                                 <div class="form-group my-3">
                                     <label for="email-log" class="form-label">البريد الإلكتروني</label>
-                                    <input type="email" id="email-log" name="email"
+                                    <input type="email" id="email-log" name="email" value="{{old('email')}}"
                                            class="form-control @error('email') is-invalid @enderror">
                                     @error('email')
                                     <div class="invalid-feedback">

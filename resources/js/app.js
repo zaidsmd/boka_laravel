@@ -103,6 +103,7 @@ $(document).on('click', '.out-of-stock-card, .out-of-stock-card-mobile', functio
         },
         error: function (xhr) {
             if (xhr.status === 401) {
+                window.location = window.origin+'/my-account?a=mo&i='+product.data('id')
                 product.find('.errors').html('<h6 class="text-danger d-inline mb-3 text-center">' + xhr.responseJSON.message + '</h6>');
             } else {
                 notyf.error(xhr.responseText);

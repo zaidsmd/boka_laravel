@@ -26,7 +26,18 @@ class ShopViewsController extends Controller
     {
         $cities = Ville::all();
         $auth = $request->user();
-        return view('account', compact('auth','cities' ));
+        $action = null;
+        $value = null;
+        if ($request->get('a')==='mo' && $request->get('i')){
+            $article = Article::find($request->get('i'));
+            if ($article){
+                if ($article->quantite < 0){
+                    $action = 'mo';
+                    $value = $article->id;
+                }
+            }
+        }
+        return view('account', compact('auth','cities','action','value'));
     }
 
     /**
