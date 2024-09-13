@@ -70,14 +70,6 @@
                             @endif
                         @endforeach
 
-                        @foreach($tagsBySlug as $slug => $tag)
-                            @if(!in_array($tag->slug, $defaultOrder))
-                                <a class="dropdown-item text-end @if(\Illuminate\Support\Facades\Request::url() === route('shop.tags', $tag->slug)) active @endif"
-                                   aria-current="page" href="{{ route('shop.tags', $tag->slug) }}">
-                                    <span>{{ $tag->name }}</span>
-                                </a>
-                            @endif
-                        @endforeach
 
 
                     </ul>
@@ -168,10 +160,36 @@
                        aria-current="page"><span>
                             الفئة العمرية</span></a>
                     <ul class="dropdown-menu">
-                        @foreach(\App\Models\Tag::where('type','فئة-عمرية')->get() as $age)
-                            <a class=" dropdown-item text-end @if(\Illuminate\Support\Facades\Request::url() === route('shop.tags',$age->slug)) active @endif"
-                               aria-current="page" href="{{route('shop.tags',$age->slug)}}"><span>
-                            {{$age->name}}</span></a>
+                        @php
+                            // Define the default order for known slugs
+                            $defaultOrder = [
+                                '0-3 سنوات' => '0-3-سنوات',
+                                '3-6 سنوات' => '3-6-سنوات',
+                                '6-9 سنوات' => '6-9-سنوات',
+                                '9-12 سنوات' => '9-12-سنوات',
+                                '12-15 سنوات' => '12-15-سنوات',
+                                '16+ سنوات' => '16-سنوات',
+                                'الوالدية' => 'الوالدية',
+                            ];
+
+                            // Fetch all tags from the database
+                            $allTags = \App\Models\Tag::where('type', 'فئة-عمرية')->get();
+
+                            // Convert the fetched tags to an associative array keyed by slug
+                            $tagsBySlug = $allTags->keyBy('slug');
+                        @endphp
+
+                        @foreach($defaultOrder as $name => $slug)
+                            @if(isset($tagsBySlug[$slug]))
+                                @php
+                                    $tag = $tagsBySlug[$slug];
+                                @endphp
+
+                                <a class="dropdown-item text-end @if(\Illuminate\Support\Facades\Request::url() === route('shop.tags', $tag->slug)) active @endif"
+                                   aria-current="page" href="{{ route('shop.tags', $tag->slug) }}">
+                                    <span>{{ $tag->name }}</span>
+                                </a>
+                            @endif
                         @endforeach
                     </ul>
                 </li>
