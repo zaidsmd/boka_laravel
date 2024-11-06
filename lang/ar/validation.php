@@ -153,6 +153,20 @@ return [
     'attributes' => [
         'email' => 'البريد الإلكتروني',
         'email_reg' => 'البريد الإلكتروني',
-        'password'=>'الرمز السري'
+        'password'=>'الرمز السري',
+        'first_name' => 'الاسم الأول',
+        'last_name' => 'الاسم الأخير',
+        'phone_number' => 'رقم الهاتف',
+        'city' => 'المدينة',
+        'other_city' => 'مدينة أخرى',
+        'address' => 'العنوان',
+        'payment_method' => 'طريقة الدفع',
+        'policy' => 'السياسة',
+        'shipping' => 'الشحن',
+        'shipping.first_name' => 'الاسم الأول للشحن',
+        'shipping.last_name' => 'الاسم الأخير للشحن',
+        'shipping.address' => 'عنوان الشحن',
+        'shipping.city' => 'مدينة الشحن',
+        'other_shipping_city' => 'مدينة شحن أخرى',
     ],
 ];

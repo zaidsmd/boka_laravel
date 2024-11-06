@@ -451,3 +451,32 @@ $(document).on('submit','#global-search-form',function (e){
         window.location = window.origin+'/shop/search/'+input.val()
     }
 })
+
+// ---------- checkout ---------
+$(document).on('submit','#checkout-form',function (event){
+    event.preventDefault();
+    let form = $(this);
+    $('.invalid-feedback').html('')
+    $('.is-invalid').removeClass('is-invalid')
+    form.append($('<div class="position-absolute top-0 bottom-0 end-0 start-0 text-primary rounded d-flex align-items-center justify-content-center cart-loader" ><div class="spinner-border"></div></div>'))
+    $.ajax({
+        url:form.attr('action'),
+        data:form.serialize(),
+        method:'POST',
+        success:function (response){
+            $('body').append(response)
+        },
+        error:function (xhr){
+            $('.cart-loader').remove();
+            if(xhr.status === 422){
+                let errors = xhr.responseJSON.errors;
+                for (const [key,value] of Object.entries(errors)){
+                    $(`[name="${key}"]`).addClass('is-invalid')
+                    $(`[name="${key}"]`).siblings('.invalid-feedback').html(value)
+                }
+            }else {
+                notyf.error("حدث خطأ أثناء العملية")
+            }
+        }
+    })
+})

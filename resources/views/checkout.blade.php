@@ -1,6 +1,6 @@
 @extends('layouts.main')
 @section('page')
-    <form action="{{route('complete-checkout')}}" method="post">
+    <form action="{{route('complete-checkout')}}" id="checkout-form" method="post" class="position-relative">
         <div class="row">
             @csrf
             <div class="col-md-6">
@@ -12,6 +12,7 @@
                             <input type="text" id="first_name-invoicing" name="first_name"
                                    value="{{old('first_name')}}"
                                    class="form-control @error('first_name') is-invalid @enderror">
+                            <div class="invalid-feedback"></div>
                             @error('first_name')
                             <div class="invalid-feedback">
                                 {{ $message }}
@@ -25,6 +26,7 @@
                             <input type="text" id="last_name-invoicing" name="last_name"
                                    value="{{old('last_name')}}"
                                    class="form-control @error('last_name') is-invalid @enderror">
+                            <div class="invalid-feedback"></div>
                             @error('last_name')
                             <div class="invalid-feedback">
                                 {{ $message }}
@@ -38,6 +40,7 @@
                             <input type="text" id="phone_number-invoicing" name="phone_number"
                                    value="{{old('phone_number')}}"
                                    class="form-control @error('phone_number') is-invalid @enderror">
+                            <div class="invalid-feedback"></div>
                             @error('phone_number')
                             <div class="invalid-feedback">
                                 {{ $message }}
@@ -51,6 +54,7 @@
                             <input type="text" id="email-invoicing" name="email"
                                    value="{{old('email')}}"
                                    class="form-control @error('email') is-invalid @enderror">
+                            <div class="invalid-feedback"></div>
                             @error('email')
                             <div class="invalid-feedback">
                                 {{ $message }}
@@ -67,6 +71,7 @@
                                 @endforeach
                                 <option value="other" @selected(old('city',$cart->city) == 'other')>@lang('city.other')</option>
                             </select>
+                            <div class="invalid-feedback"></div>
                             @error('city')
                             <div class="invalid-feedback">
                                 {{ $message }}
@@ -82,6 +87,8 @@
                                    value="{{ old('other_city') }}"
                                    class="form-control @error('other_city') is-invalid @enderror">
                             @error('other_city')
+                            <div class="invalid-feedback"></div>
+
                             <div class="invalid-feedback">
                                 {{ $message }}
                             </div>
@@ -96,6 +103,8 @@
                                    value="{{old('address')}}"
                                    class="form-control @error('address') is-invalid @enderror">
                             @error('address')
+                            <div class="invalid-feedback"></div>
+
                             <div class="invalid-feedback">
                                 {{ $message }}
                             </div>
@@ -114,6 +123,8 @@
                                    value="{{old('shipping.first_name')}}"
                                    class="form-control @error('shipping.first_name') is-invalid @enderror">
                             @error('shipping.first_name')
+                            <div class="invalid-feedback"></div>
+
                             <div class="invalid-feedback">
                                 {{ $message }}
                             </div>
@@ -125,7 +136,9 @@
                             <label for="last_name-shipping" class="form-label required">الإسم الأخير</label>
                             <input type="text" id="last_name-shipping" name="shipping[last_name]" disabled
                                    value="{{old('shipping.last_name')}}"
+
                                    class="form-control @error('shipping.last_name') is-invalid @enderror">
+                            <div class="invalid-feedback"></div>
                             @error('shipping.last_name')
                             <div class="invalid-feedback">
                                 {{ $message }}
@@ -143,6 +156,7 @@
                                 @endforeach
                                 <option value="other" @selected(old('shipping.city') == 'other')>@lang('city.other')</option>
                             </select>
+                            <div class="invalid-feedback"></div>
                             @error('shipping.city')
                             <div class="invalid-feedback">
                                 {{ $message }}
@@ -157,6 +171,8 @@
                             <input type="text" id="other_shipping_city" name="other_shipping_city"
                                    value="{{ old('other_shipping_city') }}"
                                    class="form-control @error('other_shipping_city') is-invalid @enderror" disabled>
+                            <div class="invalid-feedback"></div>
+
                             @error('other_shipping_city')
                             <div class="invalid-feedback">
                                 {{ $message }}
@@ -173,6 +189,8 @@
                             <input type="text" id="address-shipping" name="shipping[address]" disabled
                                    value="{{old('shipping.address')}}"
                                    class="form-control @error('shipping.address') is-invalid @enderror">
+                            <div class="invalid-feedback"></div>
+
                             @error('shipping.address')
                             <div class="invalid-feedback">
                                 {{ $message }}
@@ -215,7 +233,7 @@
                     <div class="payment-option p-3 rounded my-3">
                         <div class="d-flex align-items-center justify-content-between">
                             <label for="credit_card" class="form-check-label w-100">الدفع عبر بطاقة بنكية</label>
-                            <input id="credit_card" type="radio" name="payment_method" class="form-check-input" value="credit_card" disabled>
+                            <input id="credit_card" type="radio" name="payment_method" class="form-check-input" value="credit_card">
                         </div>
                     </div>
 
@@ -228,6 +246,7 @@
                     <div class="d-flex align-items-center">
                         <div class="bg-white p-1 px-2 ms-2 rounded">
                             <input id="policy" type="checkbox" name="policy" class="form-check-input" value="transfert">
+                            <div class="invalid-feedback"></div>
                         </div>
                         <label for="policy" class="form-check-label w-100 required text-muted">لقد قرأتُ الشروط والأحكام
                             وأوافق عليها لهذا الموقع</label>
