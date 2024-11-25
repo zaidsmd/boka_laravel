@@ -160,7 +160,7 @@ class OrderController extends Controller
                     "amount" => $order->total,
                     "BillToName" => $order->first_name . ' ' . $order->last_name,
                     "CallbackResponse" => true,
-                    "callbackUrl" => url('/'),
+                    "callbackUrl" => route('cmi-callback'),
                     "clientid" => "600005121",
                     "currency" => "504",
                     "email" => $order->billing_email,
@@ -175,22 +175,8 @@ class OrderController extends Controller
                     "TranType" => "PreAuth",
                     'tel'=>$order->phone_number,
                     "BillTocompany"=>'Bokadobox',
-                    "BillToCountry"=>"MAD"
+                    "BillToCountry"=>"MA"
                 ];
-                foreach ($order->lines as $key => $line) {
-                    $cmi_data['itemnumber'.$key+1] = $key+1;
-                    $cmi_data['productcode'.$key+1] = $line->article_id;
-                    $cmi_data['qty'.$key+1] = $line->quantity;
-                    $cmi_data['desc'.$key+1] = $line->article_title;
-                    $cmi_data['price'.$key+1] = number_format($line->price, 2, '.', '');
-                    $cmi_data['total'.$key+1] = number_format($line->price * $line->quantity, 2, '.', '');
-                }
-                $cmi_data['itemnumber'.count($order->lines)+1] = count($order->lines)+1;
-                $cmi_data['productcode'.count($order->lines)+1] = count($order->lines)+1;
-                $cmi_data['qty'.count($order->lines)+1] = 1;
-                $cmi_data['desc'.count($order->lines)+1] = "خدمة التوصيل";
-                $cmi_data['price'.count($order->lines)+1] = $order->shipping_fee;
-                $cmi_data['total'.count($order->lines)+1] = $order->shipping_fee;
                 $hash = $this->generateCmiHash($cmi_data);
             }else{
                 CartLine::where('cart_id', $cart->id)->delete();
@@ -235,28 +221,9 @@ class OrderController extends Controller
         return view('order-show', compact('order'));
     }
 
-    /**
-     * Show the form for editing the specified resource.
-     */
-    public function edit(Order $order)
-    {
-        //
-    }
 
-    /**
-     * Update the specified resource in storage.
-     */
-    public function update(Request $request, Order $order)
-    {
-        //
-    }
-
-    /**
-     * Remove the specified resource from storage.
-     */
-    public function destroy(Order $order)
-    {
-        //
+    public function cmiCallback($data){
+        return view('cmi-callback', compact('data'));
     }
 
     function generateOrderNumber()

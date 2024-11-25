@@ -56,3 +56,4 @@ Route::get('checkout/confirmation/{number}', [\App\Http\Controllers\OrderControl
 
 Route::post('/pay-ok', [\App\Http\Controllers\OrderController::class, 'payOk'])->withoutMiddleware(\Illuminate\Foundation\Http\Middleware\VerifyCsrfToken::class)->name('cmi-callback-ok');
 Route::post('/pay-failed', [\App\Http\Controllers\OrderController::class, 'payOk'])->withoutMiddleware(\Illuminate\Foundation\Http\Middleware\VerifyCsrfToken::class)->name('cmi-callback-failed');
+Route::post('/cmi-callback',[\App\Http\Controllers\OrderController::class,'cmiCallback'])->withoutMiddleware(\Illuminate\Foundation\Http\Middleware\VerifyCsrfToken::class)->name('cmi-callback');
