@@ -55,5 +55,7 @@ Route::POST('checkout', [\App\Http\Controllers\OrderController::class, 'complete
 Route::get('checkout/confirmation/{number}', [\App\Http\Controllers\OrderController::class, 'orderConfirmation'])->name('order.confirmations');
 
 Route::post('/pay-ok', [\App\Http\Controllers\OrderController::class, 'payOk'])->withoutMiddleware(\Illuminate\Foundation\Http\Middleware\VerifyCsrfToken::class)->name('cmi-callback-ok');
-Route::post('/pay-failed', [\App\Http\Controllers\OrderController::class, 'payOk'])->withoutMiddleware(\Illuminate\Foundation\Http\Middleware\VerifyCsrfToken::class)->name('cmi-callback-failed');
+Route::post('/pay-failed', [\App\Http\Controllers\OrderController::class, 'payFail'])->withoutMiddleware(\Illuminate\Foundation\Http\Middleware\VerifyCsrfToken::class)->name('cmi-callback-failed');
 Route::post('/cmi-callback',[\App\Http\Controllers\OrderController::class,'cmiCallback'])->withoutMiddleware(\Illuminate\Foundation\Http\Middleware\VerifyCsrfToken::class)->name('cmi-callback');
+Route::post('/test-hash',[\App\Http\Controllers\OrderController::class,'testHashCalculation'])->withoutMiddleware(\Illuminate\Foundation\Http\Middleware\VerifyCsrfToken::class)->name('cmi-test');
+

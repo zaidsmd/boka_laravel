@@ -89,18 +89,19 @@ class ShopViewsController extends Controller
     /**
      * @return \Illuminate\Container\Container|\Illuminate\Contracts\View\Factory|\Illuminate\Contracts\View\View|\Illuminate\View\View|mixed|object|string|null
      */
-    public function cart()
+    public function cart(Request $request)
     {
         $cities = Ville::all();
         $cart = cart();
         $selected_city_price =Ville::where('nom',$cart->city)->value('price');
-        return view('cart', compact('cart', 'cities','selected_city_price'));
+        $failed_payment = $request->get('failed_payment');
+        return view('cart', compact('cart', 'cities','selected_city_price','failed_payment'));
     }
 
     /**
      * @return \Illuminate\Container\Container|\Illuminate\Contracts\View\Factory|\Illuminate\Contracts\View\View|\Illuminate\View\View|mixed|object|string|null
      */
-    public function checkout()
+    public function checkout(Request $request)
     {
         $cart = \cart();
         $cities = Ville::all();

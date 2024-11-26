@@ -24,7 +24,12 @@ class OrderController extends Controller
 
     public function payOk(Request $request)
     {
-        dd($request->all());
+       return redirect()->route('order.confirmations',$request->oid);
+    }
+    public function payFail(Request $request){
+        $order = Order::where('number', $request->get('oid'))->first();
+        $order?->delete();
+        return redirect()->route('cart.show',['failed_payment'=>1]);
     }
 
     /**
@@ -222,9 +227,23 @@ class OrderController extends Controller
     }
 
 
-    public function cmiCallback($data){
-        return view('cmi-callback', compact('data'));
+    public function cmiCallback(Request $request)
+    {
+        $order = Order::where('number', $request->get('oid'))->first();
+        if($request->get("Response") == "Approved" && $order) {
+            if ($request->get('ProcReturnCode') === "00") {
+                session()->forget('cart');
+                $order?->update(['status' => 'قيد المعالجة']);
+                return response("ACTION=POSTAUTH");
+            } else {
+                return response("APPROVED");
+            }
+        } else {
+            return response("FAILURE");
+        }
     }
+
+
 
     function generateOrderNumber()
     {
