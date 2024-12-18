@@ -70,10 +70,11 @@
                         صفحتنا على الفيسبوك
                     </h6>
                 </a>
-                <div class="row align-items-center  mt-4">
+                <div class="row align-items-center justify-content-center row-gap-3 mt-4">
                     <div class="col-3">
                         <img src="{{asset('images/securecode.png')}}" class="img-fluid" alt="">
                     </div>
+
                     <div class="col-3">
                         <img src="{{asset('images/verified-by-visa-logo-825D2E4C69-seeklogo.com.png')}}"
                              class="img-fluid" alt="">
@@ -83,6 +84,11 @@
                     </div>
                     <div class=" col-3">
                         <img src="{{asset('images/logo-cmi-open.png')}}" class="img-fluid" alt="">
+                    </div>
+                    <div class=" col-3">
+                      <div class="bg-white p-2 rounded">
+                          <img src="{{asset('images/537250.png')}}" class="img-fluid" alt="">
+                      </div>
                     </div>
                 </div>
             </div>
