@@ -58,17 +58,23 @@
         </div>
         <div class="row py-4">
             @foreach($latest as $article)
-               @include('partials.article-card',[compact('article')])
+                @if($article->status == 'published')
+                    @include('partials.article-card', ['article' => $article])
+                @endif
             @endforeach
         </div>
+
         <div class="section-divider">
             <span class="text-primary fw-bold">أسعار مخفضة</span>
         </div>
         <div class="row py-4">
             @foreach($sales as $article)
-                @include('partials.article-card',[compact('article')])
+                @if($article->status == 'published')
+                    @include('partials.article-card', ['article' => $article])
+                @endif
             @endforeach
         </div>
+
     </section>
 @endsection
 
