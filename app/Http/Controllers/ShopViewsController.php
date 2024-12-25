@@ -216,11 +216,20 @@ class ShopViewsController extends Controller
                 ->groupBy('tags.id', 'tags.slug')
                 ->selectRaw('count(article_tag.article_id) as article_count')
                 ->get();
-
+            $allCategories = Category::select('categories.id', 'categories.slug')
+                ->leftJoin('article_category', 'categories.id', '=', 'article_category.category_id')
+                ->where(function ($query) use ($filteredArticleIds) {
+                    $query->whereIn('article_category.article_id', $filteredArticleIds)
+                        ->orWhereNull('article_category.article_id');
+                })
+                ->groupBy('categories.id', 'categories.slug')
+                ->selectRaw('count(article_category.article_id) as article_count')
+                ->get();
             $paginatedArticles = new ArticleCollection($query->paginate(12));
 
             return $paginatedArticles->additional([
-                'tagCounts' => $allTags
+                'tagCounts' => $allTags,
+                'catCounts'=>$allCategories,
             ]);
         }
         abort(404);

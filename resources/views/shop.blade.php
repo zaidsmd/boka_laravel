@@ -48,7 +48,7 @@
                 <p class="form-label text-orange-400">التصنيفات</p>
                 @foreach($categories as $category)
                     <div class="form-check-inline w-100 py-1">
-                        <input @checked($selected_category === $category->slug) type="checkbox" name="categories" value="{{$category->id}}" id="cat-{{$category->id}}"
+                        <input @checked($selected_category === $category->slug) type="checkbox" name="categories" value="{{$category->id}}" id="cat-{{$category->slug}}"
                                class="form-check-input filter">
                         <label for="cat-{{$category->id}}" class="form-check-label">{{$category->name}} <span
                                 class="text-muted">({{$category->articles()->where('status','published')->count()}})</span></label>

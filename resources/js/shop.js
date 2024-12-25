@@ -144,24 +144,37 @@ function fetchProducts(count, url = window.origin + '/shop-ajax') {
             fetchingScroll = false;
             current_page = response.meta.current_page;
             total = response.meta.total;
-            updateTagCounts(response.tagCounts)
+            updateTagCounts(response.tagCounts,response.catCounts)
             $('.filter,.search').removeAttr('disabled')
         }
     })
 }
 
-function updateTagCounts(tagCounts) {
+function updateTagCounts(tagCounts,categoryCounts) {
     const tagCountsMap = new Map(tagCounts.map(tag => [tag.slug, tag.article_count]));
 
 // Process all tags
     $('input[name=tags]').each(function () {
         const $checkbox = $(this);
-        const tagSlug = $checkbox.attr('id').replace('tag-', ''); // Extract tag slug from checkbox ID
+        const tagSlug = $checkbox.attr('id').replace('tag-', '');
 
         // Get the count from the map or default to 0
         const count = tagCountsMap.get(tagSlug) || 0;
 
         // Update the label associated with the checkbox
+        const $label = $checkbox.siblings('label');
+        if ($label.length) {
+            $label.find('.text-muted').html(`(${count})`);
+        }
+    });
+
+    const categoryCountsMap = new Map(categoryCounts.map(cat=>[cat.slug,cat.article_count]))
+
+    $('input[name=categories]').each(function () {
+        const $checkbox = $(this);
+        const catSlug = $checkbox.attr('id').replace('cat-', '');
+        const count = categoryCountsMap.get(catSlug) || 0;
+
         const $label = $checkbox.siblings('label');
         if ($label.length) {
             $label.find('.text-muted').html(`(${count})`);
