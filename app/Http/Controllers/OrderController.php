@@ -163,7 +163,7 @@ class OrderController extends Controller
             if ($request->input('payment_method') === 'credit_card') {
                 $cmi_data = [
                     "amount" => $order->total,
-                    "BillToName" => $order->first_name . ' ' . $order->last_name,
+                    "BillToName" => $this->sanitizeInputFormCmi($order->first_name) . ' ' . $this->sanitizeInputFormCmi($order->last_name),
                     "CallbackResponse" => true,
                     "callbackUrl" => route('cmi-callback'),
                     "clientid" => "600005121",
@@ -277,6 +277,12 @@ class OrderController extends Controller
 
         // Generate the SHA-512 hash and encode it in base64
         return base64_encode(pack("H*", hash('sha512', $hash)));
+    }
+    function sanitizeInputFormCmi($input) {
+        // Remove special characters, retain letters, numbers, and spaces
+        $sanitized = preg_replace('/[^a-zA-Z0-9 ]/', '', $input);
+        // Trim leading and trailing spaces
+        return trim($sanitized);
     }
 
 
