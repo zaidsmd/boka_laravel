@@ -1,4 +1,4 @@
-<form id="postRedirectForm" action="https://testpayment.cmi.co.ma/fim/est3Dgate" method="POST" style="display: none;">
+<form id="postRedirectForm" action="https://payment.cmi.co.ma/fim/est3Dgate" method="POST" style="display: none;">
     @foreach($data as $key => $value)
         <input type="hidden" name="{{$key}}" value="{{ $value }}">
     @endforeach
