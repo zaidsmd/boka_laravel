@@ -55,13 +55,13 @@ class UserController extends Controller
     }
     public function sauvegarder(Request $request)
     {
-//        dd($request->all());
         $rules = [
             'first_name'=>'required|min:3|max:255|string',
             'last_name'=>'required|min:3|max:255|string',
             'email' => 'required|email|unique:users,email',
             'password'=>'required|min:8|max:255',
-            'role'=>'required|string'
+            'role'=>'required|string',
+            'notifiable' => 'nullable'
         ];
         $messages = [
             'first_name.required' => 'الاسم الأول مطلوب.',
@@ -102,6 +102,8 @@ class UserController extends Controller
             $o_utilisateur->email_verified_at = Carbon::now();
             $o_utilisateur->password = Hash::make($request->get('password'));
             $o_utilisateur->role = $request->get('role');
+            $o_utilisateur->notifiable= $request->get('role') === "admin" ? $request->get("notifiable") : 0;
+
             $o_utilisateur->save();
 
             DB::commit();
@@ -180,6 +182,7 @@ class UserController extends Controller
             $o_utilisateur->email_verified_at = Carbon::now();
             $o_utilisateur->password = trim($request->get('password')) ? Hash::make($request->get('password')) : $o_utilisateur->password;
             $o_utilisateur->role = $request->get('role');
+            $o_utilisateur->notifiable= $request->get('role') === "admin" ? $request->get("notifiable") : 0;
             $o_utilisateur->save();
 
             DB::commit();

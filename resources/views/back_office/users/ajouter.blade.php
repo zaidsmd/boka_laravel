@@ -90,7 +90,7 @@
                                            class="select2  form-control @error('role') is-invalid @enderror "
                                            name="role" value="{{old('role')}}">
                                         <option value="admin">مدير</option>
-                                        <option value=" user"> مستخدم عادي</option>
+                                        <option value="user"> مستخدم عادي</option>
                                     </select>
                                     @error('role')
                                     <div class="invalid-feedback">
@@ -100,7 +100,21 @@
                                 </div>
                             </div>
 
+{{--                            only if the role is admin--}}
+                            <div id="notifiable-container" style="display:  none" class="col-4 mt-4" >
+                                <div class="input-group " >
+                                    <label for="notifiable" class="form-label required me-3">إعلام الطلبات عبر البريد الإلكتروني</label>
+                                    <input type="checkbox" id="notifiable" name="notifiable" value="1" class="form-check-input @error('notifiable') is-invalid @enderror">
+
+                                    @error('notifiable')
+                                    <div class="invalid-feedback">
+                                        {{ $message }}
+                                    </div>
+                                    @enderror
+                                </div>
                             </div>
+
+                        </div>
                     </form>
                 </div>
             </div>
@@ -119,6 +133,25 @@
     <script src="{{asset('libs/filepond/js/filepond.js')}}"></script>
     <script src="{{asset('libs/filepond/plugins/js/filepond-plugin-image-validate-size.js')}}"></script>
     <script src="{{asset('libs/filepond/plugins/js/filepond-plugin-file-validate-type.js')}}"></script>
+
+    <script>
+        const roleSelect = $('#role'); // Use jQuery selector for select2
+        const notifiableContainer = $('#notifiable-container'); // Use jQuery selector
+
+        // Function to toggle the visibility of the notifiable checkbox
+        function toggleNotifiable() {
+            if (roleSelect.val() === 'admin') {
+                notifiableContainer.show();
+            } else {
+                notifiableContainer.hide();
+            }
+        }
+        // Attach event listener for select2 change event
+        roleSelect.on('change', toggleNotifiable);
+
+        // Initialize visibility on page load
+        toggleNotifiable();
+    </script>
 
 
     <script>
