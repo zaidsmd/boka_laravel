@@ -18,7 +18,13 @@ class ProfileController extends Controller
                'last_name' => 'required|string|max:255',
                'email' => 'required|email|max:255',
                'current_password' => 'required_with:new_password|nullable|string|max:255|',
-               'new_password' => 'required_with:current_password|nullable|string|max:255',
+               'new_password' => 'required_with:current_password|nullable|string|max:255|min:8|',
+
+           ], [
+               'current_password.required_with' => 'يجب إدخال كلمة المرور الحالية عند تغيير كلمة المرور',
+               'new_password.required_with' => 'يجب إدخال كلمة المرور الجديدة عند تغيير كلمة المرور',
+               'new_password.min' => 'كلمة المرور يجب أن تتكون من 8 أحرف على الأقل.',
+
            ]);
            $user = $request->user();
            if ($request->input('current_password')) {
@@ -31,6 +37,7 @@ class ProfileController extends Controller
                'first_name' => $request->input('first_name'),
                'last_name' => $request->input('last_name'),
                'email' => $request->input('email'),
+               'password' => $request->input('new_password') ? Hash::make($request->get('new_password')) : $user->password
            ]);
            return response('تم تحديث معلوماتك بنجاح');
        }
