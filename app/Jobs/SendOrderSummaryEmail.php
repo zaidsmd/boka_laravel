@@ -2,16 +2,12 @@
 
 namespace App\Jobs;
 
-use Illuminate\Bus\Queueable;
-use Illuminate\Mail\Mailable;
 use Illuminate\Queue\SerializesModels;
-use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Foundation\Bus\Dispatchable;
-use Illuminate\Support\Facades\Mail;
-
-class SendOrderSummaryEmail implements ShouldQueue
+use Illuminate\Support\Facades\View;
+class SendOrderSummaryEmail
 {
-    use Dispatchable, Queueable, SerializesModels;
+    use Dispatchable, SerializesModels;
 
     protected $order;
 
@@ -33,24 +29,33 @@ class SendOrderSummaryEmail implements ShouldQueue
      */
     public function handle()
     {
-        // Send the order summary email
-
-
-        // Send order summary email to the user
-        Mail::send('emails.order_summary_ar', ['order' => $this->order], function ($message) {
-            $message->to($this->order->billing_email)
-                ->subject('ملخص الطلب');
-        });
-
+        // Render the customer email template
+        $customerEmailBody = View::make('emails.order_summary_ar', [
+            'order' => $this->order
+        ])->render();
+        // Send order summary email to the customer
+        SendEmailJob::dispatch(
+            $this->order->billing_email,
+            'ملخص الطلب',
+            $customerEmailBody
+        );
         // Retrieve all admins with `notifiable = true`
-        $notifiableAdmins = \App\Models\User::where('role', 'admin')->where('notifiable', true)->get();
-
-        // Send notification email to each admin
-        foreach ($notifiableAdmins as $admin) {
-            Mail::send('emails.new_order_ar', ['order' => $this->order], function ($message) use ($admin) {
-                $message->to($admin->email)
-                    ->subject('إشعار طلب جديد');
-            });
+        $notifiableAdmins = \App\Models\User::where('role', 'admin')
+            ->where('notifiable', true)
+            ->get();
+        if ($notifiableAdmins->isNotEmpty()) {
+            // Render the admin notification template
+            $adminEmailBody = View::make('emails.new_order_ar', [
+                'order' => $this->order
+            ])->render();
+            // Send notification email to each admin
+            foreach ($notifiableAdmins as $admin) {
+                SendEmailJob::dispatch(
+                    $admin->email,
+                    'إشعار طلب جديد',
+                    $adminEmailBody
+                );
+            }
         }
     }
 }

@@ -6,7 +6,7 @@ use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Foundation\Bus\Dispatchable;
 use Illuminate\Queue\InteractsWithQueue;
 use Illuminate\Queue\SerializesModels;
-use Illuminate\Support\Facades\Mail;
+use Illuminate\Support\Facades\View;
 
 class SendRegistrationEmail implements ShouldQueue
 {
@@ -21,10 +21,19 @@ class SendRegistrationEmail implements ShouldQueue
 
     public function handle()
     {
+        // Generate the setup URL
         $setupUrl = url('/set-password/' . $this->details['token']);
-        Mail::send('emails.registration', ['setupUrl' => $setupUrl], function ($message) {
-            $message->to($this->details['email'])
-                ->subject('قم بتعيين كلمة المرور الخاصة بك');
-        });
+
+        // Render the email template
+        $emailBody = View::make('emails.registration', [
+            'setupUrl' => $setupUrl
+        ])->render();
+
+        // Send the registration email using SendEmailJob
+        SendEmailJob::dispatch(
+            $this->details['email'],
+            'قم بتعيين كلمة المرور الخاصة بك',
+            $emailBody
+        );
     }
 }

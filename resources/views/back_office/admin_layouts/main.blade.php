@@ -196,6 +196,13 @@
                         </a>
                     </li>
 
+                    <li>
+                        <a href="{{ route('smtpSettings.modifier') }}" class="waves-effect">
+                            <i class="fa fa-envelope-open-text fa-3x"></i>
+                            <span>خدمات البريد</span>
+                        </a>
+                    </li>
+
 
 
                 </ul>

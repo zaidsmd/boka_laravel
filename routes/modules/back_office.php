@@ -109,5 +109,10 @@ Route::prefix('cpadmin')->group(function () {
         Route::get('/villes-select', 'villes_select')->name('villes.select');
     });
 
+    Route::group(['prefix' => 'smtp-settings','controller' => \App\Http\Controllers\SMTPSettingController::class],function (){
+        Route::get('/','modifier')->name('smtpSettings.modifier');
+        Route::post('/','mettre_a_jour')->name('smtpSettings.mettre_a_jour');
+    });
+
 
 });});
