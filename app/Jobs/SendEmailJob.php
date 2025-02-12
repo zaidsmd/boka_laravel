@@ -10,7 +10,7 @@ use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Foundation\Bus\Dispatchable;
 use Illuminate\Support\Facades\Mail;
 use App\Mail\SmtpEmail;
-use App\Models\SmtpSetting;
+use App\Models\SMTPSetting;
 use Illuminate\Support\Facades\Log;
 class SendEmailJob implements ShouldQueue
 {
@@ -45,7 +45,7 @@ class SendEmailJob implements ShouldQueue
     {
         // Récupère les paramètres SMTP
         try {
-            $smtpSettings = SmtpSetting::first();
+            $smtpSettings = SMTPSetting::first();
             if (!$smtpSettings) {
                 throw new \Exception("SMTP settings not found.");
             }
