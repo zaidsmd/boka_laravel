@@ -47,6 +47,10 @@ class PasswordSetupController extends Controller
 
         // Generate a token for the password setup link
         $token = Str::random(60);
+
+        // Delete the existing token if the email already exists in the password_reset_tokens table
+        DB::table('password_reset_tokens')->where('email', $user->email)->delete();
+
         DB::table('password_reset_tokens')->insert([
             'email' => $user->email,
             'token' => $token,
