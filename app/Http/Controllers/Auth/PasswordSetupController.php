@@ -22,6 +22,8 @@ class PasswordSetupController extends Controller
             'first_name' => 'required|string|max:255',
             'last_name' => 'required|string|max:255',
             'email_reg' => 'required|email|unique:users,email',
+            'g-recaptcha-response' => 'required|recaptchav3:register,0.5',
+
         ], [
             'first_name.required' => 'الاسم الأول مطلوب.',
             'first_name.string' => 'يجب أن يكون الاسم الأول نصاً.',
@@ -34,6 +36,9 @@ class PasswordSetupController extends Controller
             'email_reg.required' => 'البريد الإلكتروني مطلوب.',
             'email_reg.email' => 'يجب أن يكون البريد الإلكتروني صالحاً.',
             'email_reg.unique' => 'البريد الإلكتروني مسجل بالفعل.',
+
+            'g-recaptcha-response.recaptchav3'  => 'الرجاء التحقق من أنك لست روبوتاً.',
+
         ]);
 
 

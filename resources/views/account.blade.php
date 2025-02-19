@@ -370,6 +370,12 @@
                             @endif
                             <form method="post" action="{{ route('register') }}">
                                 @csrf
+                                {!! RecaptchaV3::field('register') !!}
+                                @error('g-recaptcha-response')
+                                <div class="alert alert-danger mt-2">
+                                    {{ $message }}
+                                </div>
+                                @enderror
                                 <div class="form-group my-3">
                                     <label for="first_name " class="form-label required">الاسم الشخصي</label>
                                     <input type="text" id="first_name" name="first_name"
