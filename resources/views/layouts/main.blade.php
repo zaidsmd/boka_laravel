@@ -13,7 +13,7 @@
     @stack('styles')
 
     <script src="{{asset('js/jquery/jquery-3.7.1.min.js')}}"></script>
-    {!! RecaptchaV3::initJs() !!}
+
 </head>
 <body class="bg-body-tertiary min-vh-100 d-flex flex-column">
 @include('layouts.nav-bar')

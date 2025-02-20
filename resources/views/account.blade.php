@@ -1,5 +1,14 @@
 @extends('layouts.main')
 @section('document-title','لوحة حسابي')
+@push('styles')
+    <style>
+        .grecaptcha-badge {
+            bottom: 25% !important;
+        }
+
+    </style>
+@endpush
+{!! RecaptchaV3::initJs() !!}
 
 @section('page')
     @if($auth)
